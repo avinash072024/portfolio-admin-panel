@@ -25,6 +25,9 @@ export class ProjectComponent implements OnInit {
   projects: Project[] = [];
   projectService = inject(ProjectsService);
   toasterService = inject(ToastService);
+  showDeleteModal: boolean = false;
+  deletingProjectId!: string;
+  deletingProjectTitle!: string;
 
   ngOnInit(): void {
     // Ideally fetched from your MongoDB via an Angular Service
@@ -46,7 +49,7 @@ export class ProjectComponent implements OnInit {
   getProjects(): void {
     this.projectService.getAllProjects().subscribe({
       next: (res: any) => {
-        if(res.success) {
+        if (res.success) {
           this.projects = res?.projects;
         } else {
           this.toasterService.showError('Error');
@@ -63,8 +66,48 @@ export class ProjectComponent implements OnInit {
   }
 
   onDelete(id: string) {
-    if (confirm('Are you sure you want to delete this project?')) {
-      console.log('Deleting project ID:', id);
-    }
+    // fallback method (kept for API compatibility) — opens the modal
+    this.openDeleteModal(id, 'this project');
+  }
+
+  openDeleteModal(id: string, title: string) {
+    this.deletingProjectId = id;
+    this.deletingProjectTitle = title;
+    this.showDeleteModal = true;
+    // prevent body scroll when modal open
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.deletingProjectId = '';
+    this.deletingProjectTitle = '';
+    document.body.style.overflow = '';
+  }
+
+  confirmDelete() {
+    // Replace with actual delete API call when available
+
+    // console.log('Confirmed delete ID:', this.deletingProjectId);
+    // this.toasterService.showSuccess('Project deleted');
+    // this.closeDeleteModal();
+
+    // Optionally refresh list
+    // this.getProjects();
+
+    this.projectService.deleteProject(this.deletingProjectId).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.closeDeleteModal();
+          this.getProjects();
+          this.toasterService.showSuccess(res?.message);
+        } else {
+          this.toasterService.showSuccess(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.toasterService.showSuccess(err?.message);
+      }
+    })
   }
 }
