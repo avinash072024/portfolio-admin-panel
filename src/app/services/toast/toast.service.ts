@@ -19,16 +19,29 @@ export class ToastService {
       container.id = this.containerId;
       container.style.position = 'fixed';
       container.style.top = '1rem';
-      container.style.right = '1rem';
+      container.style.left = '50%';
+      container.style.transform = 'translateX(-50%)';
       container.style.zIndex = '1080';
       document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
-    toast.className = `alert alert-${type} shadow-sm`;
+    toast.className = `alert alert-${type} shadow`;
     toast.style.marginBottom = '0.5rem';
-    toast.style.minWidth = '200px';
-    toast.textContent = message;
+    toast.style.minWidth = '300px';
+    toast.setAttribute('role', 'alert');
+
+    const icon = document.createElement('span');
+    icon.setAttribute('aria-hidden', 'true');
+    icon.style.marginRight = '0.5rem';
+    icon.style.fontWeight = '600';
+    icon.textContent = type === 'success' ? '✓' : '✖';
+
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+
+    toast.appendChild(icon);
+    toast.appendChild(messageSpan);
 
     container.appendChild(toast);
 
