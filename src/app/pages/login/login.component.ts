@@ -5,6 +5,7 @@ import * as AOS from 'aos';
 import { ThemeTogglerComponent } from "../../components/theme-toggler/theme-toggler.component";
 import { RouterLink, Router } from '@angular/router';
 import { ToastService } from '../../services/toast/toast.service';
+import { SessionService } from '../../services/session/session.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   private readonly validEmail = 'admin@example.com';
   private readonly validPassword = 'Admin@123';
 
-  constructor(private fb: FormBuilder, private router: Router, private toast: ToastService) { }
+  constructor(private fb: FormBuilder, private router: Router, private toast: ToastService, private sessionService: SessionService) { }
 
   ngOnInit(): void {
     AOS.init();
@@ -42,6 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger;
     if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.loginForm.value;
 
     if (email === this.validEmail && password === this.validPassword) {
+      this.sessionService.setUserSession(JSON.stringify(this.loginForm.value));
       this.toast.showSuccess('Login success');
       this.router.navigate(['/home']);
     } else {

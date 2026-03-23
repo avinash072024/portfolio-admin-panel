@@ -31,4 +31,17 @@ export class SessionService {
   clearSkinSession(): void {
     localStorage.removeItem(Constants.SKIN_KEY);
   }
+
+  // user session
+  setUserSession(user: any): void {
+    localStorage.setItem(Constants.USER_DETAILS, user);
+  }
+
+  getUserSession(): void {
+    localStorage.getItem(Constants.USER_DETAILS);
+  }
+
+  clearUserSession(): void {
+    localStorage.removeItem(Constants.USER_DETAILS);
+  }
 }

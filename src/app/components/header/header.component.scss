@@ -172,3 +172,58 @@
         }
     }
 }
+
+/* --- User Dropdown --- */
+.user-dropdown {
+    .btn-user {
+        // background: var(--bs-tertiary-bg);
+        background: rgba(var(--primary-rgb), 0.1);
+        border: 1px solid rgba(var(--primary-rgb), 0.06);
+        padding: 6px 10px;
+        // border-radius: 12px;
+        color: var(--bs-emphasis-color);
+        display: inline-flex;
+        align-items: center;
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            // border-radius: 10px;
+            background: linear-gradient(135deg, rgba(var(--primary-rgb),0.12), rgba(var(--primary-rgb),0.06));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+    }
+
+    .user-menu {
+        min-width: 200px;
+        background: var(--bs-body-bg);
+        border-radius: 12px;
+        padding: 6px;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: background 0.12s ease, color 0.12s ease;
+
+            &:hover {
+                background: rgba(var(--primary-rgb), 0.06);
+                color: var(--primary-color);
+            }
+        }
+    }
+
+    @media (max-width: 575px) {
+        .btn-user {
+            padding: 6px;
+            .d-none.d-md-block { display: none !important; }
+        }
+    }
+}

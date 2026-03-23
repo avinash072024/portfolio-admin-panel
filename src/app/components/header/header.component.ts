@@ -1,4 +1,5 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { ThemeService } from '../../services/theme/theme.service';
 import { Constants } from '../../models/constants';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -13,6 +14,7 @@ import { ThemeTogglerComponent } from "../theme-toggler/theme-toggler.component"
 })
 export class HeaderComponent {
   themeService = inject(ThemeService);
+  router = inject(Router);
   isScrolled = signal(false);
   appName1: string = Constants.APP_NAME1;
   appName2: string = Constants.APP_NAME2;
@@ -40,5 +42,20 @@ export class HeaderComponent {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.isScrolled.set(window.scrollY > 50);
+  }
+
+  onSettings() {
+    this.router.navigate(['/settings']);
+  }
+
+  onResetPassword() {
+    this.router.navigate(['/reset-password']);
+  }
+
+  onLogout() {
+    if (confirm('Logout from account?')) {
+      // navigate to login or landing page; adapt if auth flow exists
+      this.router.navigate(['/login']);
+    }
   }
 }
