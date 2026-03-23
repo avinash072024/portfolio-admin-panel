@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import * as AOS from 'aos';
 import { ThemeTogglerComponent } from "../../components/theme-toggler/theme-toggler.component";
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { ToastService } from '../../services/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,11 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   passwordVisible = false;
 
-  constructor(private fb: FormBuilder) { }
+  // Hard-coded credentials
+  private readonly validEmail = 'admin@example.com';
+  private readonly validPassword = 'Admin@123';
+
+  constructor(private fb: FormBuilder, private router: Router, private toast: ToastService) { }
 
   ngOnInit(): void {
     AOS.init();
@@ -37,11 +42,18 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Login Data:', this.loginForm.value);
-      // Proceed to Dashboard
-    } else {
+    if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const { email, password } = this.loginForm.value;
+
+    if (email === this.validEmail && password === this.validPassword) {
+      this.toast.showSuccess('Login success');
+      this.router.navigate(['/home']);
+    } else {
+      this.toast.showError('Login failed: wrong credentials');
     }
   }
 }
