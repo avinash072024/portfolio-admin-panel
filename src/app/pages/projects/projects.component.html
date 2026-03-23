@@ -1,1 +1,90 @@
-<p>projects works!</p>
+<div class="container py-5 mt-5">
+    <div class="card shadow-lg mt-5 border-1 border-primary rounded-4 overflow-hidden" data-aos="fade-up">
+        <div class="card-header bg-primary py-3">
+            <h4 class="text-white mb-0"><i class="bi bi-kanban me-2"></i>Create New Project</h4>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+            <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Project Title</label>
+                        <input type="text" formControlName="title" class="form-control"
+                            [class.is-invalid]="isInvalid('title')" placeholder="e.g. E-Commerce Dashboard">
+                        <div class="invalid-feedback">Title is required (min 3 chars).</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Category</label>
+                        <select formControlName="category" class="form-select"
+                            [class.is-invalid]="isInvalid('category')">
+                            <option value="">Select Category</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a category.</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Completion Date</label>
+                        <input type="date" formControlName="date" class="form-control"
+                            [class.is-invalid]="isInvalid('date')">
+                        <div class="invalid-feedback">Please select Date.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Live Link (Optional)</label>
+                        <input type="url" formControlName="link" class="form-control" placeholder="https://...">
+                    </div>
+
+                    <div class="col-12" formArrayName="desc">
+                        <label class="form-label fw-bold d-flex justify-content-between">
+                            Description Points
+                            <button type="button" (click)="addItem(descArray)"
+                                class="btn btn-sm btn-outline-primary border-0">
+                                <i class="bi bi-plus-circle"></i> Add Point
+                            </button>
+                        </label>
+                        <div *ngFor="let d of descArray.controls; let i=index" class="input-group mb-2">
+                            <input [formControlName]="i" class="form-control" placeholder="Describe a feature..."
+                                [class.is-invalid]="isInvalid(['desc', i])">
+                            <button *ngIf="descArray.length > 1" type="button" (click)="removeItem(descArray, i)"
+                                class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback">Please select a category.</div>
+                    </div>
+
+                    <div class="col-12" formArrayName="tools">
+                        <label class="form-label fw-bold d-flex justify-content-between">
+                            Tools & Technologies
+                            <button type="button" (click)="addItem(toolsArray)"
+                                class="btn btn-sm btn-outline-primary border-0">
+                                <i class="bi bi-plus-circle"></i> Add Tool
+                            </button>
+                        </label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap"
+                                style="width: auto;">
+                                <input [formControlName]="i" class="form-control form-control-sm"
+                                    placeholder="e.g. Angular" [class.is-invalid]="isInvalid(['tools', i])">
+                                <button *ngIf="toolsArray.length > 1" type="button" (click)="removeItem(toolsArray, i)"
+                                    class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-5 d-flex gap-3">
+                    <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">Save Project</button>
+                    <button type="button" class="btn btn-light px-5 py-2 fw-bold border">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

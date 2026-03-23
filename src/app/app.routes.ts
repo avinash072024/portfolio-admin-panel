@@ -8,6 +8,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
+import { ProjectsComponent } from './pages/projects/projects.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +45,11 @@ export const routes: Routes = [
                 path: 'contact',
                 component: ContactComponent,
                 title: `Contact | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'projects',
+                component: ProjectsComponent,
+                title: `Projects | ${Constants.APP_NAME}`
             }
         ]
     },
