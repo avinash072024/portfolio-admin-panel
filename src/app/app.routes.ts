@@ -30,7 +30,7 @@ export const routes: Routes = [
    {
        path: '',
        component: LayoutComponent,
-       canActivate: [authGuard],
+    //    canActivate: [authGuard],
        children: [
             {
                 path: 'home',
@@ -51,6 +51,11 @@ export const routes: Routes = [
                 path: 'projects',
                 component: ProjectComponent,
                 title: `Projects | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'add-project',
+                component: ProjectsComponent,
+                title: `Add Project | ${Constants.APP_NAME}`
             }
         ]
     },

@@ -39,13 +39,13 @@
                     </div>
 
                     <div class="col-12" formArrayName="desc">
-                        <label class="form-label fw-bold d-flex justify-content-between">
-                            Description Points
+                        <div class="form-label fw-bold d-flex justify-content-between">
+                            <label>Description Points</label>
                             <button type="button" (click)="addItem(descArray)"
                                 class="btn btn-sm btn-outline-primary border-0">
                                 <i class="bi bi-plus-circle"></i> Add Point
                             </button>
-                        </label>
+                        </div>
                         <div *ngFor="let d of descArray.controls; let i=index" class="input-group mb-2">
                             <input [formControlName]="i" class="form-control" placeholder="Describe a feature..."
                                 [class.is-invalid]="isInvalid(['desc', i])">
@@ -54,17 +54,17 @@
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
-                        <div class="invalid-feedback">Please select a category.</div>
+                        <div class="invalid-feedback">Please enter description</div>
                     </div>
 
                     <div class="col-12" formArrayName="tools">
-                        <label class="form-label fw-bold d-flex justify-content-between">
-                            Tools & Technologies
+                        <div class="form-label fw-bold d-flex justify-content-between">
+                            <label>Tools & Technologies</label>
                             <button type="button" (click)="addItem(toolsArray)"
                                 class="btn btn-sm btn-outline-primary border-0">
                                 <i class="bi bi-plus-circle"></i> Add Tool
                             </button>
-                        </label>
+                        </div>
                         <div class="d-flex flex-wrap gap-2">
                             <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap"
                                 style="width: auto;">
@@ -82,7 +82,7 @@
 
                 <div class="mt-5 d-flex gap-3">
                     <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">Save Project</button>
-                    <button type="button" class="btn btn-light px-5 py-2 fw-bold border">Cancel</button>
+                    <a routerLink="/projects" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
                 </div>
             </form>
         </div>
