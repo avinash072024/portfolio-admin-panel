@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import * as AOS from 'aos';
 import { ThemeTogglerComponent } from "../../components/theme-toggler/theme-toggler.component";
 import { RouterLink, Router } from '@angular/router';
@@ -20,10 +20,21 @@ export class LoginComponent implements OnInit {
   // Hard-coded credentials
   private readonly validEmail = 'admin@example.com';
   private readonly validPassword = 'Admin@123';
+  fb = inject(FormBuilder);
+  router = inject(Router);
+  toast = inject(ToastService);
+  sessionService = inject(SessionService);
+  location = inject(Location);
 
-  constructor(private fb: FormBuilder, private router: Router, private toast: ToastService, private sessionService: SessionService) { }
+  // constructor(private fb: FormBuilder, private router: Router, private toast: ToastService, private sessionService: SessionService) { }
 
   ngOnInit(): void {
+    if (this.sessionService.isAuthenticated()) {
+      // Redirect if already logged in
+      this.location.back(); // change route as needed
+      return;
+    }
+
     AOS.init();
     this.initForm();
   }
@@ -49,11 +60,16 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const { email, password } = this.loginForm.value;
+    const { email, password, rememberMe } = this.loginForm.value;
+    const formValue = {
+      email: email,
+      password: password,
+      rememberMe: rememberMe
+    }
 
     if (email === this.validEmail && password === this.validPassword) {
-      this.sessionService.setUserSession(JSON.stringify(this.loginForm.value));
-      this.toast.showSuccess('Login success');
+      this.sessionService.setUserSession(formValue);
+      // this.toast.showSuccess('Login success');
       this.router.navigate(['/home']);
     } else {
       this.toast.showError('Login failed: wrong credentials');

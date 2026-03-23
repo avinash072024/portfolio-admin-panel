@@ -34,14 +34,28 @@ export class SessionService {
 
   // user session
   setUserSession(user: any): void {
-    localStorage.setItem(Constants.USER_DETAILS, user);
+    try {
+      localStorage.setItem(Constants.USER_DETAILS, JSON.stringify(user));
+    } catch (e) {
+      localStorage.setItem(Constants.USER_DETAILS, String(user));
+    }
   }
 
-  getUserSession(): void {
-    localStorage.getItem(Constants.USER_DETAILS);
+  getUserSession(): any {
+    const v = localStorage.getItem(Constants.USER_DETAILS);
+    if (!v) return null;
+    try {
+      return JSON.parse(v);
+    } catch (e) {
+      return v;
+    }
   }
 
   clearUserSession(): void {
     localStorage.removeItem(Constants.USER_DETAILS);
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getUserSession();
   }
 }

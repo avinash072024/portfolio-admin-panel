@@ -5,6 +5,7 @@ import { Constants } from '../../models/constants';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { ThemeTogglerComponent } from "../theme-toggler/theme-toggler.component";
+import { SessionService } from '../../services/session/session.service';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ import { ThemeTogglerComponent } from "../theme-toggler/theme-toggler.component"
 })
 export class HeaderComponent {
   themeService = inject(ThemeService);
+  sessionService = inject(SessionService);
   router = inject(Router);
   isScrolled = signal(false);
   appName1: string = Constants.APP_NAME1;
@@ -53,9 +55,7 @@ export class HeaderComponent {
   }
 
   onLogout() {
-    if (confirm('Logout from account?')) {
-      // navigate to login or landing page; adapt if auth flow exists
-      this.router.navigate(['/login']);
-    }
+    this.sessionService.clearUserSession();
+    this.router.navigate(['/login']);
   }
 }
