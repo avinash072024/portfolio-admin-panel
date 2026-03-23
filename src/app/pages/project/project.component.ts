@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
+import { ProjectsService } from '../../services/projects/projects.service';
+import { ToastService } from '../../services/toast/toast.service';
 
 interface Project {
   _id: string;
@@ -21,20 +23,39 @@ interface Project {
 })
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
+  projectService = inject(ProjectsService);
+  toasterService = inject(ToastService);
 
   ngOnInit(): void {
     // Ideally fetched from your MongoDB via an Angular Service
-    this.projects = [
-      {
-        _id: '1',
-        title: 'Portfolio Admin',
-        category: 'Web Development',
-        date: '2026-01-15',
-        desc: ['Modern admin panel with light/dark mode', 'Responsive design'],
-        tools: ['Angular', 'Bootstrap', 'MongoDB'],
-        link: 'https://example.com'
-      }
-    ];
+    // this.projects = [
+    //   {
+    //     _id: '1',
+    //     title: 'Portfolio Admin',
+    //     category: 'Web Development',
+    //     date: '2026-01-15',
+    //     desc: ['Modern admin panel with light/dark mode', 'Responsive design'],
+    //     tools: ['Angular', 'Bootstrap', 'MongoDB'],
+    //     link: 'https://example.com'
+    //   }
+    // ];
+
+    this.getProjects();
+  }
+
+  getProjects(): void {
+    this.projectService.getAllProjects().subscribe({
+      next: (res: any) => {
+        if(res.success) {
+          this.projects = res?.projects;
+        } else {
+          this.toasterService.showError('Error');
+        }
+      },
+      error: (err: any) => {
+        this.toasterService.showError(err.message)
+      },
+    })
   }
 
   onEdit(project: Project) {

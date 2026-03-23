@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
       return;

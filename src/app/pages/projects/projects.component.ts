@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
+import { ProjectsService } from '../../services/projects/projects.service';
+import { ToastService } from '../../services/toast/toast.service';
 
 @Component({
   selector: 'app-projects',
@@ -12,6 +14,9 @@ import { RouterLink } from "@angular/router";
 export class ProjectsComponent implements OnInit {
   projectForm!: FormGroup;
   fb = inject(FormBuilder);
+  projectService = inject(ProjectsService);
+  toastrService = inject(ToastService);
+  router = inject(Router);
 
   ngOnInit(): void {
     this.projectForm = this.fb.group({
@@ -41,7 +46,21 @@ export class ProjectsComponent implements OnInit {
 
   onSubmit() {
     if (this.projectForm.valid) {
-      console.log('Project Data:', this.projectForm.value);
+      // console.log('Project Data:', this.projectForm.value);
+      this.projectService.addProject(this.projectForm.value).subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.projectForm.reset();
+            this.toastrService.showSuccess(res?.message);
+            this.router.navigateByUrl('/projects');
+          } else {
+            this.toastrService.showError(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.toastrService.showError(err?.message);
+        }
+      })
     } else {
       this.projectForm.markAllAsTouched();
     }
