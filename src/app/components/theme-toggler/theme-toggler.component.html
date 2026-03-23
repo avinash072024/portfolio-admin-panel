@@ -1,0 +1,39 @@
+<div class="dropdown">
+    <button class="btn btn-palette shadow-none rounded-pill d-flex align-items-center justify-content-center"
+        type="button" data-bs-toggle="dropdown">
+        <i class="bi bi-palette-fill"></i>
+        <i class="bi bi-chevron-down ms-1 small d-none d-md-block"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end shadow border-1 border-primary p-4 mt-3 rounded-4">
+        <div class="mb-4">
+            <h6 class="dropdown-header px-0 mb-3 text-uppercase fw-bold ls-1 small">Appearance</h6>
+            <div class="theme-toggle-group">
+                <button class="theme-btn" [class.active]="themeService.theme() === 'light'"
+                    (click)="themeService.toggleTheme('light')">
+                    <i class="bi bi-sun-fill me-2"></i> Light
+                </button>
+                <button class="theme-btn" [class.active]="themeService.theme() === 'dark'"
+                    (click)="themeService.toggleTheme('dark')">
+                    <i class="bi bi-moon-stars-fill me-2"></i> Dark
+                </button>
+            </div>
+        </div>
+
+        <hr class="dropdown-divider opacity-10 mb-4">
+
+        <div>
+            <h6 class="dropdown-header px-0 mb-3 text-uppercase fw-bold ls-1 small">Accent Color</h6>
+            <div class="skin-grid">
+                @for (skin of skins; track skin.class) {
+                <button class="skin-node" [style.background-color]="skin.hex"
+                    [class.active]="themeService.skin() === skin.class" (click)="themeService.setSkin(skin.class)"
+                    [title]="skin.name">
+                    @if (themeService.skin() === skin.class) {
+                    <i class="bi bi-check-lg"></i>
+                    }
+                </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

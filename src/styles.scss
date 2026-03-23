@@ -1,0 +1,112 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+:root {
+    --font-family: "Nunito Sans", sans-serif;
+}
+
+body {
+    font-family: var(--font-family) !important;
+}
+
+/* Default Bootstrap Blue */
+[data-skin="default-blue"] {
+    --primary-color: #0d6efd;
+    --primary-rgb: 13, 110, 253;
+    /* Needed for transparency/rgba effects */
+}
+
+/* Emerald Green */
+[data-skin="emerald-green"] {
+    --primary-color: #198754;
+    --primary-rgb: 25, 135, 84;
+}
+
+/* Vibrant Purple (Indigo-ish) */
+[data-skin="vibrant-purple"] {
+    --primary-color: #6610f2;
+    --primary-rgb: 102, 16, 242;
+}
+
+/* Hot Pink/Magenta (Rose) */
+[data-skin="hot-pink"] {
+    --primary-color: #d63384;
+    --primary-rgb: 214, 51, 132;
+}
+
+/* Bright Orange */
+[data-skin="sunset-orange"] {
+    --primary-color: #fd7e14;
+    --primary-rgb: 253, 126, 20;
+}
+
+/* Cyan / Teal */
+[data-skin="cyan-wave"] {
+    --primary-color: #0dcaf0;
+    --primary-rgb: 13, 202, 240;
+}
+
+/* Crimson Red */
+[data-skin="crimson-red"] {
+    --primary-color: #dc3545;
+    --primary-rgb: 220, 53, 69;
+}
+
+/* Apply global skin overrides */
+[data-skin] {
+    /* Override Bootstrap's internal variables */
+    --bs-primary: var(--primary-color);
+    --bs-primary-rgb: var(--primary-rgb);
+    --bs-link-color: var(--primary-color);
+    --bs-link-hover-color: color-mix(in srgb, var(--primary-color), black 20%);
+}
+
+/* Specific component overrides if needed */
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--primary-color), black 15%) !important;
+        filter: brightness(0.9);
+    }
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+
+    // Default State
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    background-color: transparent !important;
+    transition: all 0.3s ease-in-out;
+
+    &:hover,
+    &:active,
+    &:focus {
+        // Fills with skin color on hover
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+        color: #fff !important; // Ensures text is white on the colored background
+        filter: brightness(0.9);
+        box-shadow: 0 8px 15px rgba(var(--primary-rgb), 0.3);
+        // transform: translateY(-2px);
+    }
+
+    // Handle the "active/clicked" state logic
+    &:active {
+        transform: translateY(0);
+        background-color: color-mix(in srgb, var(--primary-color), black 15%) !important;
+    }
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+/* Custom scrollbar matching the skin */
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}

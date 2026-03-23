@@ -1,0 +1,103 @@
+<nav class="navbar navbar-expand-lg fixed-top transition-all" [class.scrolled]="isScrolled()">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" routerLink="/">
+            <i class="bi bi-code-slash text-primary"></i> {{appName1 | titlecase}}<span
+                class="text-primary"> {{appName2 | titlecase}}.</span>
+        </a>
+
+        <div class="d-flex align-items-center gap-3 order-lg-last">
+            <!-- <div class="dropdown">
+                <button
+                    class="btn btn-palette shadow-none rounded-pill d-flex align-items-center justify-content-center"
+                    type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-palette-fill"></i>
+                    <i class="bi bi-chevron-down ms-1 small d-none d-md-block"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end shadow border-1 border-primary p-4 mt-3 rounded-4">
+                    <div class="mb-4">
+                        <h6 class="dropdown-header px-0 mb-3 text-uppercase fw-bold ls-1 small">Appearance</h6>
+                        <div class="theme-toggle-group">
+                            <button class="theme-btn" [class.active]="themeService.theme() === 'light'"
+                                (click)="themeService.toggleTheme('light')">
+                                <i class="bi bi-sun-fill me-2"></i> Light
+                            </button>
+                            <button class="theme-btn" [class.active]="themeService.theme() === 'dark'"
+                                (click)="themeService.toggleTheme('dark')">
+                                <i class="bi bi-moon-stars-fill me-2"></i> Dark
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr class="dropdown-divider opacity-10 mb-4">
+
+                    <div>
+                        <h6 class="dropdown-header px-0 mb-3 text-uppercase fw-bold ls-1 small">Accent Color</h6>
+                        <div class="skin-grid">
+                            @for (skin of skins; track skin.class) {
+                            <button class="skin-node" [style.background-color]="skin.hex"
+                                [class.active]="themeService.skin() === skin.class"
+                                (click)="themeService.setSkin(skin.class)" [title]="skin.name">
+                                @if (themeService.skin() === skin.class) {
+                                <i class="bi bi-check-lg"></i>
+                                }
+                            </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <app-theme-toggler />
+            <button class="navbar-toggler shadow-none border-0 p-0" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#mobileMenu">
+                <!-- <div class="toggler-icon">
+                    <span></span>
+                    <span></span>
+                </div> -->
+                <i class="bi bi-grid-fill fs-2 text-primary"></i>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navContent">
+            <ul class="navbar-nav desktop-nav">
+                @for (item of navLinks; track item.id) {
+                <li class="nav-item">
+                    <a class="nav-link mx-2" [routerLink]="item.path" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        {{item.label}}
+                    </a>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="offcanvas offcanvas-end border-0" tabindex="-1" id="mobileMenu" data-bs-backdrop="static">
+    <div class="offcanvas-header py-4 px-4 d-flex justify-content-between align-items-center">
+        <h5 class="offcanvas-title fw-bold">
+            <i class="bi bi-code-slash text-primary"></i> {{appName1 | titlecase}} <span
+                class="text-primary"> {{appName2 | titlecase}}</span>
+        </h5>
+        <button type="button" class="btn-close-custom" data-bs-dismiss="offcanvas">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+    <div class="offcanvas-body p-4 d-flex flex-column">
+        <ul class="navbar-nav gap-3">
+            @for (item of navLinks; track item.id; let i = $index) {
+            <li class="nav-item" [style.animation-delay]="i * 0.1 + 's'">
+                <a class="nav-link mobile-link" [routerLink]="item.path" routerLinkActive="active"
+                    data-bs-dismiss="offcanvas">
+                    <span class="link-idx">0{{i+1}}.</span> {{item.label}}
+                </a>
+            </li>
+            }
+        </ul>
+
+        <div class="mt-auto pt-3 px-4 border-top">
+            <p class="mb-0 text-center small text-muted"><i class="bi bi-c-circle"></i> {{currentYear}} <span
+                    class="fw-bold mb-0">{{appName1 | titlecase}} {{appName2 |
+                    titlecase}}</span>.</p>
+        </div>
+    </div>
+</div>

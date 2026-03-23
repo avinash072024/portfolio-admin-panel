@@ -1,0 +1,66 @@
+.btn-palette {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+
+    &:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+}
+
+.theme-toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: var(--bs-tertiary-bg);
+    padding: 4px;
+    border-radius: 12px;
+
+    .theme-btn {
+        border: none;
+        padding: 8px;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--bs-secondary-color);
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s;
+
+        &.active {
+            background: var(--bs-body-bg);
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+.skin-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    .skin-node {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        border: 3px solid transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: transform 0.2s;
+
+        &.active {
+            border-color: var(--bs-emphasis-color);
+            transform: scale(1.15);
+        }
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
