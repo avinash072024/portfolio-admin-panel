@@ -9,6 +9,10 @@ body {
     font-family: var(--font-family) !important;
 }
 
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
 /* Default Bootstrap Blue */
 [data-skin="default-blue"] {
     --primary-color: #0d6efd;

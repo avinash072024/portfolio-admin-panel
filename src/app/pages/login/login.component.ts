@@ -3,10 +3,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import * as AOS from 'aos';
 import { ThemeTogglerComponent } from "../../components/theme-toggler/theme-toggler.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, ThemeTogglerComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, ThemeTogglerComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

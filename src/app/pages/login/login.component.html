@@ -1,5 +1,5 @@
 <div class="login-container d-flex align-items-center justify-content-center">
-    <app-theme-toggler />
+    <app-theme-toggler class="theme-toggler"></app-theme-toggler>
     <div class="glass-card p-4 p-md-5 m-4 m-md-0" data-aos="zoom-in" data-aos-duration="1000">
 
         <div class="text-center mb-4">
@@ -18,7 +18,7 @@
                         <i class="bi bi-envelope text-primary"></i>
                     </span>
                     <input type="email" formControlName="email" class="form-control border-start-0"
-                        [class.is-invalid]="isInvalid('email')" placeholder="name@example.com">
+                        [class.is-invalid]="isInvalid('email')" placeholder="name@example.com" autocomplete="off">
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                     </span>
                     <input [type]="passwordVisible ? 'text' : 'password'" formControlName="password"
                         class="form-control border-start-0 border-end-0" [class.is-invalid]="isInvalid('password')"
-                        placeholder="••••••••">
+                        placeholder="••••••••" autocomplete="off">
                     <span class="input-group-text bg-transparent border-start-0 rounded-end-2 cursor-pointer"
                         (click)="passwordVisible = !passwordVisible">
                         <i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
@@ -45,7 +45,7 @@
                     <input type="checkbox" class="form-check-input" id="remember" formControlName="rememberMe">
                     <label class="form-check-label small" for="remember">Remember me</label>
                 </div>
-                <a href="#" class="text-primary small text-decoration-none fw-bold">Forgot Password?</a>
+                <a routerLink="/forgot-password" class="text-primary small text-decoration-none fw-bold">Forgot Password?</a>
             </div>
 
             <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">

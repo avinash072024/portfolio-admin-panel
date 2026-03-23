@@ -1,6 +1,7 @@
 /* login.component.scss */
 .login-container {
     min-height: 100vh;
+    position: relative;
     // Modern mesh gradient background
     background: radial-gradient(at 0% 0%, rgba(13, 110, 253, 0.15) 0, transparent 50%),
         radial-gradient(at 100% 100%, rgba(13, 110, 253, 0.1) 0, transparent 50%),
@@ -15,6 +16,30 @@
     border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
     border-radius: 24px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggler {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 576px) {
+    .theme-toggler {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .glass-card {
+        margin: 1.25rem !important;
+        padding: 1.25rem !important;
+        max-width: 92%;
+        border-radius: 18px;
+    }
 }
 
 .input-group-text {
@@ -41,8 +66,4 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 15px rgba(13, 110, 253, 0.3);
     }
-}
-
-.cursor-pointer {
-    cursor: pointer;
 }
