@@ -4,6 +4,7 @@ import { RouterLink } from "@angular/router";
 import { ProjectsService } from '../../services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ThemeService } from '../../services/theme/theme.service';
 
 interface Project {
   _id: string;
@@ -24,7 +25,13 @@ interface Project {
 })
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
+  // pagination state
+  page: number = 1;
+  limit: number = 5;
+  total: number = 0;
+  totalPages: number = 1;
   projectService = inject(ProjectsService);
+  themeService = inject(ThemeService);
   toastr = inject(ToastrService);
   spinner = inject(NgxSpinnerService);
   showDeleteModal: boolean = false;
@@ -37,10 +44,14 @@ export class ProjectComponent implements OnInit {
 
   getProjects(): void {
     this.spinner.show();
-    this.projectService.getAllProjects().subscribe({
+    this.projectService.getAllProjects(this.page, this.limit).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.projects = res?.projects;
+          this.projects = res?.projects || [];
+          this.page = res.page || this.page;
+          this.limit = res.limit || this.limit;
+          this.total = res.total || 0;
+          this.totalPages = res.totalPages || Math.max(1, Math.ceil(this.total / this.limit));
           this.spinner.hide()
         } else {
           // this.toasterService.showError('Error');
@@ -54,6 +65,23 @@ export class ProjectComponent implements OnInit {
         this.toastr.error(err.message);
       },
     })
+  }
+
+  changePage(newPage: number) {
+    if (newPage < 1 || newPage > this.totalPages || newPage === this.page) return;
+    this.page = newPage;
+    this.getProjects();
+  }
+
+  setLimit(newLimit: number) {
+    if (newLimit === this.limit) return;
+    this.limit = newLimit;
+    this.page = 1;
+    this.getProjects();
+  }
+
+  get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   onEdit(project: Project) {
@@ -81,6 +109,7 @@ export class ProjectComponent implements OnInit {
   }
 
   confirmDelete() {
+    this.toastr.clear();
     this.spinner.show();
     this.projectService.deleteProject(this.deletingProjectId).subscribe({
       next: (res: any) => {
