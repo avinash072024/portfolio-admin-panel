@@ -3,8 +3,7 @@
         <div
             class="card-header bg-transparent border-1 border-primary py-3 d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="fw-bold mb-0">Project Portfolio <span
-                        class="badge rounded-pill bg-primary px-3">
+                <h5 class="fw-bold mb-0">Project Portfolio <span class="badge rounded-pill bg-primary px-3">
                         {{ total }}
                     </span></h5>
                 <p class="text-muted small mb-0 d-none d-md-block">Manage and oversee your developed projects</p>
@@ -31,13 +30,14 @@
                         <tr>
                             <td class="ps-4">
                                 <div class="d-flex align-items-center">
-                                    <!-- <div class="project-img-wrapper me-3">
+                                    <div class="project-img-wrapper me-3">
                                         <img [src]="project.image || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800'"
                                             class="rounded-3 shadow-sm" alt="title">
-                                    </div> -->
+                                    </div>
                                     <div>
                                         <div class="fw-bold text-body">{{ project.title }}</div>
-                                        <div class="text-muted smaller text-truncate" style="max-width: 200px;" [title]="project.desc[0]">
+                                        <div class="text-muted smaller text-truncate" style="max-width: 200px;"
+                                            [title]="project.desc[0]">
                                             {{ project.desc[0] }}
                                         </div>
                                     </div>
@@ -90,12 +90,12 @@
                 <div class="d-flex align-items-center gap-2">
                     <span class="text-muted small">Rows:</span>
                     <div class="btn-group" role="group" aria-label="rows per page">
-                        <button type="button" class="btn btn-sm"
-                            [class.active]="limit===5" (click)="setLimit(5)">5</button>
-                        <button type="button" class="btn btn-sm mx-1"
-                            [class.active]="limit===10" (click)="setLimit(10)">10</button>
-                        <button type="button" class="btn btn-sm"
-                            [class.active]="limit===20" (click)="setLimit(20)">20</button>
+                        <button type="button" class="btn btn-sm" [class.active]="limit===5"
+                            (click)="setLimit(5)">5</button>
+                        <button type="button" class="btn btn-sm mx-1" [class.active]="limit===10"
+                            (click)="setLimit(10)">10</button>
+                        <button type="button" class="btn btn-sm" [class.active]="limit===20"
+                            (click)="setLimit(20)">20</button>
                     </div>
                 </div>
 
@@ -105,8 +105,8 @@
                             <button class="page-link" (click)="changePage(page-1)">Prev</button>
                         </li>
 
-                        <li class="page-item" *ngFor="let p of pages; let i = index"
-                            [class.active]="page===p" [class.d-none]="totalPages>7 && (p>page+2 || p<page-2)">
+                        <li class="page-item" *ngFor="let p of pages; let i = index" [class.active]="page===p"
+                            [class.d-none]="totalPages>7 && (p>page+2 || p<page-2)">
                             <button class="page-link" (click)="changePage(p)">{{ p }}</button>
                         </li>
 

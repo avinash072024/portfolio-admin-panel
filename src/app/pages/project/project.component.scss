@@ -193,17 +193,20 @@ thead th {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
+.w-85 {
+    width: 85% !important;
+}
+
 @media (max-width: 720px) {
     .pagination-wrapper {
         flex-direction: column;
         gap: 0.5rem;
     }
-}
 
-.w-85 {
-    width: 85% !important;
+    .w-85 {
+        width: 100% !important;
+    }
 }
-
 
 .page-item.disabled {
     cursor: not-allowed;
