@@ -4,6 +4,7 @@ import * as AOS from 'aos';
 import { Constants } from './models/constants';
 import { SessionService } from './services/session/session.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent {
   theme = signal(localStorage.getItem(Constants.THEME_KEY) || 'light');
   skin = signal(localStorage.getItem(Constants.SKIN_KEY) || 'default-blue');
 
-  constructor(private sessionService: SessionService) {
+  constructor(private sessionService: SessionService, private toastr: ToastrService) {
     // Automatically update DOM and localStorage when signals change
     effect(() => {
       document.documentElement.setAttribute('data-bs-theme', this.theme());
@@ -43,5 +44,11 @@ export class AppComponent {
       duration: 1000,
       mirror: false
     });
+    // Example toast to demonstrate ngx-toastr integration
+    // try {
+    //   this.toastr.success('Welcome back!', 'Ready');
+    // } catch (e) {
+    //   // ignore if toastr not available yet during bootstrap
+    // }
   }
 }

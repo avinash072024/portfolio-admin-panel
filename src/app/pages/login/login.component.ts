@@ -4,8 +4,8 @@ import { CommonModule, Location } from '@angular/common';
 import * as AOS from 'aos';
 import { ThemeTogglerComponent } from "../../components/theme-toggler/theme-toggler.component";
 import { RouterLink, Router } from '@angular/router';
-import { ToastService } from '../../services/toast/toast.service';
 import { SessionService } from '../../services/session/session.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
   private readonly validPassword = 'Admin@123';
   fb = inject(FormBuilder);
   router = inject(Router);
-  toast = inject(ToastService);
   sessionService = inject(SessionService);
+  toastrService = inject(ToastrService);
   location = inject(Location);
 
   // constructor(private fb: FormBuilder, private router: Router, private toast: ToastService, private sessionService: SessionService) { }
@@ -71,7 +71,8 @@ export class LoginComponent implements OnInit {
       // this.toast.showSuccess('Login success');
       this.router.navigate(['/home']);
     } else {
-      this.toast.showError('Login failed: wrong credentials');
+      // this.toast.showError('Login failed: wrong credentials');
+      this.toastrService.error('Login failed: wrong credentials');
     }
   }
 }

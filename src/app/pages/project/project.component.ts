@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { ProjectsService } from '../../services/projects/projects.service';
-import { ToastService } from '../../services/toast/toast.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 interface Project {
   _id: string;
@@ -24,39 +25,33 @@ interface Project {
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
   projectService = inject(ProjectsService);
-  toasterService = inject(ToastService);
+  toastr = inject(ToastrService);
+  spinner = inject(NgxSpinnerService);
   showDeleteModal: boolean = false;
   deletingProjectId!: string;
   deletingProjectTitle!: string;
 
   ngOnInit(): void {
-    // Ideally fetched from your MongoDB via an Angular Service
-    // this.projects = [
-    //   {
-    //     _id: '1',
-    //     title: 'Portfolio Admin',
-    //     category: 'Web Development',
-    //     date: '2026-01-15',
-    //     desc: ['Modern admin panel with light/dark mode', 'Responsive design'],
-    //     tools: ['Angular', 'Bootstrap', 'MongoDB'],
-    //     link: 'https://example.com'
-    //   }
-    // ];
-
     this.getProjects();
   }
 
   getProjects(): void {
+    this.spinner.show();
     this.projectService.getAllProjects().subscribe({
       next: (res: any) => {
         if (res.success) {
           this.projects = res?.projects;
+          this.spinner.hide()
         } else {
-          this.toasterService.showError('Error');
+          // this.toasterService.showError('Error');
+          this.spinner.hide();
+          this.toastr.error("Error");
         }
       },
       error: (err: any) => {
-        this.toasterService.showError(err.message)
+        // this.toasterService.showError(err.message)
+        this.spinner.hide();
+        this.toastr.error(err.message);
       },
     })
   }
@@ -86,27 +81,22 @@ export class ProjectComponent implements OnInit {
   }
 
   confirmDelete() {
-    // Replace with actual delete API call when available
-
-    // console.log('Confirmed delete ID:', this.deletingProjectId);
-    // this.toasterService.showSuccess('Project deleted');
-    // this.closeDeleteModal();
-
-    // Optionally refresh list
-    // this.getProjects();
-
+    this.spinner.show();
     this.projectService.deleteProject(this.deletingProjectId).subscribe({
       next: (res: any) => {
         if (res?.success) {
           this.closeDeleteModal();
           this.getProjects();
-          this.toasterService.showSuccess(res?.message);
+          this.spinner.hide();
+          this.toastr.success(res?.message);
         } else {
-          this.toasterService.showSuccess(res?.message);
+          this.spinner.hide();
+          this.toastr.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.toasterService.showSuccess(err?.message);
+        this.spinner.hide();
+        this.toastr.error(err?.message);
       }
     })
   }

@@ -3,7 +3,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
 import { ProjectsService } from '../../services/projects/projects.service';
-import { ToastService } from '../../services/toast/toast.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-projects',
@@ -15,7 +16,8 @@ export class ProjectsComponent implements OnInit {
   projectForm!: FormGroup;
   fb = inject(FormBuilder);
   projectService = inject(ProjectsService);
-  toastrService = inject(ToastService);
+  spinner = inject(NgxSpinnerService);
+  toastr = inject(ToastrService);
   router = inject(Router);
 
   ngOnInit(): void {
@@ -47,18 +49,22 @@ export class ProjectsComponent implements OnInit {
   onSubmit() {
     if (this.projectForm.valid) {
       // console.log('Project Data:', this.projectForm.value);
+      this.spinner.show();
       this.projectService.addProject(this.projectForm.value).subscribe({
         next: (res: any) => {
           if (res?.success) {
             this.projectForm.reset();
-            this.toastrService.showSuccess(res?.message);
-            this.router.navigateByUrl('/projects');
+            this.spinner.hide();
+            this.toastr.success(res?.message);
+            // this.router.navigateByUrl('/projects');
           } else {
-            this.toastrService.showError(res?.message);
+            this.spinner.hide();
+            this.toastr.error(res?.message);
           }
         },
         error: (err: any) => {
-          this.toastrService.showError(err?.message);
+          this.spinner.hide();
+          this.toastr.error(err?.message);
         }
       })
     } else {
