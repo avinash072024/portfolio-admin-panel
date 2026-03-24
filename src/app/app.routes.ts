@@ -11,6 +11,7 @@ import { authGuard } from './guards/auth.guard';
 import { ProjectComponent } from './pages/project/project.component';
 import { AddEditProjectComponent } from './pages/add-edit-project/add-edit-project.component';
 import { SkillsComponent } from './pages/skills/skills.component';
+import { AddEditSkillsComponent } from './pages/add-edit-skills/add-edit-skills.component';
 
 export const routes: Routes = [
     {
@@ -67,6 +68,16 @@ export const routes: Routes = [
                 path: 'skills',
                 component: SkillsComponent,
                 title: `Skills | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'add-skill',
+                component: AddEditSkillsComponent,
+                title: `Add Skill | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'edit-skill/:id',
+                component: AddEditSkillsComponent,
+                title: `Edit Skill | ${Constants.APP_NAME}`
             },
         ]
     },

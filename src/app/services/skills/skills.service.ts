@@ -14,4 +14,20 @@ export class SkillsService {
     const params = `?page=${page}&limit=${limit}`;
     return this.http.get(`${environment.apiUrl}/skills${params}`);
   }
+
+  getSkillById(id: string): Observable<any> {
+    return this.http.get(environment.apiUrl + `/skills/${id}`);
+  }
+
+  addSkill(data: any): Observable<any> {
+    return this.http.post(environment.apiUrl + '/skills', data);
+  }
+
+  updateSkill(id: string, data: any): Observable<any> {
+    return this.http.put(environment.apiUrl + `/skills/${id}`, data);
+  }
+
+  deleteSkill(id: string): Observable<any> {
+    return this.http.delete(environment.apiUrl + `/skills/${id}`);
+  }
 }

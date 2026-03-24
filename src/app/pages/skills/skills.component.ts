@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SkillsService } from '../../services/skills/skills.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 export interface Skill {
   _id: string;
@@ -16,7 +17,7 @@ export interface Skill {
 
 @Component({
   selector: 'app-skills',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })

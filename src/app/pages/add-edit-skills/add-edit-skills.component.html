@@ -1,0 +1,67 @@
+<div class="container py-5 mt-5">
+	<div class="card shadow-lg mt-5 border-1 border-primary rounded-4 overflow-hidden" data-aos="fade-up">
+		<div class="card-header d-flex justify-content-between align-items-center bg-primary py-3">
+			<h4 class="text-white mb-0"><i class="bi bi-patch-check me-2"></i>{{ isEdit ? 'Edit Skill' : 'Add New Skill' }}</h4>
+			<a routerLink="/skills" class="btn btn-light fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
+		</div>
+
+		<div class="card-body p-4 p-md-5">
+			<form [formGroup]="skillForm" (ngSubmit)="onSubmit()">
+				<div class="row g-4">
+					<div class="col-md-6">
+						<label class="form-label fw-bold">Skill Name</label>
+						<input type="text" formControlName="name" class="form-control" [class.is-invalid]="isInvalid('name')" placeholder="e.g. Angular">
+						<div class="invalid-feedback">Name is required (min 2 chars).</div>
+					</div>
+
+					<div class="col-md-6">
+						<label class="form-label fw-bold">Category</label>
+						<select formControlName="category" class="form-select" [class.is-invalid]="isInvalid('category')">
+							<option value="">Select Category</option>
+							<option value="Frontend Development">Frontend Development</option>
+							<option value="Backend & Database">Backend & Database</option>
+							<option value="Tools & Design">Tools & Design</option>
+							<option value="Version Control & DevOps">Version Control & DevOps</option>
+							<option value="Payment Gateways">Payment Gateways</option>
+						</select>
+						<div class="invalid-feedback">Please select a category.</div>
+					</div>
+
+					<div class="col-md-4">
+						<label class="form-label fw-bold">Level (%)</label>
+						<input type="number" formControlName="level" class="form-control" min="0" max="100" [class.is-invalid]="isInvalid('level')">
+						<div class="invalid-feedback">Enter level between 0 and 100.</div>
+					</div>
+
+					<div class="col-md-4">
+						<label class="form-label fw-bold">Color</label>
+						<input type="color" formControlName="color" class="form-control form-control-color w-100" [class.is-invalid]="isInvalid('color')" style="height: 45px;">
+					</div>
+
+					<div class="col-md-4">
+						<label class="form-label fw-bold">Icon Class (Bootstrap Icon)</label>
+						<input type="text" formControlName="icon" class="form-control" placeholder="e.g. bi bi-bootstrap" />
+					</div>
+
+					<div class="col-12">
+						<div class="d-flex align-items-center gap-3">
+							<div class="preview-box d-flex align-items-center justify-content-center" [style.borderColor]="skillForm.value.color">
+								<i class="fs-3" [class]="skillForm.value.icon" [style.color]="skillForm.value.color"></i>
+							</div>
+							<div>
+								<div class="fw-bold">Preview</div>
+								<div class="text-muted small">This shows how the icon and color will look.</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="mt-5 d-flex gap-3">
+					<button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">{{ isEdit ? 'Update' : 'Save' }}</button>
+					<a routerLink="/skills" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
