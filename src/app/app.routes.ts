@@ -10,6 +10,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
 import { ProjectComponent } from './pages/project/project.component';
 import { AddEditProjectComponent } from './pages/add-edit-project/add-edit-project.component';
+import { SkillsComponent } from './pages/skills/skills.component';
 
 export const routes: Routes = [
     {
@@ -61,7 +62,12 @@ export const routes: Routes = [
                 path: 'edit-project/:id',
                 component: AddEditProjectComponent,
                 title: `Edit Project | ${Constants.APP_NAME}`
-            }
+            },
+            {
+                path: 'skills',
+                component: SkillsComponent,
+                title: `Skills | ${Constants.APP_NAME}`
+            },
         ]
     },
     {
