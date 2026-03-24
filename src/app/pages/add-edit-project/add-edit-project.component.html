@@ -1,7 +1,7 @@
 <div class="container py-5 mt-5">
     <div class="card shadow-lg mt-5 border-1 border-primary rounded-4 overflow-hidden" data-aos="fade-up">
         <div class="card-header d-flex justify-content-between align-items-center bg-primary py-3">
-            <h4 class="text-white mb-0"><i class="bi bi-kanban me-2"></i>Create New Project</h4>
+            <h4 class="text-white mb-0"><i class="bi bi-kanban me-2"></i>{{ isEdit ? 'Edit Project' : 'Create New Project' }}</h4>
             <a routerLink="/projects" class="btn btn-light fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
 
@@ -52,7 +52,7 @@
                                 [class.is-invalid]="isInvalid(['desc', i])">
                             <button *ngIf="descArray.length > 1" type="button" (click)="removeItem(descArray, i)"
                                 class="btn btn-outline-danger">
-                                <i class="bi bi-trash"></i>
+                                <i class="bi bi-trash3"></i>
                             </button>
                         </div>
                         <div class="invalid-feedback">Please enter description</div>
@@ -67,13 +67,13 @@
                             </button>
                         </div>
                         <div class="d-flex flex-wrap gap-2">
-                            <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap"
-                                style="width: auto;">
+                            <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap w-auto"
+                                >
                                 <input [formControlName]="i" class="form-control form-control-sm"
                                     placeholder="e.g. Angular" [class.is-invalid]="isInvalid(['tools', i])">
                                 <button *ngIf="toolsArray.length > 1" type="button" (click)="removeItem(toolsArray, i)"
                                     class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-x"></i>
+                                    <i class="bi bi-trash3"></i>
                                 </button>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="mt-5 d-flex gap-3">
-                    <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">Save</button>
+                    <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">{{ isEdit ? 'Update' : 'Save' }}</button>
                     <a routerLink="/projects" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
                 </div>
             </form>

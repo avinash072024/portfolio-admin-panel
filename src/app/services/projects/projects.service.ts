@@ -23,6 +23,10 @@ export class ProjectsService {
     return this.http.post(environment.apiUrl + '/projects', data);
   }
 
+  updateProject(id: string, data: any): Observable<any> {
+    return this.http.put(environment.apiUrl + `/projects/${id}`, data);
+  }
+
   deleteProject(id: string): Observable<any> {
     return this.http.delete(environment.apiUrl + `/projects/${id}`)
   }

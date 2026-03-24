@@ -6,6 +6,7 @@ import { ThemeTogglerComponent } from "../../components/theme-toggler/theme-togg
 import { RouterLink, Router } from '@angular/router';
 import { SessionService } from '../../services/session/session.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
   sessionService = inject(SessionService);
   toastrService = inject(ToastrService);
   location = inject(Location);
+  spinner = inject(NgxSpinnerService);
 
   // constructor(private fb: FormBuilder, private router: Router, private toast: ToastService, private sessionService: SessionService) { }
 
@@ -35,7 +37,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    AOS.init();
+    // AOS.init();
     this.initForm();
   }
 
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false]
+      // rememberMe: [false]
     });
   }
 
@@ -59,19 +61,18 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const { email, password, rememberMe } = this.loginForm.value;
+    const { email, password } = this.loginForm.value;
     const formValue = {
       email: email,
-      password: password,
-      rememberMe: rememberMe
+      password: password
     }
-
+    this.spinner.show();
     if (email === this.validEmail && password === this.validPassword) {
       this.sessionService.setUserSession(formValue);
-      // this.toast.showSuccess('Login success');
+      this.spinner.hide();
       this.router.navigate(['/home']);
     } else {
-      // this.toast.showError('Login failed: wrong credentials');
+      this.spinner.hide()
       this.toastrService.error('Login failed: wrong credentials');
     }
   }

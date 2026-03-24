@@ -8,8 +8,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
-import { ProjectsComponent } from './pages/projects/projects.component';
 import { ProjectComponent } from './pages/project/project.component';
+import { AddEditProjectComponent } from './pages/add-edit-project/add-edit-project.component';
 
 export const routes: Routes = [
     {
@@ -54,15 +54,19 @@ export const routes: Routes = [
             },
             {
                 path: 'add-project',
-                component: ProjectsComponent,
+                component: AddEditProjectComponent,
                 title: `Add Project | ${Constants.APP_NAME}`
             },
             {
-                path: '**',
-                component: NotFoundComponent,
-                title: '404 - Page not found'
+                path: 'edit-project/:id',
+                component: AddEditProjectComponent,
+                title: `Edit Project | ${Constants.APP_NAME}`
             }
         ]
+    },
+    {
+        path: '**',
+        component: NotFoundComponent,
+        title: '404 - Page not found'
     }
-
 ];

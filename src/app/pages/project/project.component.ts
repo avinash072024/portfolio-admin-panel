@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { ProjectsService } from '../../services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -34,6 +34,7 @@ export class ProjectComponent implements OnInit {
   themeService = inject(ThemeService);
   toastr = inject(ToastrService);
   spinner = inject(NgxSpinnerService);
+  router = inject(Router);
   showDeleteModal: boolean = false;
   deletingProjectId!: string;
   deletingProjectTitle!: string;
@@ -85,7 +86,8 @@ export class ProjectComponent implements OnInit {
   }
 
   onEdit(project: Project) {
-    console.log('Editing project:', project.title);
+    // navigate to add-edit page with project id for editing
+    this.router.navigate(['/edit-project', project._id]);
   }
 
   onDelete(id: string) {
