@@ -27,11 +27,11 @@ export const routes: Routes = [
         component: ForgotPasswordComponent,
         title: `Forgot Password | ${Constants.APP_NAME}`
     },
-   {
-       path: '',
-       component: LayoutComponent,
-       canActivate: [authGuard],
-       children: [
+    {
+        path: '',
+        component: LayoutComponent,
+        canActivate: [authGuard],
+        children: [
             {
                 path: 'home',
                 component: HomeComponent,
@@ -56,12 +56,13 @@ export const routes: Routes = [
                 path: 'add-project',
                 component: ProjectsComponent,
                 title: `Add Project | ${Constants.APP_NAME}`
+            },
+            {
+                path: '**',
+                component: NotFoundComponent,
+                title: '404 - Page not found'
             }
         ]
-    },
-    {
-        path: '**',
-        component: NotFoundComponent,
-        title: '404 - Page not found'
     }
+
 ];
