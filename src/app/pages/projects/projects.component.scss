@@ -18,10 +18,6 @@
     border-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
 }
 
-.btn-primary {
-    border-radius: 10px;
-}
-
 // Ensure the form looks great in Dark Mode
 [data-bs-theme="dark"] {
     .card {
