@@ -1,1 +1,135 @@
-<p>home works!</p>
+<div class="container py-5 mt-5">
+    <div class="row my-5" data-aos="fade-down">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-bold mb-2">Welcome back, <span class="text-primary">Admin</span></h1>
+            <p class="text-muted lead">Here's a quick overview of your portfolio performance today.</p>
+        </div>
+        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+            <a routerLink="/projects" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+                <i class="bi bi-plus-circle me-2"></i>Add New Project
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-sm-6 col-xl-3" *ngFor="let stat of stats; let i = index" [attr.data-aos]="'fade-up'"
+            [attr.data-aos-delay]="i * 100">
+            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="icon-shape rounded-3" [ngClass]="'bg-' + stat.color + '-subtle text-' + stat.color">
+                            <i class="bi {{ stat.icon }} fs-4"></i>
+                        </div>
+                        <span class="badge bg-success-subtle text-success small">+12% <i
+                                class="bi bi-arrow-up"></i></span>
+                    </div>
+                    <h3 class="fw-bold mb-1">{{ stat.count | number }}</h3>
+                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">{{ stat.label }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7" data-aos="fade-right">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-4">Website Traffic Trend</h5>
+                <div
+                    class="placeholder-chart rounded-4 d-flex align-items-center justify-content-center bg-light-subtle border border-dashed">
+                    <p class="text-muted small">Chart.js Component Integration Placeholder</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5" data-aos="fade-left">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-4">Quick Shortcuts</h5>
+                <div class="list-group list-group-flush">
+                    <a href="#"
+                        class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center py-3">
+                        <div class="bg-primary-subtle p-2 rounded-circle me-3"><i class="bi bi-pencil text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Update Skills</h6>
+                            <small class="text-muted">Modify your technical matrix</small>
+                        </div>
+                    </a>
+                    <a href="#"
+                        class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center py-3">
+                        <div class="bg-warning-subtle p-2 rounded-circle me-3"><i
+                                class="bi bi-file-earmark-pdf text-warning"></i></div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Replace Resume</h6>
+                            <small class="text-muted">Upload latest CV version</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 my-5">
+        <div class="col-12" data-aos="fade-up">
+            <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+                <div class="card-header bg-transparent border-0 p-4 pb-2 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Recent Website Visitors</h5>
+                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 custom-table">
+                            <thead class="bg-light-subtle">
+                                <tr>
+                                    <th class="ps-4 text-muted fw-semibold small uppercase-tracking border-0">IP Address</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">City</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Country</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">ISP</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Timezone</th>
+                                    <th class="pe-4 text-muted fw-semibold small uppercase-tracking border-0 text-end">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let visitor of visitors">
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary-subtle text-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                                                <i class="bi bi-globe2"></i>
+                                            </div>
+                                            <span class="fw-medium">{{ visitor.query }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-medium">{{ visitor.city }}, {{ visitor.countryCode }}</span>
+                                            <!-- <small class="text-muted">{{ visitor.country }}</small> -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-medium">{{visitor.region}}, {{ visitor.country }}, </span>
+                                            <!-- <small class="text-muted">{{ visitor.country }}</small> -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-truncate d-inline-block" style="max-width: 200px;" [title]="visitor.isp">{{ visitor.isp }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary-subtle text-secondary">{{ visitor.timezone }}</span>
+                                    </td>
+                                    <td class="pe-4 text-end">
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status === 'success'">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Success
+                                        </span>
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status !== 'success'">
+                                            <i class="bi bi-x-circle-fill me-1"></i> Failed
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

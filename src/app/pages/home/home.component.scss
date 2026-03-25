@@ -1,0 +1,87 @@
+/* home.component.scss */
+
+// Skin Color Variable - You can change this globally
+$primary-skin: var(--bs-primary);
+
+.stat-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bs-body-bg);
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+        border-color: rgba($primary-skin, 0.3) !important;
+    }
+}
+
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.uppercase-tracking {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+}
+
+.placeholder-chart {
+    height: 250px;
+    background-image: linear-gradient(rgba(var(--bs-primary-rgb), 0.05) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(var(--bs-primary-rgb), 0.05) 2px, transparent 2px);
+    background-size: 40px 40px;
+}
+
+// Ensure Dark Mode Text Contrast
+[data-bs-theme="dark"] {
+    .stat-card {
+        background: #1e2125;
+    }
+
+    .bg-light-subtle {
+        background-color: #2b3035 !important;
+    }
+
+    .visitor-card {
+        background: #1e2125;
+        
+        .custom-table {
+            tbody tr:hover {
+                background-color: rgba(var(--bs-primary-rgb), 0.1) !important;
+            }
+        }
+    }
+}
+
+.visitor-card {
+    background: var(--bs-body-bg);
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
+    
+    .custom-table {
+        th {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        td {
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
+        }
+        tr:last-child td {
+            border-bottom: 0 !important;
+        }
+        tbody tr {
+            transition: all 0.2s ease;
+            &:hover {
+                background-color: rgba(var(--bs-primary-rgb), 0.02) !important;
+                td:first-child {
+                    box-shadow: inset 3px 0 0 $primary-skin;
+                }
+            }
+        }
+    }
+}
