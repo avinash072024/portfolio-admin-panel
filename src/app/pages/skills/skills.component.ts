@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SkillsService } from '../../services/skills/skills.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 export interface Skill {
   _id: string;
@@ -33,6 +33,11 @@ export class SkillsComponent implements OnInit {
   toastr = inject(ToastrService);
   skillsService = inject(SkillsService);
   themeService = inject(ThemeService);
+  router = inject(Router);
+  
+  showDeleteModal: boolean = false;
+  deletingSkillId!: string;
+  deletingSkillTitle!: string;
 
   ngOnInit(): void {
     this.getProjects();
@@ -102,6 +107,48 @@ export class SkillsComponent implements OnInit {
 
   get rangeEnd() {
     return Math.min(this.page * this.limit, this.total);
+  }
+
+  onDelete(id: string) {
+    // fallback method (kept for API compatibility) — opens the modal
+    this.openDeleteModal(id, 'this project');
+  }
+
+  openDeleteModal(id: string, title: string) {
+    this.deletingSkillId = id;
+    this.deletingSkillTitle = title;
+    this.showDeleteModal = true;
+    // prevent body scroll when modal open
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.deletingSkillId = '';
+    this.deletingSkillTitle = '';
+    document.body.style.overflow = '';
+  }
+
+  confirmDelete() {
+    this.toastr.clear();
+    this.spinner.show();
+    this.skillsService.deleteSkill(this.deletingSkillId).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.closeDeleteModal();
+          this.getProjects();
+          this.spinner.hide();
+          this.toastr.success(res?.message);
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.message);
+      }
+    })
   }
 
 }

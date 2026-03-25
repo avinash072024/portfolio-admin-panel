@@ -8,13 +8,13 @@
 		<div class="card-body p-4 p-md-5">
 			<form [formGroup]="skillForm" (ngSubmit)="onSubmit()">
 				<div class="row g-4">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label class="form-label fw-bold">Skill Name</label>
 						<input type="text" formControlName="name" class="form-control" [class.is-invalid]="isInvalid('name')" placeholder="e.g. Angular">
 						<div class="invalid-feedback">Name is required (min 2 chars).</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label class="form-label fw-bold">Category</label>
 						<select formControlName="category" class="form-select" [class.is-invalid]="isInvalid('category')">
 							<option value="">Select Category</option>
@@ -34,12 +34,12 @@
 					</div>
 
 					<div class="col-md-4">
-						<label class="form-label fw-bold">Color</label>
-						<input type="color" formControlName="color" class="form-control form-control-color w-100" [class.is-invalid]="isInvalid('color')" style="height: 45px;">
+						<label class="form-label fw-bold">Color (HEX Only)</label>
+						<input type="text" formControlName="color" class="form-control" [class.is-invalid]="isInvalid('color')">
 					</div>
 
 					<div class="col-md-4">
-						<label class="form-label fw-bold">Icon Class (Bootstrap Icon)</label>
+						<label class="form-label fw-bold">Icon Class (Bootstrap, Tabler & Fontawesome Icon)</label>
 						<input type="text" formControlName="icon" class="form-control" placeholder="e.g. bi bi-bootstrap" />
 					</div>
 
