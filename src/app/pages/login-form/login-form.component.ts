@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth/auth.service';
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss'
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
   passwordVisible = false;
 
@@ -25,12 +25,18 @@ export class LoginFormComponent {
     private sessionService: SessionService,
     private router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  ngOnInit(): void {
+    if(this.sessionService.getUserSession()) {
+      this.router.navigate(['/home']);
+    }
   }
 
   isInvalid(controlName: string): boolean {
