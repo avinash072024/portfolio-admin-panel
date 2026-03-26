@@ -13,6 +13,7 @@ import { AddEditProjectComponent } from './pages/add-edit-project/add-edit-proje
 import { SkillsComponent } from './pages/skills/skills.component';
 import { AddEditSkillsComponent } from './pages/add-edit-skills/add-edit-skills.component';
 import { LoginFormComponent } from './pages/login-form/login-form.component';
+import { ForgotPasswordFormComponent } from './pages/forgot-password-form/forgot-password-form.component';
 
 export const routes: Routes = [
     {
@@ -27,7 +28,7 @@ export const routes: Routes = [
     },
     {
         path: 'forgot-password',
-        component: ForgotPasswordComponent,
+        component: ForgotPasswordFormComponent,
         title: `Forgot Password | ${Constants.APP_NAME}`
     },
     {
