@@ -186,8 +186,10 @@
         align-items: center;
 
         .avatar {
-            width: 34px;
-            height: 34px;
+            // width: 34px;
+            // height: 34px;
+            width: 30px;
+            height: 30px;
             // border-radius: 10px;
             background: linear-gradient(135deg, rgba(var(--primary-rgb),0.12), rgba(var(--primary-rgb),0.06));
             display: flex;

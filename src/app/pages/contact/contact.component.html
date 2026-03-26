@@ -1,7 +1,10 @@
 <div class="contact-container container pt-4 mt-5">
   <div class="page-header my-5 d-flex justify-content-between align-items-center">
     <div>
-      <h2 class="fw-bold mb-1">Contact Management</h2>
+      <div class="d-flex align-items-center gap-5">
+        <h2 class="fw-bold mb-1">Contact Management</h2>
+        <button type="button" class="btn btn-primary btn-sm" (click)="eidtableFiedls()" [title]="editableFields ? 'Cancel' : 'Edit'"><i class="bi" [ngClass]="editableFields ? 'bi-x' : 'bi-pencil'"></i> {{ editableFields ? 'Cancel' : 'Edit'}}</button>
+      </div>
       <p class="text-secondary mb-0">Update your contact details and social links shown on your portfolio.</p>
     </div>
   </div>
@@ -9,39 +12,35 @@
   <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="row g-4">
     <!-- Basic Info Card -->
     <div class="col-lg-6">
-      <div class="card h-100 shadow-sm border-0">
+      <div class="card h-100 shadow-sm border-1 border-primary">
         <div class="card-header bg-transparent py-3">
           <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Basic Information</h5>
         </div>
         <div class="card-body">
-          <!-- <div class="mb-3">
-            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
-            <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter your full name">
-          </div> -->
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
-              <input type="text" id="firstName" formControlName="firstName" class="form-control"
+              <input type="text" id="firstName" formControlName="firstName" class="form-control" [readOnly]="!editableFields"
                 placeholder="Enter your first name">
             </div>
             <div class="col-md-6">
               <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-              <input type="text" id="lastName" formControlName="lastName" class="form-control"
+              <input type="text" id="lastName" formControlName="lastName" class="form-control" [readOnly]="!editableFields"
                 placeholder="Enter your last name">
             </div>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
-            <input type="email" id="email" formControlName="email" class="form-control"
+            <input type="email" id="email" formControlName="email" class="form-control" [readOnly]="!editableFields"
               placeholder="yourname@example.com">
           </div>
           <div class="mb-3">
             <label for="phone" class="form-label">Phone Number</label>
-            <input type="text" id="phone" formControlName="phone" class="form-control" placeholder="+91 1234567890">
+            <input type="text" id="phone" formControlName="phone" class="form-control" placeholder="+91 1234567890" [readOnly]="!editableFields">
           </div>
           <div class="mb-0">
             <label for="address" class="form-label">Address / Location</label>
-            <textarea id="address" formControlName="address" class="form-control" rows="3"
+            <textarea id="address" formControlName="address" class="form-control" rows="3" [readOnly]="!editableFields"
               placeholder="City, Country"></textarea>
           </div>
         </div>
@@ -50,7 +49,7 @@
 
     <!-- Social Links Card -->
     <div class="col-lg-6">
-      <div class="card h-100 shadow-sm border-0">
+      <div class="card h-100 shadow-sm border-1 border-primary">
         <div class="card-header bg-transparent py-3">
           <h5 class="mb-0"><i class="bi bi-share-fill me-2 text-primary"></i>Social Media Links</h5>
         </div>
@@ -58,30 +57,30 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label for="linkedin" class="form-label"><i class="bi bi-linkedin me-1"></i> LinkedIn</label>
-              <input type="url" id="linkedin" formControlName="linkedin" class="form-control"
+              <input type="url" id="linkedin" formControlName="linkedin" class="form-control" [readOnly]="!editableFields"
                 placeholder="LinkedIn URL">
             </div>
             <div class="col-md-6">
               <label for="github" class="form-label"><i class="bi bi-github me-1"></i> GitHub</label>
-              <input type="url" id="github" formControlName="github" class="form-control" placeholder="GitHub URL">
+              <input type="url" id="github" formControlName="github" class="form-control" placeholder="GitHub URL" [readOnly]="!editableFields">
             </div>
             <div class="col-md-6">
               <label for="twitter" class="form-label"><i class="bi bi-twitter-x me-1"></i> Twitter / X</label>
-              <input type="url" id="twitter" formControlName="twitter" class="form-control" placeholder="Twitter URL">
+              <input type="url" id="twitter" formControlName="twitter" class="form-control" placeholder="Twitter URL" [readOnly]="!editableFields">
             </div>
             <div class="col-md-6">
               <label for="instagram" class="form-label"><i class="bi bi-instagram me-1"></i> Instagram</label>
-              <input type="url" id="instagram" formControlName="instagram" class="form-control"
+              <input type="url" id="instagram" formControlName="instagram" class="form-control" [readOnly]="!editableFields"
                 placeholder="Instagram URL">
             </div>
             <div class="col-md-6">
               <label for="facebook" class="form-label"><i class="bi bi-facebook me-1"></i> Facebook</label>
-              <input type="url" id="facebook" formControlName="facebook" class="form-control"
+              <input type="url" id="facebook" formControlName="facebook" class="form-control" [readOnly]="!editableFields"
                 placeholder="Facebook URL">
             </div>
             <div class="col-md-6">
               <label for="whatsapp" class="form-label"><i class="bi bi-whatsapp me-1"></i> WhatsApp</label>
-              <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control"
+              <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control" [readOnly]="!editableFields"
                 placeholder="WhatsApp Number">
             </div>
           </div>
@@ -91,25 +90,30 @@
 
     <!-- Additional Links & Action -->
     <div class="col-12 mb-5">
-      <div class="card shadow-sm border-0">
+      <div class="card shadow-sm border-1 border-primary">
+        <div class="card-header bg-transparent py-3">
+          <h5 class="mb-0"><i class="bi bi-share-fill me-2 text-primary"></i>Resume / Portfolio PDF Link</h5>
+        </div>
         <div class="card-body">
           <div class="row">
             <div class="col-md-9">
-              <label for="resumeUrl" class="form-label fw-bold"><i
-                  class="bi bi-file-earmark-pdf-fill me-2 text-primary"></i>Resume / Portfolio PDF Link</label>
+              <!-- <label for="resumeUrl" class="form-label fw-bold"><i
+                  class="bi bi-file-earmark-pdf-fill me-2 text-primary"></i>Resume / Portfolio PDF Link</label> -->
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                <input type="url" id="resumeUrl" formControlName="resumeUrl" class="form-control"
+                <input type="url" id="resumeUrl" formControlName="resumeUrl" class="form-control" [readOnly]="!editableFields"
                   placeholder="G-Drive or Direct PDF Link">
               </div>
             </div>
+            @if (editableFields) {
             <div class="col-md-3 d-flex align-items-end gap-2 mt-3 mt-md-0">
               <button type="button" (click)="loadContact()" class="btn btn-outline-secondary btn-lg px-4">Reset</button>
               <button type="submit" [disabled]="contactForm.invalid"
-                class="btn btn-primary btn-lg px-5 d-flex align-items-center">
+                class="btn btn-primary btn-lg px-4">
                 Save
               </button>
             </div>
+            }
           </div>
         </div>
       </div>

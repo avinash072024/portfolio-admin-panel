@@ -18,10 +18,9 @@ export class ContactComponent implements OnInit {
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
 
+  editableFields: boolean = false;
+
   contactForm: FormGroup;
-  // isLoading = signal(false);
-  // isSaving = signal(false);
-  // message = signal<{ type: 'success' | 'error', text: string } | null>(null);
 
   constructor() {
     this.contactForm = this.fb.group({
@@ -74,6 +73,7 @@ export class ContactComponent implements OnInit {
           }
           // this.isSaving.set(false);
           this.spinner.hide();
+          this.editableFields = !this.editableFields;
         },
         error: (err: any) => {
           this.spinner.hide();
@@ -83,5 +83,11 @@ export class ContactComponent implements OnInit {
     } else {
       this.contactForm.markAllAsTouched();
     }
+  }
+
+  eidtableFiedls(): void{
+    this.editableFields = !this.editableFields;
+    this.toastr.clear();
+    this.toastr.info(this.editableFields ? 'Fields are now editable' : 'Fields are now read-only'); 
   }
 }
