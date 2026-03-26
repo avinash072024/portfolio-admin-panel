@@ -19,13 +19,14 @@ export class ContactComponent implements OnInit {
   private toastr = inject(ToastrService);
 
   contactForm: FormGroup;
-  isLoading = signal(false);
-  isSaving = signal(false);
-  message = signal<{ type: 'success' | 'error', text: string } | null>(null);
+  // isLoading = signal(false);
+  // isSaving = signal(false);
+  // message = signal<{ type: 'success' | 'error', text: string } | null>(null);
 
   constructor() {
     this.contactForm = this.fb.group({
-      name: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
       address: [''],
@@ -44,43 +45,43 @@ export class ContactComponent implements OnInit {
   }
 
   loadContact() {
-    this.isLoading.set(true);
+    // this.isLoading.set(true);
+    this.spinner.show()
     this.contactService.getContact().subscribe({
       next: (res) => {
         if (res.success && res.contact) {
           this.contactForm.patchValue(res.contact);
         }
-        this.isLoading.set(false);
+        this.spinner.hide();
+        // this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Error loading contact:', err);
-        this.isLoading.set(false);
+        // console.error('Error loading contact:', err);
+        // this.isLoading.set(false);
+        this.spinner.hide();
+        this.toastr.error(err.error.message || 'Failed to load contact details');
       }
     });
   }
 
   onSubmit() {
     if (this.contactForm.valid) {
-      this.isSaving.set(true);
-      this.message.set(null);
-
+      this.spinner.show();
       this.contactService.updateContact(this.contactForm.value).subscribe({
-        next: (res) => {
+        next: (res: any) => {
           if (res.success) {
-            this.message.set({ type: 'success', text: res.message });
-            setTimeout(() => this.message.set(null), 3000);
+            this.toastr.success(res.message);
           }
-          this.isSaving.set(false);
+          // this.isSaving.set(false);
+          this.spinner.hide();
         },
-        error: (err) => {
-          this.message.set({ type: 'error', text: err.error.message || 'Failed to update contact details' });
-          this.isSaving.set(false);
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err.error.message || 'Failed to update contact details')
         }
       });
     } else {
       this.contactForm.markAllAsTouched();
     }
-
-
   }
 }
