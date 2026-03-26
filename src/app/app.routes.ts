@@ -39,11 +39,11 @@ export const routes: Routes = [
                 component: HomeComponent,
                 title: `Home | ${Constants.APP_NAME}`
             },
-            {
-                path: 'about',
-                component: AboutComponent,
-                title: `About | ${Constants.APP_NAME}`
-            },
+            // {
+            //     path: 'about',
+            //     component: AboutComponent,
+            //     title: `About | ${Constants.APP_NAME}`
+            // },
             {
                 path: 'contact',
                 component: ContactComponent,

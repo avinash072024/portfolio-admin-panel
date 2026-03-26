@@ -1,0 +1,70 @@
+.contact-container {
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+
+    &:hover {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+
+  .card-header {
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+
+  .form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--bs-body-color-rgb);
+  }
+
+  .form-control {
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+    padding: 0.6rem 0.85rem;
+
+    &:focus {
+      background-color: var(--bs-body-bg);
+      border-color: var(--bs-primary);
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+  }
+
+  .input-group-text {
+    background-color: var(--bs-body-secondary);
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+  }
+
+  .loading-state {
+    min-height: 400px;
+  }
+
+  .alert {
+    animation: slideInDown 0.4s ease-out;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 991.98px) {
+  .contact-container {
+    .card {
+      margin-bottom: 1rem;
+    }
+  }
+}
