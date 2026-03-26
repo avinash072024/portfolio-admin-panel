@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.development';
 
 export interface ContactInfo {
   _id?: string;
@@ -25,8 +25,6 @@ export interface ContactInfo {
 })
 export class ContactService {
   private http = inject(HttpClient);
-
-  // private apiUrl = `${environment.apiUrl}/contact`;
 
   getContact(): Observable<{ success: boolean; contact: ContactInfo }> {
     return this.http.get<{ success: boolean; contact: ContactInfo }>(`${environment.apiUrl}/contact`);

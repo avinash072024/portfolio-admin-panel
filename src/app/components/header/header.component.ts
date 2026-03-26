@@ -34,10 +34,10 @@ export class HeaderComponent {
 
   navLinks = [
     { id: 1, path: '/home', label: 'Home' },
-    { id: 2, path: '/projects', label: 'Projects' },
-    { id: 3, path: '/skills', label: 'Skills' },
-    { id: 4, path: '/contact', label: 'Contact' },
-    { id: 5, path: '/services', label: 'Services' },
+    { id: 2, path: '/services', label: 'Services' },
+    { id: 3, path: '/projects', label: 'Projects' },
+    { id: 4, path: '/skills', label: 'Skills' },
+    { id: 5, path: '/contact', label: 'Contact' },
   ]
 
   @HostListener('window:scroll', [])

@@ -44,7 +44,6 @@ export class ContactComponent implements OnInit {
   }
 
   loadContact() {
-    // this.isLoading.set(true);
     this.spinner.show()
     this.contactService.getContact().subscribe({
       next: (res) => {
@@ -52,11 +51,8 @@ export class ContactComponent implements OnInit {
           this.contactForm.patchValue(res.contact);
         }
         this.spinner.hide();
-        // this.isLoading.set(false);
       },
       error: (err) => {
-        // console.error('Error loading contact:', err);
-        // this.isLoading.set(false);
         this.spinner.hide();
         this.toastr.error(err.error.message || 'Failed to load contact details');
       }
@@ -71,7 +67,6 @@ export class ContactComponent implements OnInit {
           if (res.success) {
             this.toastr.success(res.message);
           }
-          // this.isSaving.set(false);
           this.spinner.hide();
           this.editableFields = !this.editableFields;
         },
