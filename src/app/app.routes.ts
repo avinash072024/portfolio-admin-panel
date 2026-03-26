@@ -12,6 +12,7 @@ import { ProjectComponent } from './pages/project/project.component';
 import { AddEditProjectComponent } from './pages/add-edit-project/add-edit-project.component';
 import { SkillsComponent } from './pages/skills/skills.component';
 import { AddEditSkillsComponent } from './pages/add-edit-skills/add-edit-skills.component';
+import { LoginFormComponent } from './pages/login-form/login-form.component';
 
 export const routes: Routes = [
     {
@@ -21,7 +22,7 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent,
+        component: LoginFormComponent,
         title: `Login | ${Constants.APP_NAME}`
     },
     {

@@ -1,0 +1,116 @@
+<app-theme-toggler class="theme-toggler" />
+<div class="login-page-wrapper d-flex align-items-center justify-content-center min-vh-100 p-3 p-md-4">
+  
+  <!-- Dynamic Background blobs for modern feel -->
+  <div class="blob shape-1 d-none d-md-block"></div>
+  <div class="blob shape-2 d-none d-md-block"></div>
+  
+  <div class="modern-login-card d-flex shadow-lg overflow-hidden position-relative z-3">
+    
+    <!-- Left Branding Side -->
+    <div class="login-brand-side d-none d-lg-flex flex-column justify-content-center p-5 text-white position-relative">
+      <div class="glass-overlay"></div>
+      
+      <div class="z-1 position-relative">
+        <div class="brand-icon mb-4">
+          <!-- A placeholder geometric icon using bootstrap-icons -->
+          <i class="bi bi-hexagon-half display-1 text-white opacity-75"></i>
+        </div>
+        <h1 class="fw-bold display-5 mb-3 lh-sm">
+          Welcome to <br />Portfolio Admin
+        </h1>
+        <p class="fs-5 text-white-75 mb-5 fw-light">
+          Manage your skills, projects, and analytics directly from an elegant, personalized dashboard.
+        </p>
+        
+        <!-- Feature Highlights (Optional visually appealing element) -->
+        <div class="d-flex align-items-center gap-3 mt-4 feature-pill-wrapper">
+          <div class="feature-pill glass-pill"><i class="bi bi-speedometer2"></i> Dashboard</div>
+          <div class="feature-pill glass-pill"><i class="bi bi-palette"></i> Themes</div>
+          <div class="feature-pill glass-pill"><i class="bi bi-graph-up-arrow"></i> Analytics</div>
+        </div>
+      </div>
+
+      <!-- Decorative abstract circles -->
+      <div class="circle circle-sm"></div>
+      <div class="circle circle-lg"></div>
+    </div>
+
+    <!-- Right Form Side -->
+    <div class="login-form-side p-4 p-md-5 bg-body d-flex flex-column justify-content-center border-start border-light border-opacity-10">
+      
+      <div class="text-center text-lg-start mb-3">
+        <div class="d-lg-none brand-icon-mobile mb-3">
+          <i class="bi bi-hexagon-half text-primary display-4"></i>
+        </div>
+        <h2 class="fw-bold mb-1">Sign In to Account</h2>
+        <p class="text-muted">Enter your email & password to login</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold mb-2 d-flex align-items-center">
+            Email Address
+          </label>
+          <div class="input-wrapper" [class.has-error]="isInvalid('email')">
+            <div class="position-relative">
+              <i class="bi bi-envelope position-absolute top-50 start-0 translate-middle-y ms-3 fs-5 custom-icon transition-base"></i>
+              <input type="email" class="form-control form-control-lg custom-input ps-5 pe-3" 
+                placeholder="Ex. hello@example.com" formControlName="email">
+            </div>
+            <div class="error-msg text-danger mt-1 small" *ngIf="isInvalid('email')">
+              <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid email.
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="form-label fw-semibold mb-0">Password</label>
+            <a routerLink="/forgot-password" class="text-primary small fw-semibold text-decoration-none">
+              Forgot Password?
+            </a>
+          </div>
+          <div class="input-wrapper" [class.has-error]="isInvalid('password')">
+            <div class="position-relative">
+              <i class="bi bi-shield-lock position-absolute top-50 start-0 translate-middle-y ms-3 fs-5 custom-icon transition-base"></i>
+              
+              <input [type]="passwordVisible ? 'text' : 'password'" class="form-control form-control-lg custom-input ps-5 pe-5" 
+                placeholder="••••••••" formControlName="password">
+              
+              <button type="button" class="btn btn-link text-muted position-absolute top-50 end-0 translate-middle-y me-2 p-1 text-decoration-none shadow-none btn-eye" (click)="togglePasswordVisibility()">
+                <i class="bi fs-5 transition-base" [ngClass]="passwordVisible ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+              </button>
+            </div>
+
+            <div class="error-msg text-danger mt-1 small" *ngIf="isInvalid('password')">
+              <i class="bi bi-exclamation-circle me-1"></i>Min 6 characters required.
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center my-3">
+          <div class="form-check custom-checkbox-wrapper">
+            <input class="form-check-input custom-checkbox" type="checkbox" id="rememberMe">
+            <label class="form-check-label text-muted user-select-none mt-1 ms-1" for="rememberMe">
+              Remember me on this device
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold rounded-4 shadow-primary-sm btn-login d-flex justify-content-center align-items-center gap-2">
+          Sign In to Dashboard
+          <i class="bi bi-arrow-right fs-5"></i>
+        </button>
+      </form>
+
+      <div class="text-center mt-3 text-muted small">
+        <p class="mb-0">Secure login protected by advanced encryption.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
