@@ -73,56 +73,77 @@
             <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
                 <div class="card-header bg-transparent border-0 p-4 pb-2 d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold mb-0">Recent Website Visitors</h5>
-                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</button>
+                    <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0 custom-table">
                             <thead class="bg-light-subtle">
                                 <tr>
-                                    <th class="ps-4 text-muted fw-semibold small uppercase-tracking border-0">IP Address</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">City</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Country</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">ISP</th>
+                                    <th class="ps-4 text-muted fw-semibold small uppercase-tracking border-0">Visitor info</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Location</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Network</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Organization</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Timezone</th>
-                                    <th class="pe-4 text-muted fw-semibold small uppercase-tracking border-0">Status</th>
+                                    <!-- <th class="pe-4 text-muted fw-semibold small uppercase-tracking border-0 text-center">Status</th> -->
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let visitor of visitors">
+                                <tr *ngFor="let visitor of visitors.slice(0,5)">
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center">
-                                            <div class="bg-primary-subtle text-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                                                <i class="bi bi-globe2"></i>
+                                            <div class="bg-primary-subtle text-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="bi" [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i>
                                             </div>
-                                            <span class="fw-medium">{{ visitor.query }}</span>
+                                            <div class="d-flex flex-column">
+                                                <span class="fw-bold text-dark">{{ visitor.ip }}</span>
+                                                <small class="text-muted">{{ visitor.version }}</small>
+                                            </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex flex-column">
-                                            <span class="fw-medium">{{ visitor.city }}, {{ visitor.countryCode }}</span>
-                                            <!-- <small class="text-muted">{{ visitor.country }}</small> -->
+                                            <span class="fw-medium text-dark">{{ visitor.city }}, {{ visitor.region }}</span>
+                                            <small class="text-muted">
+                                                <i class="bi bi-geo-alt-fill me-1 small"></i>{{ visitor.country_name }}
+                                            </small>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex flex-column">
-                                            <span class="fw-medium">{{visitor.region}}, {{ visitor.country }}, </span>
-                                            <!-- <small class="text-muted">{{ visitor.country }}</small> -->
+                                            <span class="fw-medium text-dark">{{ visitor.network }}</span>
+                                            <small class="text-muted">ASN: {{ visitor.asn }}</small>
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="text-truncate d-inline-block" style="max-width: 200px;" [title]="visitor.isp">{{ visitor.isp }}</span>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-truncate d-inline-block fw-medium text-dark" style="max-width: 180px;" [title]="visitor.org">
+                                                {{ visitor.org }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-secondary-subtle text-secondary">{{ visitor.timezone }}</span>
+                                        <div class="d-flex flex-column">
+                                            <span class="badge bg-primary rounded-pill px-2 py-1 small align-self-start">{{ visitor.timezone }}</span>
+                                            <small class="text-muted mt-1">UTC {{ visitor.utc_offset }}</small>
+                                        </div>
                                     </td>
-                                    <td class="pe-4">
-                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status === 'success'">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Success
-                                        </span>
-                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status !== 'success'">
-                                            <i class="bi bi-x-circle-fill me-1"></i> Failed
-                                        </span>
+                                    <!-- <td class="pe-4 text-center">
+                                        <div class="dropdown">
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status === 'success'">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Success
+                                            </span>
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status !== 'success'">
+                                                <i class="bi bi-x-circle-fill me-1"></i> Failed
+                                            </span>
+                                        </div>
+                                    </td> -->
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-medium text-dark">{{ visitor.currency_name }}</span>
+                                            <small class="text-muted">{{ visitor.currency }}</small>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>

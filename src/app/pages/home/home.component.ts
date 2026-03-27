@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as AOS from 'aos';
 import { RouterLink } from '@angular/router';
+import { VisitorService } from '../../services/visitor/visitor.service';
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -18,15 +21,131 @@ export class HomeComponent implements OnInit {
     { label: 'Resume Downloads', count: 89, icon: 'bi-cloud-download', color: 'warning' }
   ];
 
-  visitors = [
-    { status: "success", country: "India", countryCode: "IN", region: "MH", regionName: "Maharashtra", city: "Kolhapur", zip: "416122", lat: 16.6956, lon: 74.2317, timezone: "Asia/Kolkata", isp: "Idea Cellular Ltd", org: "", as: "AS45271 Vodafone Idea Ltd", query: "106.76.78.161" },
-    { status: "success", country: "United States", countryCode: "US", region: "CA", regionName: "California", city: "San Francisco", zip: "94105", lat: 37.7749, lon: -122.4194, timezone: "America/Los_Angeles", isp: "Comcast Cable", org: "", as: "AS7922 Comcast Cable", query: "73.223.11.21" },
-    { status: "success", country: "United Kingdom", countryCode: "GB", region: "ENG", regionName: "England", city: "London", zip: "EC1A", lat: 51.5074, lon: -0.1278, timezone: "Europe/London", isp: "BT", org: "", as: "AS2856 BT", query: "81.134.202.29" },
-    { status: "success", country: "Germany", countryCode: "DE", region: "BE", regionName: "Berlin", city: "Berlin", zip: "10115", lat: 52.52, lon: 13.405, timezone: "Europe/Berlin", isp: "Deutsche Telekom", org: "", as: "AS3320 Deutsche Telekom", query: "79.200.120.45" },
-    { status: "success", country: "Australia", countryCode: "AU", region: "NSW", regionName: "New South Wales", city: "Sydney", zip: "2000", lat: -33.8688, lon: 151.2093, timezone: "Australia/Sydney", isp: "Telstra", org: "", as: "AS1221 Telstra", query: "120.140.20.10" }
-  ];
+  // visitors = [
+  //   {
+  //     _id: "69c6523243a7e63d1ac39426",
+  //     ip: "2402:8100:22c7:b47c:5806:6285:5fb7:ee9f",
+  //     network: "2402:8100:2200::/40",
+  //     version: "IPv6",
+  //     city: "Kolhāpur",
+  //     region: "Maharashtra",
+  //     region_code: "MH",
+  //     country: "IN",
+  //     country_name: "India",
+  //     country_code: "IN",
+  //     country_code_iso3: "IND",
+  //     country_capital: "New Delhi",
+  //     country_tld: ".in",
+  //     continent_code: "AS",
+  //     in_eu: false,
+  //     postal: "416205",
+  //     latitude: 16.6956,
+  //     longitude: 74.2317,
+  //     timezone: "Asia/Kolkata",
+  //     utc_offset: "+0530",
+  //     country_calling_code: "+91",
+  //     currency: "INR",
+  //     currency_name: "Rupee",
+  //     languages: "en-IN,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,bh,sat,ks,ne,sd,kok,doi,mni,…",
+  //     country_area: 3287590,
+  //     country_population: 1352617328,
+  //     asn: "AS45271",
+  //     org: "Vodafone Idea Ltd",
+  //     status: "success"
+  //   },
+  //   {
+  //     _id: "69c6523243a7e63d1ac39427",
+  //     ip: "103.1.2.3",
+  //     network: "103.1.2.0/24",
+  //     version: "IPv4",
+  //     city: "Mumbai",
+  //     region: "Maharashtra",
+  //     region_code: "MH",
+  //     country: "IN",
+  //     country_name: "India",
+  //     country_code: "IN",
+  //     country_code_iso3: "IND",
+  //     country_capital: "New Delhi",
+  //     country_tld: ".in",
+  //     continent_code: "AS",
+  //     in_eu: false,
+  //     postal: "400001",
+  //     latitude: 19.0760,
+  //     longitude: 72.8777,
+  //     timezone: "Asia/Kolkata",
+  //     utc_offset: "+0530",
+  //     country_calling_code: "+91",
+  //     currency: "INR",
+  //     currency_name: "Rupee",
+  //     languages: "en-IN,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,bh,sat,ks,ne,sd,kok,doi,mni,…",
+  //     country_area: 3287590,
+  //     country_population: 1352617328,
+  //     asn: "AS12345",
+  //     org: "Reliance Jio Infocomm Ltd",
+  //     status: "success"
+  //   },
+  //   {
+  //     _id: "69c6523243a7e63d1ac39428",
+  //     ip: "192.168.1.1",
+  //     network: "192.168.1.0/24",
+  //     version: "IPv4",
+  //     city: "San Francisco",
+  //     region: "California",
+  //     region_code: "CA",
+  //     country: "US",
+  //     country_name: "United States",
+  //     country_code: "US",
+  //     country_code_iso3: "USA",
+  //     country_capital: "Washington DC",
+  //     country_tld: ".us",
+  //     continent_code: "NA",
+  //     in_eu: false,
+  //     postal: "94105",
+  //     latitude: 37.7749,
+  //     longitude: -122.4194,
+  //     timezone: "America/Los_Angeles",
+  //     utc_offset: "-0800",
+  //     country_calling_code: "+1",
+  //     currency: "USD",
+  //     currency_name: "US Dollar",
+  //     languages: "en-US,es-US,haw,fr",
+  //     country_area: 9833517,
+  //     country_population: 327167434,
+  //     asn: "AS7922",
+  //     org: "Comcast Cable Communications, LLC",
+  //     status: "success"
+  //   }
+  // ];
+  visitors: any[] = [];
+  private visitorService = inject(VisitorService);
+  private spinner = inject(NgxSpinnerService);
+  private toastr = inject(ToastrService);
+
+
+  // constructor(private visitorService: VisitorService) { }
 
   ngOnInit() {
     AOS.init({ duration: 1000, once: true });
+    this.getVisitor();
+  }
+
+  getVisitor(): void {
+    this.spinner.show();
+    this.visitorService.getVisitor().subscribe({
+      next: (res: any) => {
+        if (res?.success && res?.data) {
+          this.visitors = res.data;
+          this.spinner.hide();
+          // this.toastr.success(res?.message);
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message)
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err.error.message || 'Failed to load visitor count');
+      }
+    });
   }
 }

@@ -1,0 +1,47 @@
+$primary-skin: var(--bs-primary);
+
+.uppercase-tracking {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+}
+
+.visitor-card {
+    background: var(--bs-body-bg);
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
+
+    .custom-table {
+        th {
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+        }
+
+        td {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
+        }
+
+        tr:last-child td {
+            border-bottom: 0 !important;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: rgba(var(--bs-primary-rgb), 0.03) !important;
+
+                td:first-child {
+                    box-shadow: inset 4px 0 0 $primary-skin;
+                }
+            }
+        }
+    }
+}
+
+.text-dark {
+    color: var(--bs-emphasis-color) !important;
+}

@@ -14,6 +14,7 @@ import { LoginFormComponent } from './pages/login-form/login-form.component';
 import { ForgotPasswordFormComponent } from './pages/forgot-password-form/forgot-password-form.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-services.component';
+import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor.component';
 
 export const routes: Routes = [
     {
@@ -95,6 +96,11 @@ export const routes: Routes = [
                 path: 'edit-service/:id',
                 component: AddEditServicesComponent,
                 title: `Edit Service | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'website-visitor',
+                component: WebsiteVisitorComponent,
+                title: `Website Visitor | ${Constants.APP_NAME}`
             },
         ]
     },
