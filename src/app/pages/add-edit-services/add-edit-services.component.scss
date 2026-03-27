@@ -1,0 +1,60 @@
+.form-control,
+.form-select,
+.input-group-text {
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.03);
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+    color: var(--bs-body-color);
+
+    &:focus {
+        background-color: transparent;
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.1);
+    }
+}
+
+.input-group-text {
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+}
+
+// Custom styling for focus on input group
+.input-group:focus-within {
+    .input-group-text {
+        border-color: var(--bs-primary);
+        color: var(--bs-primary);
+    }
+}
+
+// Ensure the form looks great in Dark Mode
+[data-bs-theme="dark"] {
+    .card {
+        background: #1e1e1e;
+        border: 1px solid #333;
+    }
+
+    .btn-light {
+        background: #2d2d2d;
+        color: white;
+        border-color: #444;
+    }
+}
+
+.input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    border-bottom-right-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.input-group> :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-bottom-left-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+}
+
+.invalid-feedback {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}

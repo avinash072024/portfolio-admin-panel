@@ -18,6 +18,7 @@
 						<tr>
 							<th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Service</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
+							<th class="py-3 text-uppercase small fw-bold text-muted">Key Features</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
 						</tr>
 					</thead>
@@ -43,6 +44,18 @@
 								<div class="text-muted small text-truncate" style="max-width: 400px;">
 									{{ s.description }}
 								</div>
+							</td>
+
+							<td>
+								<!-- <div class="text-muted small text-truncate" style="max-width: 400px;">
+									{{ s.features }}
+								</div> -->
+								<div class="d-flex flex-wrap gap-1 text-truncate" style="max-width: 400px;">
+                                    <span *ngFor="let feature of s.features"
+                                        class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
+                                        {{ feature }}
+                                    </span>
+                                </div>
 							</td>
 
 							<td class="text-end pe-4">
