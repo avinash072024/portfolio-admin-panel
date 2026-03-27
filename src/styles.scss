@@ -114,3 +114,10 @@ body {
     background: var(--primary-color);
     border-radius: 10px;
 }
+
+// Modern Table Header
+thead th {
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.02) !important;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08) !important;
+}

@@ -54,13 +54,6 @@
     font-size: 0.8rem;
 }
 
-// Modern Table Header
-thead th {
-    background-color: rgba(var(--bs-emphasis-color-rgb), 0.02) !important;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08) !important;
-}
-
 [data-bs-theme="dark"] {
     .card {
         background-color: #1a1d20;

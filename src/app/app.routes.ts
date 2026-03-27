@@ -12,6 +12,8 @@ import { SkillsComponent } from './pages/skills/skills.component';
 import { AddEditSkillsComponent } from './pages/add-edit-skills/add-edit-skills.component';
 import { LoginFormComponent } from './pages/login-form/login-form.component';
 import { ForgotPasswordFormComponent } from './pages/forgot-password-form/forgot-password-form.component';
+import { ServicesComponent } from './pages/services/services.component';
+import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-services.component';
 
 export const routes: Routes = [
     {
@@ -50,6 +52,11 @@ export const routes: Routes = [
                 title: `Contact | ${Constants.APP_NAME}`
             },
             {
+                path: 'services',
+                component: ServicesComponent,
+                title: `Services | ${Constants.APP_NAME}`
+            },
+            {
                 path: 'projects',
                 component: ProjectComponent,
                 title: `Projects | ${Constants.APP_NAME}`
@@ -78,6 +85,16 @@ export const routes: Routes = [
                 path: 'edit-skill/:id',
                 component: AddEditSkillsComponent,
                 title: `Edit Skill | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'add-service',
+                component: AddEditServicesComponent,
+                title: `Add Service | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'edit-service/:id',
+                component: AddEditServicesComponent,
+                title: `Edit Service | ${Constants.APP_NAME}`
             },
         ]
     },
