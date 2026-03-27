@@ -1,7 +1,7 @@
 <div class="contact-container container pt-4 mt-5">
   <div class="page-header my-5 d-flex justify-content-between align-items-center">
     <div>
-      <div class="d-flex align-items-center gap-5">
+      <div class="d-flex align-items-center gap-3">
         <h2 class="fw-bold mb-1">Contact Management</h2>
         <button type="button" class="btn btn-primary btn-sm" (click)="eidtableFiedls()" [title]="editableFields ? 'Cancel' : 'Edit'"><i class="bi" [ngClass]="editableFields ? 'bi-x' : 'bi-pencil'"></i> {{ editableFields ? 'Cancel' : 'Edit'}}</button>
       </div>
@@ -17,13 +17,13 @@
           <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Basic Information</h5>
         </div>
         <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6 mb-3">
               <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
               <input type="text" id="firstName" formControlName="firstName" class="form-control" [readOnly]="!editableFields"
                 placeholder="Enter your first name">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
               <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
               <input type="text" id="lastName" formControlName="lastName" class="form-control" [readOnly]="!editableFields"
                 placeholder="Enter your last name">
