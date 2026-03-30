@@ -10,6 +10,10 @@ export class ProjectsService {
 
   constructor(private http: HttpClient) { }
 
+  getProjects(): Observable<any> {
+    return this.http.get(environment.apiUrl + '/projects');
+  }
+
   getAllProjects(page: number = 1, limit: number = 5): Observable<any> {
     const params = `?page=${page}&limit=${limit}`;
     return this.http.get(`${environment.apiUrl}/projects${params}`);

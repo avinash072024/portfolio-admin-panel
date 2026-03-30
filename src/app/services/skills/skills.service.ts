@@ -10,6 +10,10 @@ export class SkillsService {
 
   constructor(private http: HttpClient) { }
 
+  getSkills(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/skills`);
+  }
+
   getAllSkills(page: number = 1, limit: number = 5): Observable<any> {
     const params = `?page=${page}&limit=${limit}`;
     return this.http.get(`${environment.apiUrl}/skills${params}`);
