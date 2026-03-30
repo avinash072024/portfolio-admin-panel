@@ -91,9 +91,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let visitor of visitors.slice(0,5)">
+                                <tr *ngFor="let visitor of visitors">
                                     <td>
-                                        <div class="d-flex flex-column">
+                                        <div class="d-flex flex-column" style="width: 100px;">
                                             <span class="fw-medium text-dark">{{ visitor.createdAt | date:'dd MMM, yyyy' }}</span>
                                             <small class="text-muted">
                                                 <i class="bi bi-clock me-1 small"></i>{{ visitor.createdAt | date:'HH:mm:ss' }}
@@ -112,7 +112,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex flex-column">
+                                        <div class="d-flex flex-column" style="width: 180px;">
                                             <span class="fw-medium text-dark">{{ visitor.city }}, {{ visitor.region }}</span>
                                             <small class="text-muted">
                                                 <i class="bi bi-geo-alt-fill me-1 small"></i>{{ visitor.country_name }}

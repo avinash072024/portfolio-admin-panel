@@ -8,7 +8,7 @@ $primary-skin: var(--bs-primary);
 
 .visitor-card {
     background: var(--bs-body-bg);
-    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
+    // border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.05) !important;
 
     .custom-table {
         th {
@@ -44,4 +44,82 @@ $primary-skin: var(--bs-primary);
 
 .text-dark {
     color: var(--bs-emphasis-color) !important;
+}
+
+/* Pagination styles */
+.pagination-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.pagination .page-item {
+    border-radius: 8px;
+    // overflow: hidden;
+}
+
+.pagination .page-link {
+    min-width: 32px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-radius: 8px;
+    padding: 0 10px;
+    transition: all 160ms ease;
+}
+
+.pagination .page-item.active .page-link {
+    // background: linear-gradient(180deg, var(--bs-primary-bg-subtle), var(--bs-primary));
+    // color: #fff;
+    // border-color: transparent;
+    // box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+
+    background: var(--bs-primary);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+// .pagination .page-link:hover {
+//     transform: translateY(-3px);
+// }
+
+.btn-group .btn {
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+    background: transparent;
+    color: var(--bs-body-color);
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+    min-width: 32px;
+    height: 30px;
+}
+
+.btn-group .btn.active {
+    background: var(--bs-primary);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 720px) {
+    .pagination-wrapper {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .w-85 {
+        width: 100% !important;
+    }
+}
+
+.page-item.disabled {
+    cursor: not-allowed;
 }

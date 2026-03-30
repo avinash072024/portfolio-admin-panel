@@ -1,12 +1,12 @@
 <div class="container py-5 mt-3">
     <div class="row g-4 my-5">
         <div class="col-12" data-aos="fade-up">
-            <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+            <div class="card visitor-card border-1 border-primary shadow-sm rounded-4 h-100 p-0 overflow-hidden">
                 <div
                     class="card-header bg-transparent border-1 border-primary py-3 d-flex justify-content-between align-items-center">
                     <div>
                         <h5 class="fw-bold mb-0">Website Visitors <span class="badge rounded-pill bg-primary px-3">
-                                {{ visitors.length }}
+                                {{ total }}
                             </span></h5>
                         <p class="text-muted small mb-0 d-none d-md-block">Manage and oversee your website visitors
                         </p>
@@ -17,7 +17,8 @@
                         <table class="table table-hover align-middle mb-0 custom-table">
                             <thead class="bg-light-subtle">
                                 <tr>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Date&nbsp;&&nbsp;Time</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">
+                                        Date&nbsp;&&nbsp;Time</th>
                                     <th class="ps-4 text-muted fw-semibold small uppercase-tracking border-0">Visitor
                                         info</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Location</th>
@@ -32,10 +33,12 @@
                             <tbody>
                                 <tr *ngFor="let visitor of visitors">
                                     <td>
-                                        <div class="d-flex flex-column">
-                                            <span class="fw-medium text-dark">{{ visitor.createdAt | date:'dd MMM, yyyy' }}</span>
+                                        <div class="d-flex flex-column" style="width: 100px;">
+                                            <span class="fw-medium text-dark">{{ visitor.createdAt | date:'dd MMM, yyyy'
+                                                }}</span>
                                             <small class="text-muted">
-                                                <i class="bi bi-clock me-1 small"></i>{{ visitor.createdAt | date:'HH:mm:ss' }}
+                                                <i class="bi bi-clock me-1 small"></i>{{ visitor.createdAt |
+                                                date:'HH:mm:ss' }}
                                             </small>
                                         </div>
                                     </td>
@@ -53,7 +56,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex flex-column">
+                                        <div class="d-flex flex-column" style="width: 180px;">
                                             <span class="fw-medium text-dark">{{ visitor.city }}, {{ visitor.region
                                                 }}</span>
                                             <small class="text-muted">
@@ -102,6 +105,39 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
+                        [attr.data-skin]="themeService.skin()">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="text-muted small">Rows:</span>
+                            <div class="btn-group" role="group" aria-label="rows per page">
+                                <button type="button" class="btn btn-sm" [class.active]="limit===5"
+                                    (click)="setLimit(5)">5</button>
+                                <button type="button" class="btn btn-sm mx-1" [class.active]="limit===10"
+                                    (click)="setLimit(10)">10</button>
+                                <button type="button" class="btn btn-sm" [class.active]="limit===20"
+                                    (click)="setLimit(20)">20</button>
+                            </div>
+                        </div>
+
+                        <nav class="pagination-wrapper" aria-label="Projects pagination">
+                            <ul class="pagination mb-0">
+                                <li class="page-item" [class.disabled]="page<=1">
+                                    <button class="page-link" (click)="changePage(page-1)">Prev</button>
+                                </li>
+
+                                <li class="page-item" *ngFor="let p of pages; let i = index" [class.active]="page===p"
+                                    [class.d-none]="totalPages>7 && (p>page+2 || p<page-2)">
+                                    <button class="page-link" (click)="changePage(p)">{{ p }}</button>
+                                </li>
+
+                                <li class="page-item" [class.disabled]="page>=totalPages">
+                                    <button class="page-link" (click)="changePage(page+1)">Next</button>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div class="text-muted small">Page {{page}} of {{totalPages}} • {{total}} items</div>
                     </div>
                 </div>
             </div>
