@@ -92,6 +92,7 @@ export class SettingsComponent implements OnInit {
         next: (res: any) => {
           this.resetEducationForm();
           this.loadEducations();
+          this.showHideResetButtonInEducationForm = false;
           this.spinner.hide();
           this.toastr.success(res?.message || 'Education updated');
         },
@@ -172,6 +173,7 @@ export class SettingsComponent implements OnInit {
         next: (res: any) => {
           this.resetExperienceForm();
           this.loadExperiences();
+          this.showHideResetButtonInExperienceForm = false;
           this.spinner.hide();
           this.toastr.success(res?.message || 'Experience updated');
         },

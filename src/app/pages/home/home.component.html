@@ -130,8 +130,8 @@
                         <table class="table table-hover align-middle mb-0 custom-table">
                             <thead class="bg-light-subtle">
                                 <tr>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Date&nbsp;&&nbsp;Time</th>
-                                    <th class="ps-4 text-muted fw-semibold small uppercase-tracking border-0">Visitor info</th>
+                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0">Date&nbsp;&&nbsp;Time</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Visitor info</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Location</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Network</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Organization</th>
@@ -142,7 +142,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let visitor of visitors">
-                                    <td>
+                                    <td class="ps-3">
                                         <div class="d-flex flex-column" style="width: 100px;">
                                             <span class="fw-medium text-dark">{{ visitor.createdAt | date:'dd MMM, yyyy' }}</span>
                                             <small class="text-muted">
@@ -150,7 +150,7 @@
                                             </small>
                                         </div>
                                     </td>
-                                    <td class="ps-4">
+                                    <td>
                                         <div class="d-flex align-items-center">
                                             <div class="bg-primary-subtle text-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                                 <i class="bi" [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i>
