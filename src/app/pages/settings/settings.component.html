@@ -179,14 +179,14 @@
 
 					<div *ngIf="resumes.length === 0" class="text-muted small">No resumes uploaded yet.</div>
 					<div class="list-entries" *ngFor="let r of resumes">
-						<div class="d-flex justify-content-between align-items-center py-2">
+						<div class="entry d-flex justify-content-between align-items-center py-2">
 							<div>
 								<div class="fw-semibold">{{ r.originalName || r.originalname || r.name }}</div>
 								<div class="small text-muted">{{ r.mimeType || r.mimetype }} • {{ r.size | number }}
 									bytes</div>
 							</div>
-							<div>
-								<a class="btn btn-sm btn-outline-secondary me-2" [href]="r.path || r.path"
+							<div class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
+								<a class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0" [href]="r.path || r.path"
 									target="_blank"><i class="bi bi-eye"></i></a>
 								<button class="btn btn-sm btn-outline-danger" (click)="deleteResume(r._id || r.id, r.originalName || r.originalname || r.name)"><i
 										class="bi bi-trash3"></i></button>
