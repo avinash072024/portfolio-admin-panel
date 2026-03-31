@@ -13,7 +13,7 @@
 
   <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="row g-4">
     <!-- Basic Info Card -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-4">
       <div class="card h-100 shadow-sm border-1 border-primary rounded-4">
         <div class="card-header bg-transparent py-3">
           <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Basic Information</h5>
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Social Links Card -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-4">
       <div class="card h-100 shadow-sm border-1 border-primary rounded-4">
         <div class="card-header bg-transparent py-3">
           <h5 class="mb-0"><i class="bi bi-share-fill me-2 text-primary"></i>Social Media Links</h5>
@@ -88,29 +88,6 @@
               <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control"
                 [readOnly]="!editableFields" placeholder="WhatsApp Number">
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Additional Links & Action -->
-    <div class="col-12 mb-3">
-      <div class="card shadow-sm border-1 border-primary rounded-4">
-        <div class="card-header bg-transparent py-3">
-          <h5 class="mb-0"><i class="bi bi-share-fill me-2 text-primary"></i>Resume / Portfolio PDF Link</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12">
-              <!-- <label for="resumeUrl" class="form-label fw-bold"><i
-                  class="bi bi-file-earmark-pdf-fill me-2 text-primary"></i>Resume / Portfolio PDF Link</label> -->
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                <input type="url" id="resumeUrl" formControlName="resumeUrl" class="form-control"
-                  [readOnly]="!editableFields" placeholder="G-Drive or Direct PDF Link">
-              </div>
-            </div>
-
           </div>
         </div>
       </div>

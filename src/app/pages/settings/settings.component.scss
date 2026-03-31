@@ -1,14 +1,24 @@
 .settings-page {
-	h2 { font-weight: 600; }
+	h2 {
+		font-weight: 600;
+	}
 
 	// .card {
 	// 	border: 0;
 	// 	border-radius: .6rem;
 	// }
 
-	.card-body { padding: 1rem 1.15rem; }
+	.card-body {
+		padding: 1rem 1.15rem;
+	}
 
-	.entry { border-bottom: 1px dashed rgba(0,0,0,0.05); }
+	.entry {
+		border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
+	}
+
+	.entry:last-child {
+		border-bottom: none;
+	}
 
 	.skin-btn {
 		width: 34px;
@@ -18,20 +28,48 @@
 		cursor: pointer;
 	}
 
-	.skin-btn.default-blue { background: #0d6efd; }
-	.skin-btn.emerald-green { background: #198754; }
-	.skin-btn.vibrant-purple { background: #6610f2; }
-	.skin-btn.hot-pink { background: #d63384; }
-	.skin-btn.sunset-orange { background: #fd7e14; }
-	.skin-btn.cyan-wave { background: #0dcaf0; }
-	.skin-btn.crimson-red { background: #dc3545; }
+	.skin-btn.default-blue {
+		background: #0d6efd;
+	}
 
-	.skin-btn:focus, .skin-btn:hover { transform: translateY(-2px); }
+	.skin-btn.emerald-green {
+		background: #198754;
+	}
+
+	.skin-btn.vibrant-purple {
+		background: #6610f2;
+	}
+
+	.skin-btn.hot-pink {
+		background: #d63384;
+	}
+
+	.skin-btn.sunset-orange {
+		background: #fd7e14;
+	}
+
+	.skin-btn.cyan-wave {
+		background: #0dcaf0;
+	}
+
+	.skin-btn.crimson-red {
+		background: #dc3545;
+	}
+
+	.skin-btn:focus,
+	.skin-btn:hover {
+		transform: translateY(-2px);
+	}
 
 	/* Responsive tweaks */
 	@media (max-width: 767px) {
-		.skin-btn { width: 30px; height: 30px; }
-		.card-body { padding: .85rem; }
+		.skin-btn {
+			width: 30px;
+			height: 30px;
+		}
+
+		.card-body {
+			padding: .85rem;
+		}
 	}
 }
-

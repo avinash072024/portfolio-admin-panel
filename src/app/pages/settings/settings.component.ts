@@ -30,6 +30,9 @@ export class SettingsComponent implements OnInit {
   experiences: any[] = [];
   resumes: any[] = [];
 
+  showHideResetButtonInExperienceForm = false;
+  showHideResetButtonInEducationForm = false;
+
   // reactive forms
   educationForm!: FormGroup;
   editEducationId: string | null = null;
@@ -116,6 +119,7 @@ export class SettingsComponent implements OnInit {
   editEducation(e: any): void {
     this.editEducationId = e._id || e.id || null;
     if (this.educationForm) {
+      this.showHideResetButtonInEducationForm = true;
       this.educationForm.patchValue({
         title: e.title || '',
         institution: e.institution || '',
@@ -195,6 +199,7 @@ export class SettingsComponent implements OnInit {
   editExperience(e: any): void {
     this.editExperienceId = e._id || e.id || null;
     if (this.experienceForm) {
+      this.showHideResetButtonInExperienceForm = true;
       this.experienceForm.patchValue({
         title: e.title || '',
         company: e.company || '',
