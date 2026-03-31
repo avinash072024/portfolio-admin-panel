@@ -1,0 +1,16 @@
+<div *ngIf="visible" class="confirm-overlay">
+  <div class="confirm-backdrop"></div>
+  <div class="confirm-dialog">
+    <div class="confirm-header">
+      <h5 class="text-primary mb-0"><i class="bi bi-trash3 me-2"></i>{{ title }}</h5>
+    </div>
+    <div class="confirm-body">
+      <!-- <p [innerHTML]="message"></p> -->
+      <p *ngIf="itemName">Are you sure you want to delete {{ sectionName }} <strong class="text-primary">{{ itemName }}</strong>? This action cannot be undone.</p>
+    </div>
+    <div class="confirm-footer d-flex justify-content-end gap-2">
+      <button class="btn btn-primary" (click)="close(false); itemName = sectionName = ''"> <i class="bi bi-x"></i> Cancel</button>
+      <button class="btn btn-danger" (click)="close(true)"><i class="bi bi-trash3 me-1"></i> Delete</button>
+    </div>
+  </div>
+</div>

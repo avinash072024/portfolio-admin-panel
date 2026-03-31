@@ -7,10 +7,12 @@ import { ResumeService } from '../../services/resume/resume.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ConfirmModalComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
@@ -22,6 +24,7 @@ export class SettingsComponent implements OnInit {
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
+  @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
 
   educations: any[] = [];
   experiences: any[] = [];
@@ -36,6 +39,7 @@ export class SettingsComponent implements OnInit {
 
   // resume upload
   selectedResumeFile: File | null = null;
+  resumeForm!: FormGroup;
 
   ngOnInit(): void {
     this.educationForm = this.fb.group({
@@ -50,6 +54,10 @@ export class SettingsComponent implements OnInit {
       company: ['', Validators.required],
       duration: ['', Validators.required],
       description: ['']
+    });
+
+    this.resumeForm = this.fb.group({
+      file: [null, Validators.required]
     });
 
     this.loadEducations();
@@ -117,15 +125,18 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  deleteEducation(id: string): void {
-    if (!confirm('Delete this education?')) return;
-    this.educationService.deleteEducation(id).subscribe({
-      next: (res: any) => {
-        this.toastr.success(res?.message || 'Deleted');
-        this.loadEducations();
-      },
-      error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
-    });
+  deleteEducation(id: string, itemName: string): void {
+    (async () => {
+      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete education ${itemName}? This action cannot be undone.`, itemName, 'education');
+      if (!confirmed) return;
+      this.educationService.deleteEducation(id).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res?.message || 'Deleted');
+          this.loadEducations();
+        },
+        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
+      });
+    })();
   }
 
   resetEducationForm(): void {
@@ -193,15 +204,19 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  deleteExperience(id: string): void {
-    if (!confirm('Delete this experience?')) return;
-    this.experienceService.deleteProject(id).subscribe({
-      next: (res: any) => {
-        this.toastr.success(res?.message || 'Deleted');
-        this.loadExperiences();
-      },
-      error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
-    });
+  deleteExperience(id: string, itemName: string): void {
+    (async () => {
+      debugger;
+      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete experience ${itemName}? This action cannot be undone.`, itemName, 'experience');
+      if (!confirmed) return;
+      this.experienceService.deleteProject(id).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res?.message || 'Deleted');
+          this.loadExperiences();
+        },
+        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
+      });
+    })();
   }
 
   resetExperienceForm(): void {
@@ -222,31 +237,56 @@ export class SettingsComponent implements OnInit {
   onResumeFileSelected(ev: any): void {
     const f = ev?.target?.files?.[0] || null;
     this.selectedResumeFile = f;
+    if (this.resumeForm) {
+      this.resumeForm.get('file')?.setValue(f);
+      this.resumeForm.get('file')?.markAsDirty();
+      this.resumeForm.get('file')?.markAsTouched();
+    }
   }
 
   uploadResume(): void {
-    if (!this.selectedResumeFile) { this.toastr.error('Select file first'); return; }
+    if (!this.resumeForm) return;
+    if (this.resumeForm.invalid) {
+      this.resumeForm.markAllAsTouched();
+      // this.toastr.error('Select file first');
+      return;
+    }
+
+    const fileControl = this.resumeForm.get('file');
+    const file = fileControl?.value || this.selectedResumeFile;
+    if (!file) { this.toastr.error('Select file first'); return; }
+
     const fd = new FormData();
-    fd.append('file', this.selectedResumeFile);
+    fd.append('file', file);
+    this.spinner.show();
     this.resumeService.addResume(fd).subscribe({
       next: (res: any) => {
+        this.spinner.hide();
         this.toastr.success('Resume uploaded');
         this.selectedResumeFile = null;
+        if (this.resumeForm) this.resumeForm.reset();
+        this.resumeForm.get('file')?.setValue(null);
         this.loadResumes();
       },
-      error: (err) => this.toastr.error(err?.error?.message || 'Upload failed')
+      error: (err) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || 'Upload failed');
+      }
     });
   }
 
-  deleteResume(id: string): void {
-    if (!confirm('Delete this resume?')) return;
-    this.resumeService.deleteResume(id).subscribe({
-      next: (res: any) => {
-        this.toastr.success(res?.message || 'Deleted');
-        this.loadResumes();
-      },
-      error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
-    });
+  deleteResume(id: string, itemName: string): void {
+    (async () => {
+      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete resume ${itemName}? This action cannot be undone.`, itemName, 'resume');
+      if (!confirmed) return;
+      this.resumeService.deleteResume(id).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res?.message || 'Deleted');
+          this.loadResumes();
+        },
+        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
+      });
+    })();
   }
 
   // Theme / Skin

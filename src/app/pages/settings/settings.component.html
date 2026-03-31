@@ -14,6 +14,8 @@
 						<h5 class="mb-0">Education</h5>
 						<div class="text-muted small">Add or edit entries</div>
 					</div>
+					<!-- confirm modal -->
+					<app-confirm-modal></app-confirm-modal>
 				</div>
 				<div class="card-body">
 					<form [formGroup]="educationForm" (ngSubmit)="saveEducation()" class="row g-2 mb-3 align-items-end">
@@ -76,7 +78,7 @@
 								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
 									(click)="editEducation(e)"><i class="bi bi-pencil"></i></button>
 								<button class="btn btn-sm btn-outline-danger"
-									(click)="deleteEducation(e._id || e.id)"><i class="bi bi-trash3"></i></button>
+									(click)="deleteEducation(e._id || e.id, e.title)"><i class="bi bi-trash3"></i></button>
 							</div>
 						</div>
 					</div>
@@ -144,7 +146,7 @@
 								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
 									(click)="editExperience(ex)"><i class="bi bi-pencil"></i></button>
 								<button class="btn btn-sm btn-outline-danger"
-									(click)="deleteExperience(ex._id || ex.id)"><i class="bi bi-trash3"></i></button>
+									(click)="deleteExperience(ex._id || ex.id, ex.title)"><i class="bi bi-trash3"></i></button>
 							</div>
 						</div>
 					</div>
@@ -163,10 +165,15 @@
 				</div>
 				<div class="card-body">
 					<div class="mb-3">
-						<div class="d-flex gap-2">
+						<form [formGroup]="resumeForm" class="d-flex gap-2">
 							<input type="file" class="form-control form-control-sm"
-								(change)="onResumeFileSelected($event)" />
-							<button class="btn btn-primary btn-sm" (click)="uploadResume()">Upload</button>
+								(change)="onResumeFileSelected($event)"
+								[class.is-invalid]="resumeForm.get('file')?.invalid && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)"
+								/>
+							<button class="btn btn-primary btn-sm" type="button" (click)="uploadResume()">Upload</button>
+						</form>
+						<div *ngIf="resumeForm.get('file')?.invalid && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)" class="invalid-feedback d-block small">
+							Please select a file to upload.
 						</div>
 					</div>
 
@@ -181,8 +188,8 @@
 							<div>
 								<a class="btn btn-sm btn-outline-primary me-2" [href]="r.path || r.path"
 									target="_blank"><i class="bi bi-eye"></i></a>
-								<button class="btn btn-sm btn-outline-danger" (click)="deleteResume(r._id || r.id)"><i
-										class="bi bi-trash"></i></button>
+								<button class="btn btn-sm btn-outline-danger" (click)="deleteResume(r._id || r.id, r.originalName || r.originalname || r.name)"><i
+										class="bi bi-trash3"></i></button>
 							</div>
 						</div>
 					</div>
