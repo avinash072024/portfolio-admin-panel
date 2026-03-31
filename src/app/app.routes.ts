@@ -15,6 +15,7 @@ import { ForgotPasswordFormComponent } from './pages/forgot-password-form/forgot
 import { ServicesComponent } from './pages/services/services.component';
 import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-services.component';
 import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 export const routes: Routes = [
     {
@@ -101,6 +102,11 @@ export const routes: Routes = [
                 path: 'website-visitor',
                 component: WebsiteVisitorComponent,
                 title: `Website Visitor | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'settings',
+                component: SettingsComponent,
+                title: `Settings | ${Constants.APP_NAME}`
             },
         ]
     },
