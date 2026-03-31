@@ -51,7 +51,6 @@ export class HomeComponent implements OnInit {
       next: (res: any) => {
         // 2. Hide the spinner once everything completes successfully
         this.spinner.hide();
-        debugger;
 
         // --- Handle Visitors Data ---
         if (res.visitors?.success && res.visitors?.Visitors) {

@@ -213,7 +213,6 @@ export class SettingsComponent implements OnInit {
 
   deleteExperience(id: string, itemName: string): void {
     (async () => {
-      debugger;
       const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete experience ${itemName}? This action cannot be undone.`, itemName, 'experience');
       if (!confirmed) return;
       this.experienceService.deleteProject(id).subscribe({
