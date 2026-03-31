@@ -6,151 +6,145 @@
 	</div>
 
 	<div class="row g-4">
-		<!-- Left column: Education & Experience -->
-		<div class="col-lg-7">
-			<div class="row g-4">
-				<!-- Education Card -->
-				<div class="col-12">
-					<div class="card shadow border-1 border-primary rounded-4 h-100">
-						<div class="card-header bg-transparent border-1 border-primary py-3">
-							<div class="d-flex justify-content-between align-items-center">
-								<h5 class="mb-0">Education</h5>
-								<div class="text-muted small">Add or edit entries</div>
+		<div class="col-lg-6">
+			<!-- Education Card -->
+			<div class="card shadow border-1 border-primary rounded-4 h-100">
+				<div class="card-header bg-transparent border-1 border-primary py-3">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="mb-0">Education</h5>
+						<div class="text-muted small">Add or edit entries</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<form [formGroup]="educationForm" (ngSubmit)="saveEducation()" class="row g-2 mb-3 align-items-end">
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Title</label>
+							<input class="form-control form-control-sm"
+								[class.is-invalid]="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
+								formControlName="title" placeholder="e.g. B.Sc. Computer Science" />
+							<div *ngIf="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
+								class="invalid-feedback d-block small">
+								Title is required.
 							</div>
 						</div>
-						<div class="card-body">
-							<form [formGroup]="educationForm" (ngSubmit)="saveEducation()"
-								class="row g-2 mb-3 align-items-end">
-								<div class="col-12 col-md-4">
-									<label class="form-label small mb-1">Title</label>
-									<input class="form-control form-control-sm"
-										[class.is-invalid]="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
-										formControlName="title" placeholder="e.g. B.Sc. Computer Science" />
-									<div *ngIf="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
-										class="invalid-feedback d-block small">
-										Title is required.
-									</div>
-								</div>
-								<div class="col-12 col-md-4">
-									<label class="form-label small mb-1">Institution</label>
-									<input class="form-control form-control-sm"
-										[class.is-invalid]="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
-										formControlName="institution" placeholder="University / College" />
-									<div *ngIf="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
-										class="invalid-feedback d-block small">
-										Institution is required.
-									</div>
-								</div>
-								<div class="col-12 col-md-4">
-									<label class="form-label small mb-1">Duration</label>
-									<input class="form-control form-control-sm"
-										[class.is-invalid]="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
-										formControlName="duration" placeholder="2018 - 2022" />
-									<div *ngIf="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
-										class="invalid-feedback d-block small">
-										Duration is required.
-									</div>
-								</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Institution</label>
+							<input class="form-control form-control-sm"
+								[class.is-invalid]="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
+								formControlName="institution" placeholder="University / College" />
+							<div *ngIf="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
+								class="invalid-feedback d-block small">
+								Institution is required.
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Duration</label>
+							<input class="form-control form-control-sm"
+								[class.is-invalid]="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
+								formControlName="duration" placeholder="2018 - 2022" />
+							<div *ngIf="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
+								class="invalid-feedback d-block small">
+								Duration is required.
+							</div>
+						</div>
 
-								<div class="col-12 col-md-12">
-									<label class="form-label small mb-1">Description</label>
-									<textarea class="form-control form-control-sm" rows="2"
-										formControlName="description" placeholder="Short notes"></textarea>
-								</div>
-								<div class="col-md-2 d-grid">
-									<button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
-								</div>
-							</form>
+						<div class="col-12 col-md-12">
+							<label class="form-label small mb-1">Description</label>
+							<textarea class="form-control form-control-sm" rows="2" formControlName="description"
+								placeholder="Short notes"></textarea>
+						</div>
+						<div class="col-md-2 d-grid">
+							<button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
+						</div>
+					</form>
 
-							<div class="list-entries">
-								<div *ngIf="educations.length === 0" class="text-muted small">No education records yet.
-								</div>
-								<div class="entry d-flex justify-content-between align-items-center py-2"
-									*ngFor="let e of educations">
-									<div>
-										<div class="fw-semibold">{{ e.title }}</div>
-										<div class="small text-muted d-none d-md-block">{{ e.institution }} • {{ e.duration }}</div>
-										<div class="small text-muted d-block d-md-none">{{ e.institution }}</div>
-										<div class="small text-muted d-block d-md-none">{{ e.duration }}</div>
-										<div class="small mt-1">{{ e.description }}</div>
-									</div>
-									<div class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
-										<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
-											(click)="editEducation(e)"><i class="bi bi-pencil"></i></button>
-										<button class="btn btn-sm btn-outline-danger"
-											(click)="deleteEducation(e._id || e.id)"><i
-												class="bi bi-trash3"></i></button>
-									</div>
-								</div>
+					<div class="list-entries">
+						<div *ngIf="educations.length === 0" class="text-muted small">No education records yet.
+						</div>
+						<div class="entry d-flex justify-content-between align-items-center py-2"
+							*ngFor="let e of educations">
+							<div>
+								<div class="fw-semibold">{{ e.title }}</div>
+								<div class="small text-muted d-none d-md-block">{{ e.institution }} • {{
+									e.duration }}</div>
+								<div class="small text-muted d-block d-md-none">{{ e.institution }}</div>
+								<div class="small text-muted d-block d-md-none">{{ e.duration }}</div>
+								<div class="small mt-1">{{ e.description }}</div>
+							</div>
+							<div
+								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
+								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
+									(click)="editEducation(e)"><i class="bi bi-pencil"></i></button>
+								<button class="btn btn-sm btn-outline-danger"
+									(click)="deleteEducation(e._id || e.id)"><i class="bi bi-trash3"></i></button>
 							</div>
 						</div>
 					</div>
 				</div>
-
-				<!-- Experience Card -->
-				<div class="col-12">
-					<div class="card shadow border-1 border-primary rounded-4 h-100">
-						<div class="card-header bg-transparent border-1 border-primary py-3">
-							<div class="d-flex justify-content-between align-items-center">
-								<h5 class="mb-0">Experience</h5>
-								<div class="text-muted small">Company roles & durations</div>
-							</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<!-- Experience Card -->
+			<div class="card shadow border-1 border-primary rounded-4 h-100">
+				<div class="card-header bg-transparent border-1 border-primary py-3">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="mb-0">Experience</h5>
+						<div class="text-muted small">Company roles & durations</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<form [formGroup]="experienceForm" (ngSubmit)="saveExperience()"
+						class="row g-2 mb-3 align-items-end">
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Title</label>
+							<input class="form-control form-control-sm"
+								[class.is-invalid]="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
+								formControlName="title" placeholder="e.g. Frontend Developer" />
+							<div *ngIf="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
+								class="invalid-feedback d-block small">Title is required.</div>
 						</div>
-						<div class="card-body">
-							<form [formGroup]="experienceForm" (ngSubmit)="saveExperience()"
-								class="row g-2 mb-3 align-items-end">
-								<div class="col-12 col-md-4">
-									<label class="form-label small mb-1">Title</label>
-									<input class="form-control form-control-sm"
-										[class.is-invalid]="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
-										formControlName="title" placeholder="e.g. Frontend Developer" />
-									<div *ngIf="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
-										class="invalid-feedback d-block small">Title is required.</div>
-								</div>
-								<div class="col-12 col-md-4">
-									<label class="form-label small mb-1">Company</label>
-									<input class="form-control form-control-sm"
-										[class.is-invalid]="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
-										formControlName="company" placeholder="Company name" />
-									<div *ngIf="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
-										class="invalid-feedback d-block small">Company is required.</div>
-								</div>
-								<div class="col-12 col-md-4">
-									<label class="form-label small mb-1">Duration</label>
-									<input class="form-control form-control-sm"
-										[class.is-invalid]="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
-										formControlName="duration" placeholder="2022 - Present" />
-									<div *ngIf="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
-										class="invalid-feedback d-block small">Duration is required.</div>
-								</div>
-								<div class="col-12">
-									<label class="form-label small mb-1">Description</label>
-									<textarea class="form-control form-control-sm" rows="2"
-										formControlName="description" placeholder="Short summary"></textarea>
-								</div>
-								<div class="col-md-2 d-grid">
-									<button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
-								</div>
-							</form>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Company</label>
+							<input class="form-control form-control-sm"
+								[class.is-invalid]="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
+								formControlName="company" placeholder="Company name" />
+							<div *ngIf="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
+								class="invalid-feedback d-block small">Company is required.</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Duration</label>
+							<input class="form-control form-control-sm"
+								[class.is-invalid]="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
+								formControlName="duration" placeholder="2022 - Present" />
+							<div *ngIf="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
+								class="invalid-feedback d-block small">Duration is required.</div>
+						</div>
+						<div class="col-12">
+							<label class="form-label small mb-1">Description</label>
+							<textarea class="form-control form-control-sm" rows="2" formControlName="description"
+								placeholder="Short summary"></textarea>
+						</div>
+						<div class="col-md-2 d-grid">
+							<button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
+						</div>
+					</form>
 
-							<div class="list-entries">
-								<div *ngIf="experiences.length === 0" class="text-muted small">No experience records
-									yet.</div>
-								<div class="entry d-flex justify-content-between align-items-center py-2"
-									*ngFor="let ex of experiences">
-									<div>
-										<div class="fw-semibold">{{ ex.title }}</div>
-										<div class="small text-muted">{{ ex.company }} • {{ ex.duration }}</div>
-										<div class="small mt-1">{{ ex.description }}</div>
-									</div>
-									<div class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
-										<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
-											(click)="editExperience(ex)"><i class="bi bi-pencil"></i></button>
-										<button class="btn btn-sm btn-outline-danger"
-											(click)="deleteExperience(ex._id || ex.id)"><i
-												class="bi bi-trash3"></i></button>
-									</div>
-								</div>
+					<div class="list-entries">
+						<div *ngIf="experiences.length === 0" class="text-muted small">No experience records
+							yet.</div>
+						<div class="entry d-flex justify-content-between align-items-center py-2"
+							*ngFor="let ex of experiences">
+							<div>
+								<div class="fw-semibold">{{ ex.title }}</div>
+								<div class="small text-muted">{{ ex.company }} • {{ ex.duration }}</div>
+								<div class="small mt-1">{{ ex.description }}</div>
+							</div>
+							<div
+								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
+								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
+									(click)="editExperience(ex)"><i class="bi bi-pencil"></i></button>
+								<button class="btn btn-sm btn-outline-danger"
+									(click)="deleteExperience(ex._id || ex.id)"><i class="bi bi-trash3"></i></button>
 							</div>
 						</div>
 					</div>
@@ -158,8 +152,7 @@
 			</div>
 		</div>
 
-		<!-- Right column: Theme & Resumes -->
-		<div class="col-lg-5">
+		<div class="col-lg-6">
 			<!-- Resumes Card -->
 			<div class="card shadow border-1 border-primary rounded-4">
 				<div class="card-header bg-transparent border-1 border-primary py-3">

@@ -6,6 +6,7 @@ import { ExperienceService } from '../../services/experience/experience.service'
 import { ResumeService } from '../../services/resume/resume.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-settings',
@@ -19,6 +20,7 @@ export class SettingsComponent implements OnInit {
   private resumeService = inject(ResumeService);
   themeService = inject(ThemeService);
   private toastr = inject(ToastrService);
+  private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
 
   educations: any[] = [];
@@ -72,24 +74,33 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
     const payload = this.educationForm.value;
     if (this.editEducationId) {
       this.educationService.updateEducation(this.editEducationId, payload).subscribe({
         next: (res: any) => {
-          this.toastr.success(res?.message || 'Education updated');
           this.resetEducationForm();
           this.loadEducations();
+          this.spinner.hide();
+          this.toastr.success(res?.message || 'Education updated');
         },
-        error: (err) => this.toastr.error(err?.error?.message || 'Update failed')
+        error: (err) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || 'Update failed');
+        }
       });
     } else {
       this.educationService.addEducation(payload).subscribe({
         next: (res: any) => {
-          this.toastr.success(res?.message || 'Education added');
           this.resetEducationForm();
           this.loadEducations();
+          this.spinner.hide();
+          this.toastr.success(res?.message || 'Education added');
         },
-        error: (err) => this.toastr.error(err?.error?.message || 'Create failed')
+        error: (err) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || 'Create failed');
+        }
       });
     }
   }
@@ -139,24 +150,33 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
     const payload = this.experienceForm.value;
     if (this.editExperienceId) {
       this.experienceService.updateProject(this.editExperienceId, payload).subscribe({
         next: (res: any) => {
-          this.toastr.success(res?.message || 'Experience updated');
           this.resetExperienceForm();
           this.loadExperiences();
+          this.spinner.hide();
+          this.toastr.success(res?.message || 'Experience updated');
         },
-        error: (err) => this.toastr.error(err?.error?.message || 'Update failed')
+        error: (err) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || 'Update failed');
+        }
       });
     } else {
       this.experienceService.addProject(payload).subscribe({
         next: (res: any) => {
-          this.toastr.success(res?.message || 'Experience added');
           this.resetExperienceForm();
           this.loadExperiences();
+          this.spinner.hide();
+          this.toastr.success(res?.message || 'Experience added');
         },
-        error: (err) => this.toastr.error(err?.error?.message || 'Create failed')
+        error: (err) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || 'Create failed');
+        }
       });
     }
   }
