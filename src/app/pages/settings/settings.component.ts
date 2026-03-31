@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
 import { ResumeService } from '../../services/resume/resume.service';
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
@@ -19,22 +19,37 @@ export class SettingsComponent implements OnInit {
   private resumeService = inject(ResumeService);
   themeService = inject(ThemeService);
   private toastr = inject(ToastrService);
+  private fb = inject(FormBuilder);
 
   educations: any[] = [];
   experiences: any[] = [];
   resumes: any[] = [];
 
-  // simple forms
-  newEducation: any = { title: '', institution: '', duration: '', description: '' };
+  // reactive forms
+  educationForm!: FormGroup;
   editEducationId: string | null = null;
 
-  newExperience: any = { title: '', company: '', duration: '', description: '' };
+  experienceForm!: FormGroup;
   editExperienceId: string | null = null;
 
   // resume upload
   selectedResumeFile: File | null = null;
 
   ngOnInit(): void {
+    this.educationForm = this.fb.group({
+      title: ['', Validators.required],
+      institution: ['', Validators.required],
+      duration: ['', Validators.required],
+      description: ['']
+    });
+
+    this.experienceForm = this.fb.group({
+      title: ['', Validators.required],
+      company: ['', Validators.required],
+      duration: ['', Validators.required],
+      description: ['']
+    });
+
     this.loadEducations();
     this.loadExperiences();
     this.loadResumes();
@@ -51,8 +66,15 @@ export class SettingsComponent implements OnInit {
   }
 
   saveEducation(): void {
+    if (!this.educationForm) return;
+    if (this.educationForm.invalid) {
+      this.educationForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.educationForm.value;
     if (this.editEducationId) {
-      this.educationService.updateEducation(this.editEducationId, this.newEducation).subscribe({
+      this.educationService.updateEducation(this.editEducationId, payload).subscribe({
         next: (res: any) => {
           this.toastr.success(res?.message || 'Education updated');
           this.resetEducationForm();
@@ -61,7 +83,7 @@ export class SettingsComponent implements OnInit {
         error: (err) => this.toastr.error(err?.error?.message || 'Update failed')
       });
     } else {
-      this.educationService.addEducation(this.newEducation).subscribe({
+      this.educationService.addEducation(payload).subscribe({
         next: (res: any) => {
           this.toastr.success(res?.message || 'Education added');
           this.resetEducationForm();
@@ -74,7 +96,14 @@ export class SettingsComponent implements OnInit {
 
   editEducation(e: any): void {
     this.editEducationId = e._id || e.id || null;
-    this.newEducation = { title: e.title, institution: e.institution, duration: e.duration, description: e.description };
+    if (this.educationForm) {
+      this.educationForm.patchValue({
+        title: e.title || '',
+        institution: e.institution || '',
+        duration: e.duration || '',
+        description: e.description || ''
+      });
+    }
   }
 
   deleteEducation(id: string): void {
@@ -90,7 +119,7 @@ export class SettingsComponent implements OnInit {
 
   resetEducationForm(): void {
     this.editEducationId = null;
-    this.newEducation = { title: '', institution: '', duration: '', description: '' };
+    if (this.educationForm) this.educationForm.reset();
   }
 
   // Experience
@@ -104,8 +133,15 @@ export class SettingsComponent implements OnInit {
   }
 
   saveExperience(): void {
+    if (!this.experienceForm) return;
+    if (this.experienceForm.invalid) {
+      this.experienceForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.experienceForm.value;
     if (this.editExperienceId) {
-      this.experienceService.updateProject(this.editExperienceId, this.newExperience).subscribe({
+      this.experienceService.updateProject(this.editExperienceId, payload).subscribe({
         next: (res: any) => {
           this.toastr.success(res?.message || 'Experience updated');
           this.resetExperienceForm();
@@ -114,7 +150,7 @@ export class SettingsComponent implements OnInit {
         error: (err) => this.toastr.error(err?.error?.message || 'Update failed')
       });
     } else {
-      this.experienceService.addProject(this.newExperience).subscribe({
+      this.experienceService.addProject(payload).subscribe({
         next: (res: any) => {
           this.toastr.success(res?.message || 'Experience added');
           this.resetExperienceForm();
@@ -127,7 +163,14 @@ export class SettingsComponent implements OnInit {
 
   editExperience(e: any): void {
     this.editExperienceId = e._id || e.id || null;
-    this.newExperience = { title: e.title, company: e.company, duration: e.duration, description: e.description };
+    if (this.experienceForm) {
+      this.experienceForm.patchValue({
+        title: e.title || '',
+        company: e.company || '',
+        duration: e.duration || '',
+        description: e.description || ''
+      });
+    }
   }
 
   deleteExperience(id: string): void {
@@ -143,7 +186,7 @@ export class SettingsComponent implements OnInit {
 
   resetExperienceForm(): void {
     this.editExperienceId = null;
-    this.newExperience = { title: '', company: '', duration: '', description: '' };
+    if (this.experienceForm) this.experienceForm.reset();
   }
 
   // Resumes
