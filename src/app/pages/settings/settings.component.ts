@@ -151,7 +151,7 @@ export class SettingsComponent implements OnInit {
 
   // Experience
   loadExperiences(): void {
-    this.experienceService.getProject().subscribe({
+    this.experienceService.getExperience().subscribe({
       next: (res: any) => {
         this.experiences = res?.experiences || res || [];
       },
@@ -169,7 +169,7 @@ export class SettingsComponent implements OnInit {
     this.spinner.show();
     const payload = this.experienceForm.value;
     if (this.editExperienceId) {
-      this.experienceService.updateProject(this.editExperienceId, payload).subscribe({
+      this.experienceService.updateExperience(this.editExperienceId, payload).subscribe({
         next: (res: any) => {
           this.resetExperienceForm();
           this.loadExperiences();
@@ -183,7 +183,7 @@ export class SettingsComponent implements OnInit {
         }
       });
     } else {
-      this.experienceService.addProject(payload).subscribe({
+      this.experienceService.addExperience(payload).subscribe({
         next: (res: any) => {
           this.resetExperienceForm();
           this.loadExperiences();
@@ -215,7 +215,7 @@ export class SettingsComponent implements OnInit {
     (async () => {
       const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete experience ${itemName}? This action cannot be undone.`, itemName, 'experience');
       if (!confirmed) return;
-      this.experienceService.deleteProject(id).subscribe({
+      this.experienceService.deleteExperience(id).subscribe({
         next: (res: any) => {
           this.toastr.success(res?.message || 'Deleted');
           this.loadExperiences();

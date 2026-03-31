@@ -9,23 +9,23 @@ import { environment } from '../../../environments/environment.development';
 export class ExperienceService {
   constructor(private http: HttpClient) { }
 
-  getProjectById(id: string): Observable<any> {
+  getExperienceById(id: string): Observable<any> {
     return this.http.get(environment.apiUrl + `/experience/${id}`);
   }
 
-  getProject(): Observable<any> {
+  getExperience(): Observable<any> {
     return this.http.get(environment.apiUrl + `/experience`);
   }
 
-  addProject(data: any): Observable<any> {
+  addExperience(data: any): Observable<any> {
     return this.http.post(environment.apiUrl + '/experience', data);
   }
 
-  updateProject(id: string, data: any): Observable<any> {
+  updateExperience(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/experience/${id}`, data);
   }
 
-  deleteProject(id: string): Observable<any> {
+  deleteExperience(id: string): Observable<any> {
     return this.http.delete(environment.apiUrl + `/experience/${id}`)
   }
 }
