@@ -72,14 +72,14 @@
 					<div class="list-entries">
 						<div *ngIf="educations.length === 0" class="text-muted small">No education records yet.
 						</div>
-						<div class="entry d-flex justify-content-between align-items-center py-2"
+						<div class="entry d-flex justify-content-between align-items-start py-2"
 							*ngFor="let e of educations">
-							<div>
+							<div style="max-width: 80%;">
 								<div class="fw-semibold">{{ e.title }}</div>
 								<div class="small text-muted d-none d-md-block">{{ e.institution }} • {{
 									e.duration }}</div>
 								<div class="small text-muted d-block d-md-none">{{ e.institution }}</div>
-								<div class="small text-muted d-block d-md-none">{{ e.duration }}</div>
+								<div class="small text-muted d-block d-md-none my-1">{{ e.duration }}</div>
 								<div class="small mt-1">{{ e.description }}</div>
 							</div>
 							<div
@@ -150,11 +150,13 @@
 					<div class="list-entries">
 						<div *ngIf="experiences.length === 0" class="text-muted small">No experience records
 							yet.</div>
-						<div class="entry d-flex justify-content-between align-items-center py-2"
+						<div class="entry d-flex justify-content-between align-items-start py-2"
 							*ngFor="let ex of experiences">
-							<div>
+							<div style="max-width: 80%;">
 								<div class="fw-semibold">{{ ex.title }}</div>
-								<div class="small text-muted">{{ ex.company }} • {{ ex.duration }}</div>
+								<div class="small text-muted d-none d-md-block">{{ ex.company }} • {{ ex.duration }}</div>
+								<div class="small text-muted d-block d-md-none">{{ ex.company }}</div>
+								<div class="small text-muted d-block d-md-none my-1">{{ ex.duration }}</div>
 								<div class="small mt-1">{{ ex.description }}</div>
 							</div>
 							<div

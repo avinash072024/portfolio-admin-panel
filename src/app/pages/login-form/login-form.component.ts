@@ -52,7 +52,7 @@ export class LoginFormComponent implements OnInit {
           if (res.success) {
             this.sessionService.setUserSession(res.data);
             this.spinner.hide();
-            this.toastr.success(res.message || 'Login successful');
+            // this.toastr.success(res.message || 'Login successful');
             this.router.navigate(['/home']);
           } else {
             this.spinner.hide();
