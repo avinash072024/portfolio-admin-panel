@@ -1,17 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
+  private cachedProjects$?: Observable<any>;
 
   constructor(private http: HttpClient) { }
 
   getProjects(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/projects');
+    if (!this.cachedProjects$) {
+      this.cachedProjects$ = this.http.get(environment.apiUrl + '/projects').pipe(
+        shareReplay({ bufferSize: 1, refCount: true, windowTime: 300000 }),
+        catchError(err => {
+          this.cachedProjects$ = undefined;
+          return throwError(() => err);
+        })
+      );
+    }
+    return this.cachedProjects$;
   }
 
   getAllProjects(page: number = 1, limit: number = 5): Observable<any> {
@@ -24,15 +35,25 @@ export class ProjectsService {
   }
 
   addProject(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/projects', data);
+    return this.http.post(environment.apiUrl + '/projects', data).pipe(
+      tap(() => this.invalidateCache())
+    );
   }
 
   updateProject(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/projects/${id}`, data);
+    return this.http.put(environment.apiUrl + `/projects/${id}`, data).pipe(
+      tap(() => this.invalidateCache())
+    );
   }
 
   deleteProject(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/projects/${id}`)
+    return this.http.delete(environment.apiUrl + `/projects/${id}`).pipe(
+      tap(() => this.invalidateCache())
+    );
+  }
+
+  private invalidateCache() {
+    this.cachedProjects$ = undefined;
   }
 
 }
