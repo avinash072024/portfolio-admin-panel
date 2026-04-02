@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastrModule } from 'ngx-toastr';
 
 import { WebsiteVisitorComponent } from './website-visitor.component';
 
@@ -8,7 +11,7 @@ describe('WebsiteVisitorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WebsiteVisitorComponent]
+      imports: [WebsiteVisitorComponent, RouterTestingModule, HttpClientTestingModule, ToastrModule.forRoot()]
     })
     .compileComponents();
 
