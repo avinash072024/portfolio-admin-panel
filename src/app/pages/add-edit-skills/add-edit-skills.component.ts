@@ -222,26 +222,4 @@ export class AddEditSkillsComponent implements OnInit {
       });
     }
   }
-
-  deleteCategory(id: string): void {
-    // Keep for backward compatibility or direct calls if any
-    if (confirm('Are you sure you want to delete this category?')) {
-      this.spinner.show();
-      this.skillsService.deleteSkillCategory(id).subscribe({
-        next: (res: any) => {
-          this.spinner.hide();
-          if (res?.success) {
-            this.toastr.success(res?.message || 'Category deleted');
-            this.getSkillCategories();
-          } else {
-            this.toastr.error(res?.message || 'Failed to delete category');
-          }
-        },
-        error: (err: any) => {
-          this.spinner.hide();
-          this.toastr.error(err?.message || 'Error deleting category');
-        }
-      });
-    }
-  }
 }

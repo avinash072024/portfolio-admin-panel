@@ -38,9 +38,30 @@
 	border: 2px solid var(--bs-primary);
 }
 
-.form-control-color { padding: .25rem; height: auto; }
+// Delete modal styling
+#deleteConfirmModal {
+	.modal-content {
+		border-radius: 1.25rem !important;
+	}
+	// .bi-trash3 {
+	// 	color: var(--bs-primary);
+	// }
+	// .btn-primary {
+	// 	background-color: var(--bs-primary);
+	// 	border-color: var(--bs-primary);
+	// 	&:hover { opacity: 0.9; }
+	// }
+	// .text-primary {
+	// 	color: var(--bs-primary) !important;
+	// }
+}
 
-// .input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-// 	border-bottom-right-radius: 10px !important;
-// 	border-top-right-radius: 10px !important;
-// }
+[data-bs-theme="dark"] #deleteConfirmModal {
+	.modal-content {
+		background-color: #1e1e1e;
+		border-color: #333;
+	}
+	.text-muted {
+		color: #adb5bd !important;
+	}
+}
