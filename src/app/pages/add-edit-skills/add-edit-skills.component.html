@@ -1,7 +1,8 @@
 <div class="container py-5 mt-5">
 	<div class="card shadow-lg mt-5 border-1 border-primary rounded-4 overflow-hidden" data-aos="fade-up">
 		<div class="card-header d-flex justify-content-between align-items-center bg-primary py-3">
-			<h4 class="text-white mb-0"><i class="bi bi-patch-check me-2"></i>{{ isEdit ? 'Edit Skill' : 'Add New Skill' }}</h4>
+			<h4 class="text-white mb-0"><i class="bi bi-patch-check me-2"></i>{{ isEdit ? 'Edit Skill' : 'Add New Skill'
+				}}</h4>
 			<a routerLink="/skills" class="btn btn-primary fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
 		</div>
 
@@ -10,43 +11,60 @@
 				<div class="row g-4">
 					<div class="col-md-4">
 						<label class="form-label fw-bold">Skill Name</label>
-						<input type="text" formControlName="name" class="form-control" [class.is-invalid]="isInvalid('name')" placeholder="e.g. Angular">
+						<input type="text" formControlName="name" class="form-control"
+							[class.is-invalid]="isInvalid('name')" placeholder="e.g. Angular">
 						<div class="invalid-feedback">Name is required (min 2 chars).</div>
 					</div>
 
 					<div class="col-md-4">
-						<label class="form-label fw-bold">Category</label>
-						<select formControlName="category" class="form-select" [class.is-invalid]="isInvalid('category')">
+						<div class="d-flex justify-content-between align-items-center mb-2">
+							<label class="form-label fw-bold mb-0">Category</label>
+							<button type="button" class="btn btn-sm btn-outline-primary border-0 fw-semibold"
+								data-bs-toggle="modal" data-bs-target="#categoryModal">
+								<i class="bi bi-plus-circle me-1"></i>Manage
+							</button>
+						</div>
+						<select formControlName="category" class="form-select"
+							[class.is-invalid]="isInvalid('category')">
 							<option value="">Select Category</option>
-							<option value="Frontend Development">Frontend Development</option>
+							<!-- <option value="Frontend Development">Frontend Development</option>
 							<option value="Backend & Database">Backend & Database</option>
 							<option value="Tools & Design">Tools & Design</option>
 							<option value="Version Control & DevOps">Version Control & DevOps</option>
-							<option value="Payment Gateways">Payment Gateways</option>
+							<option value="Payment Gateways">Payment Gateways</option> -->
+							@for (item of skillCategories; track $index) {
+							<option [value]="item.name">{{ item.name }}</option>
+							}
 						</select>
 						<div class="invalid-feedback">Please select a category.</div>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-label fw-bold">Level (%)</label>
-						<input type="number" formControlName="level" class="form-control" min="0" max="100" [class.is-invalid]="isInvalid('level')">
+						<input type="number" formControlName="level" class="form-control" min="0" max="100"
+							[class.is-invalid]="isInvalid('level')">
 						<div class="invalid-feedback">Enter level between 0 and 100.</div>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-label fw-bold">Color (HEX Only)</label>
-						<input type="text" formControlName="color" class="form-control" [class.is-invalid]="isInvalid('color')">
+						<input type="text" formControlName="color" class="form-control"
+							[class.is-invalid]="isInvalid('color')">
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-label fw-bold">Icon Class (Bootstrap, Tabler & Fontawesome Icon)</label>
-						<input type="text" formControlName="icon" class="form-control" placeholder="e.g. bi bi-bootstrap" />
+						<input type="text" formControlName="icon" class="form-control"
+							[class.is-invalid]="isInvalid('icon')" placeholder="e.g. bi bi-bootstrap" />
+						<div class="invalid-feedback">Icon is required.</div>
 					</div>
 
 					<div class="col-12">
 						<div class="d-flex align-items-center gap-3">
-							<div class="preview-box d-flex align-items-center justify-content-center" [style.borderColor]="skillForm.value.color">
-								<i class="fs-3" [class]="skillForm.value.icon" [style.color]="skillForm.value.color"></i>
+							<div class="preview-box d-flex align-items-center justify-content-center"
+								[style.borderColor]="skillForm.value.color">
+								<i class="fs-3" [class]="skillForm.value.icon"
+									[style.color]="skillForm.value.color"></i>
 							</div>
 							<div>
 								<div class="fw-bold">Preview</div>
@@ -58,10 +76,69 @@
 				</div>
 
 				<div class="mt-5 d-flex gap-3">
-					<button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">{{ isEdit ? 'Update' : 'Save' }}</button>
+					<button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">{{ isEdit ? 'Update' : 'Save'
+						}}</button>
 					<a routerLink="/skills" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Category Management Modal -->
+<div class="modal fade" id="categoryModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+			<div class="modal-header bg-primary text-white py-3 border-0">
+				<h5 class="modal-title fw-bold" id="categoryModalLabel"><i class="bi bi-grid me-2"></i>Manage Categories
+				</h5>
+				<button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body px-4 pt-4">
+				<div class="input-group mb-4 shadow-sm">
+					<input type="text" class="form-control border-end-0 border-primary shadow-none"
+						placeholder="New category name e.g. Frontend" [(ngModel)]="newCategoryName"
+						(keyup.enter)="addCategory()">
+					<button class="btn btn-primary px-3 fw-bold" type="button" (click)="addCategory()">
+						{{ isCategoryEdit ? 'Update' : 'Add' }}
+					</button>
+					@if (isCategoryEdit) {
+					<button class="btn btn-danger px-3 fw-bold" type="button" (click)="cancelCategoryEdit()"
+						title="Cancel Edit">
+						<i class="bi bi-x-lg"></i>
+					</button>
+					}
+				</div>
+
+				<h6 class="fw-bold mb-3 text-primary"><i class="bi bi-list-ul me-1"></i> Existing Categories</h6>
+				<div class="list-group list-group-flush border rounded-3 overflow-hidden shadow-sm">
+					@if (skillCategories.length === 0) {
+					<div class="list-group-item text-center text-muted py-4">
+						<i class="bi bi-info-circle me-2"></i>No categories found
+					</div>
+					}
+					@for (cat of skillCategories; track cat._id) {
+					<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
+						<span class="fw-medium">{{ cat.name }}</span>
+						<div class="d-flex gap-2">
+							<button class="btn btn-sm btn-outline-primary shadow-sm" (click)="editCategory(cat)"
+								title="Edit Category">
+								<i class="bi bi-pencil"></i>
+							</button>
+							<button class="btn btn-sm btn-outline-danger shadow-sm" (click)="deleteCategory(cat._id)"
+								title="Delete Category">
+								<i class="bi bi-trash3"></i>
+							</button>
+						</div>
+					</div>
+					}
+				</div>
+			</div>
+			<div class="modal-footer border-0 p-3 bg-body-tertiary">
+				<button type="button" class="btn btn-primary fw-bold w-100 py-2 rounded-3 shadow"
+					data-bs-dismiss="modal">Done</button>
+			</div>
 		</div>
 	</div>
 </div>

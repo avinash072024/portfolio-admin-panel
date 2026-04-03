@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,7 @@ import { SkillsService } from '../../services/skills/skills.service';
 
 @Component({
   selector: 'app-add-edit-skills',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './add-edit-skills.component.html',
   styleUrl: './add-edit-skills.component.scss'
 })
@@ -24,11 +24,17 @@ export class AddEditSkillsComponent implements OnInit {
 
   isEdit: boolean = false;
   currentSkillId: string | null = null;
+  skillCategories: any[] = [];
+  newCategoryName: string = '';
+  isCategoryEdit: boolean = false;
+  categoryEditId: string | null = null;
+  categoryToDelete: any = null;
 
   ngOnInit(): void {
+    this.getSkillCategories();
     this.skillForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
-      icon: [''],
+      icon: ['', Validators.required],
       level: [50, [Validators.required, Validators.min(0), Validators.max(100)]],
       color: ['#0d6efd'],
       category: ['', Validators.required]
@@ -116,4 +122,126 @@ export class AddEditSkillsComponent implements OnInit {
     }
   }
 
+  getSkillCategories(): void {
+    this.spinner.show();
+    this.skillsService.getSkillByCategory().subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.skillCategories = res.categories || [];
+          this.spinner.hide();
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message || 'Failed to load categories');
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.message || 'Failed to load categories');
+      }
+    });
+  }
+
+  addCategory(): void {
+    if (!this.newCategoryName.trim()) {
+      this.toastr.warning('Please enter a category name');
+      return;
+    }
+
+    this.spinner.show();
+    if (this.isCategoryEdit && this.categoryEditId) {
+      this.skillsService.updateSkillCategory(this.categoryEditId, { name: this.newCategoryName }).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category updated');
+            this.cancelCategoryEdit();
+            this.getSkillCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to update category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error updating category');
+        }
+      });
+    } else {
+      this.skillsService.addSkillCategory({ name: this.newCategoryName }).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category added');
+            this.newCategoryName = '';
+            this.getSkillCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to add category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error adding category');
+        }
+      });
+    }
+  }
+
+  editCategory(cat: any): void {
+    this.isCategoryEdit = true;
+    this.categoryEditId = cat._id;
+    this.newCategoryName = cat.name;
+  }
+
+  cancelCategoryEdit(): void {
+    this.isCategoryEdit = false;
+    this.categoryEditId = null;
+    this.newCategoryName = '';
+  }
+
+  prepareDelete(cat: any): void {
+    this.categoryToDelete = cat;
+  }
+
+  confirmDelete(): void {
+    if (this.categoryToDelete) {
+      this.spinner.show();
+      this.skillsService.deleteSkillCategory(this.categoryToDelete._id).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category deleted');
+            this.categoryToDelete = null;
+            this.getSkillCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to delete category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error deleting category');
+        }
+      });
+    }
+  }
+
+  deleteCategory(id: string): void {
+    // Keep for backward compatibility or direct calls if any
+    if (confirm('Are you sure you want to delete this category?')) {
+      this.spinner.show();
+      this.skillsService.deleteSkillCategory(id).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category deleted');
+            this.getSkillCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to delete category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error deleting category');
+        }
+      });
+    }
+  }
 }

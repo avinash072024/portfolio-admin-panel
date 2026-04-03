@@ -51,6 +51,23 @@ export class SkillsService {
       tap(() => this.invalidateCache())
     );
   }
+
+  getSkillByCategory(): Observable<any> {
+    return this.http.get(environment.apiUrl + `/skill-categories`);
+  }
+
+  addSkillCategory(data: any): Observable<any> {
+    return this.http.post(environment.apiUrl + '/skill-categories', data);
+  }
+
+  deleteSkillCategory(id: string): Observable<any> {
+    return this.http.delete(environment.apiUrl + `/skill-categories/${id}`);
+  }
+
+  updateSkillCategory(id: string, data: any): Observable<any> {
+    return this.http.put(environment.apiUrl + `/skill-categories/${id}`, data);
+  }
+
   private invalidateCache() {
     this.cachedSkills$ = undefined;
   }
