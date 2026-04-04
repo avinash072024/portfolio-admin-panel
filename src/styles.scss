@@ -121,3 +121,166 @@ thead th {
     letter-spacing: 0.05em;
     border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08) !important;
 }
+
+/* ==========================================================================
+   Modern ngx-toastr Customization
+   ========================================================================== */
+.toast-container {
+    width: auto !important;
+    max-width: 400px;
+    padding: 1.5rem;
+
+    @media (max-width: 576px) {
+        width: 100% !important;
+        max-width: none;
+        padding: 1rem;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+    }
+}
+
+.ngx-toastr {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 1rem;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    font-size: 0.95rem;
+    color: var(--bs-body-color) !important;
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1) !important;
+    backdrop-filter: blur(12px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background-image: none !important;
+
+    &:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
+        transform: translateY(-2px);
+    }
+
+    /* Icon Styling */
+    &::before {
+        position: absolute;
+        left: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: "bootstrap-icons";
+        font-size: 1.5rem;
+        line-height: 1;
+        opacity: 0.9;
+    }
+
+    /* Progress Bar */
+    .toast-progress {
+        height: 3px !important;
+        background-color: var(--primary-color) !important;
+        opacity: 0.6 !important;
+        border-radius: 0 0 1rem 1rem;
+        bottom: 0;
+        top: auto !important;
+    }
+
+    /* Close Button */
+    .toast-close-button {
+        top: 0.75rem !important;
+        right: 0.75rem !important;
+        color: var(--bs-body-color) !important;
+        text-shadow: none !important;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+        font-size: 1.25rem;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    /* Message & Title */
+    .toast-title {
+        font-weight: 700 !important;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .toast-message {
+        opacity: 0.85;
+        line-height: 1.4;
+    }
+}
+
+/* Success Toast */
+.toast-success {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.85) !important;
+    border-left: 5px solid var(--primary-color) !important;
+
+    &::before {
+        content: "\F26A"; /* BI: check-circle */
+        color: var(--primary-color);
+    }
+
+    .toast-progress {
+        background-color: var(--primary-color) !important;
+    }
+}
+
+/* Error Toast */
+.toast-error {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.85) !important;
+    border-left: 5px solid #dc3545 !important;
+
+    &::before {
+        content: "\F331"; /* BI: exclamation-triangle */
+        color: #dc3545;
+    }
+
+    .toast-progress {
+        background-color: #dc3545 !important;
+    }
+}
+
+/* Info Toast */
+.toast-info {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.85) !important;
+    border-left: 5px solid #0dcaf0 !important;
+
+    &::before {
+        content: "\F431"; /* BI: info-circle */
+        color: #0dcaf0;
+    }
+
+    .toast-progress {
+        background-color: #0dcaf0 !important;
+    }
+}
+
+/* Warning Toast */
+.toast-warning {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.85) !important;
+    border-left: 5px solid #ffc107 !important;
+
+    &::before {
+        content: "\F33A"; /* BI: exclamation-circle */
+        color: #ffc107;
+    }
+
+    .toast-progress {
+        background-color: #ffc107 !important;
+    }
+}
+
+/* Theme-Specific Adjustments */
+[data-bs-theme="dark"] {
+    .ngx-toastr {
+        background-color: rgba(33, 37, 41, 0.85) !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+}
+
+[data-bs-theme="light"] {
+    .ngx-toastr {
+        background-color: rgba(255, 255, 255, 0.85) !important;
+    }
+}

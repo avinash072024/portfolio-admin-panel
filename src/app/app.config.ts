@@ -13,9 +13,32 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimations(),
-    provideToastr(), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          }),
+    // provideToastr({
+    //   timeOut: 5000,
+    //   positionClass: 'toast-top-right',
+    //   preventDuplicates: true,
+    //   progressBar: true,
+    //   // closeButton: true,
+    //   newestOnTop: true,
+    //   tapToDismiss: false,
+    // }),
+    provideToastr({
+      timeOut: 5000,
+      extendedTimeOut: 2000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      countDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      progressBar: true,
+      // progressAnimation: 'increasing',
+      newestOnTop: true,
+      enableHtml: false,
+      tapToDismiss: false,
+      easeTime: 500,
+    }),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
 };
