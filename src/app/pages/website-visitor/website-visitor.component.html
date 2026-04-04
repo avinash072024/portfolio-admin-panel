@@ -26,8 +26,7 @@
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Organization
                                     </th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Timezone</th>
-                                    <!-- <th class="pe-4 text-muted fw-semibold small uppercase-tracking border-0 text-center">Status</th> -->
-                                    <!-- <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th> -->
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,22 +85,12 @@
                                             <small class="text-muted mt-1">UTC {{ visitor.utc_offset }}</small>
                                         </div>
                                     </td>
-                                    <!-- <td class="pe-4 text-center">
-                                        <div class="dropdown">
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status === 'success'">
-                                                <i class="bi bi-check-circle-fill me-1"></i> Success
-                                            </span>
-                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status !== 'success'">
-                                                <i class="bi bi-x-circle-fill me-1"></i> Failed
-                                            </span>
-                                        </div>
-                                    </td> -->
-                                    <!-- <td>
+                                    <td>
                                         <div class="d-flex flex-column">
                                             <span class="fw-medium text-dark">{{ visitor.currency_name }}</span>
                                             <small class="text-muted">{{ visitor.currency }}</small>
                                         </div>
-                                    </td> -->
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
