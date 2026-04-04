@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
 import { ProjectsService } from '../../services/projects/projects.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-project',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './add-edit-project.component.html',
   styleUrl: './add-edit-project.component.scss'
 })
@@ -23,8 +23,14 @@ export class AddEditProjectComponent implements OnInit {
   route = inject(ActivatedRoute);
   currentProjectId: string | null = null;
   isEdit: boolean = false;
+  projectCategories: any[] = [];
+  newCategoryName: string = '';
+  isCategoryEdit: boolean = false;
+  categoryEditId: string | null = null;
+  categoryToDelete: any = null;
 
   ngOnInit(): void {
+    this.getProjectCategories();
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       category: ['', Validators.required],
@@ -97,7 +103,6 @@ export class AddEditProjectComponent implements OnInit {
 
   onSubmit() {
     if (this.projectForm.valid) {
-      // console.log('Project Data:', this.projectForm.value);
       this.spinner.show();
       if (this.isEdit && this.currentProjectId) {
         this.projectService.updateProject(this.currentProjectId, this.projectForm.value).subscribe({
@@ -137,6 +142,107 @@ export class AddEditProjectComponent implements OnInit {
       }
     } else {
       this.projectForm.markAllAsTouched();
+    }
+  }
+
+  getProjectCategories(): void {
+    this.spinner.show();
+    this.projectService.getProjectCategories().subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.projectCategories = res.categories || [];
+          this.spinner.hide();
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message || 'Failed to load categories');
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.message || 'Failed to load categories');
+      }
+    });
+  }
+
+  addCategory(): void {
+    if (!this.newCategoryName.trim()) {
+      this.toastr.warning('Please enter a category name');
+      return;
+    }
+
+    this.spinner.show();
+    if (this.isCategoryEdit && this.categoryEditId) {
+      this.projectService.updateProjectCategory(this.categoryEditId, { name: this.newCategoryName }).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category updated');
+            this.cancelCategoryEdit();
+            this.getProjectCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to update category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error updating category');
+        }
+      });
+    } else {
+      this.projectService.addProjectCategory({ name: this.newCategoryName }).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category added');
+            this.newCategoryName = '';
+            this.getProjectCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to add category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error adding category');
+        }
+      });
+    }
+  }
+
+  editCategory(cat: any): void {
+    this.isCategoryEdit = true;
+    this.categoryEditId = cat._id;
+    this.newCategoryName = cat.name;
+  }
+
+  cancelCategoryEdit(): void {
+    this.isCategoryEdit = false;
+    this.categoryEditId = null;
+    this.newCategoryName = '';
+  }
+
+  prepareDelete(cat: any): void {
+    this.categoryToDelete = cat;
+  }
+
+  confirmDelete(): void {
+    if (this.categoryToDelete) {
+      this.spinner.show();
+      this.projectService.deleteProjectCategory(this.categoryToDelete._id).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.toastr.success(res?.message || 'Category deleted');
+            this.categoryToDelete = null;
+            this.getProjectCategories();
+          } else {
+            this.toastr.error(res?.message || 'Failed to delete category');
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.message || 'Error deleting category');
+        }
+      });
     }
   }
 }

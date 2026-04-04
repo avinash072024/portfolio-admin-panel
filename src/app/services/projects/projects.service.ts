@@ -52,6 +52,29 @@ export class ProjectsService {
     );
   }
 
+  
+
+
+
+  getProjectCategories(): Observable<any> {
+    return this.http.get(environment.apiUrl + `/project-categories`);
+  }
+
+  addProjectCategory(data: any): Observable<any> {
+    return this.http.post(environment.apiUrl + '/project-categories', data);
+  }
+
+  deleteProjectCategory(id: string): Observable<any> {
+    return this.http.delete(environment.apiUrl + `/project-categories/${id}`);
+  }
+
+  updateProjectCategory(id: string, data: any): Observable<any> {
+    return this.http.put(environment.apiUrl + `/project-categories/${id}`, data);
+  }
+
+
+  
+
   private invalidateCache() {
     this.cachedProjects$ = undefined;
   }
