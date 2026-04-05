@@ -1,14 +1,35 @@
 <div class="container py-5 mt-5" data-aos="fade-up">
 	<div class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden">
 		<div
-			class="card-header bg-transparent border-1 border-primary py-3 d-flex justify-content-between align-items-center">
-			<div>
-				<h5 class="fw-bold mb-0">Skills <span class="badge rounded-pill bg-primary px-3">{{ total }}</span></h5>
-				<p class="text-muted small mb-0 d-none d-md-block">Manage and overview your skillset</p>
+			class="card-header bg-transparent border-1 border-primary py-3 px-3">
+			<div class="row g-2 g-md-3 align-items-center">
+				<!-- Title & Badge -->
+				<div class="col-6 col-md-4 order-1">
+					<h5 class="fw-bold mb-0 text-truncate">Skills <span class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">
+							{{ total }}
+						</span></h5>
+					<p class="text-muted small mb-0 d-none d-md-block">Manage and overview your skillset</p>
+				</div>
+
+				<!-- New Button -->
+				<div class="col-6 col-md-3 order-2 order-md-3 text-end">
+					<a routerLink="/add-skill" class="btn btn-primary rounded-3 px-3">
+						<i class="bi bi-plus-lg me-1"></i> <span>New</span>
+					</a>
+				</div>
+
+				<!-- Search Bar -->
+				<div class="col-12 col-md-5 order-3 order-md-2">
+					<div class="search-wrapper">
+						<i class="bi bi-search search-icon"></i>
+						<input type="text" class="form-control search-input" placeholder="Search skills..."
+							[(ngModel)]="searchTerm" (input)="onSearch()">
+						<button *ngIf="searchTerm" (click)="clearSearch()" class="btn-clear" title="Clear search">
+							<i class="bi bi-x-lg"></i>
+						</button>
+					</div>
+				</div>
 			</div>
-			<a routerLink="/add-skill" class="btn btn-primary rounded-3 px-3">
-				<i class="bi bi-plus-lg me-1"></i> New
-			</a>
 		</div>
 
 		<div class="card-body p-0">
@@ -76,7 +97,13 @@
 							</td>
 						</tr>
 						<tr *ngIf="!skills.length">
-							<td colspan="4" class="text-center">No skills found. Please add skills.</td>
+							<td colspan="4" class="text-center py-5">
+								<div class="text-muted">
+									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+									<span *ngIf="searchTerm">No skills matching "<strong>{{searchTerm}}</strong>"</span>
+									<span *ngIf="!searchTerm">No skills found. Please add skills.</span>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>

@@ -5,6 +5,8 @@ import { SkillsService } from '../../services/skills/skills.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 export interface Skill {
   _id: string;
@@ -17,7 +19,7 @@ export interface Skill {
 
 @Component({
   selector: 'app-skills',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
@@ -28,24 +30,34 @@ export class SkillsComponent implements OnInit {
   total: number = 0;
   totalPages: number = 1;
   pages: number[] = [];
+  searchTerm: string = '';
+  private searchSubject = new Subject<string>();
 
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   skillsService = inject(SkillsService);
   themeService = inject(ThemeService);
   router = inject(Router);
-  
+
   showDeleteModal: boolean = false;
   deletingSkillId!: string;
   deletingSkillTitle!: string;
 
   ngOnInit(): void {
-    this.getProjects();
+    this.getSkills();
+
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.page = 1;
+      this.getSkills();
+    });
   }
 
-  getProjects(): void {
+  getSkills(): void {
     this.spinner.show();
-    this.skillsService.getAllSkills(this.page, this.limit).subscribe({
+    this.skillsService.getAllSkills(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.skills = res?.skills || [];
@@ -67,6 +79,17 @@ export class SkillsComponent implements OnInit {
     })
   }
 
+  onSearch(): void {
+    // this.page = 1;
+    // this.getSkills();
+    this.searchSubject.next(this.searchTerm);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.onSearch();
+  }
+
   buildPages() {
     const pages: number[] = [];
     for (let i = 1; i <= this.totalPages; i++) {
@@ -78,27 +101,27 @@ export class SkillsComponent implements OnInit {
   changePage(p: number) {
     if (p < 1 || p > this.totalPages || p === this.page) return;
     this.page = p;
-    this.getProjects();
+    this.getSkills();
   }
 
   prev() {
     if (this.page > 1) {
       this.page--;
-      this.getProjects();
+      this.getSkills();
     }
   }
 
   next() {
     if (this.page < this.totalPages) {
       this.page++;
-      this.getProjects();
+      this.getSkills();
     }
   }
 
   setLimit(n: number) {
     this.limit = n;
     this.page = 1;
-    this.getProjects();
+    this.getSkills();
   }
 
   get rangeStart() {
@@ -136,7 +159,7 @@ export class SkillsComponent implements OnInit {
       next: (res: any) => {
         if (res?.success) {
           this.closeDeleteModal();
-          this.getProjects();
+          this.getSkills();
           this.spinner.hide();
           this.toastr.success(res?.message);
         } else {

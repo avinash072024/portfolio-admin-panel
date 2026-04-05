@@ -14,7 +14,7 @@ export class SkillsService {
 
   getSkills(): Observable<any> {
     if (!this.cachedSkills$) {
-      this.cachedSkills$ = this.http.get(`${environment.apiUrl}/skills`).pipe(
+      this.cachedSkills$ = this.http.get(environment.apiUrl + '/skills').pipe(
         shareReplay({ bufferSize: 1, refCount: true, windowTime: 300000 }),
         catchError(err => {
           this.cachedSkills$ = undefined;
@@ -25,9 +25,13 @@ export class SkillsService {
     return this.cachedSkills$;
   }
 
-  getAllSkills(page: number = 1, limit: number = 5): Observable<any> {
-    const params = `?page=${page}&limit=${limit}`;
-    return this.http.get(`${environment.apiUrl}/skills${params}`);
+  getAllSkills(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
+    let url = `${environment.apiUrl}/skills`;
+    let params = `?page=${page}&limit=${limit}`;
+    if (search) {
+      params += `&search=${encodeURIComponent(search)}`;
+    }
+    return this.http.get(`${url}${params}`);
   }
 
   getSkillById(id: string): Observable<any> {
@@ -51,8 +55,12 @@ export class SkillsService {
       tap(() => this.invalidateCache())
     );
   }
-
-  getSkillByCategory(): Observable<any> {
+ 
+ 
+ 
+ 
+ 
+  getSkillCategories(): Observable<any> {
     return this.http.get(environment.apiUrl + `/skill-categories`);
   }
 
@@ -67,7 +75,10 @@ export class SkillsService {
   updateSkillCategory(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/skill-categories/${id}`, data);
   }
-
+ 
+ 
+ 
+ 
   private invalidateCache() {
     this.cachedSkills$ = undefined;
   }

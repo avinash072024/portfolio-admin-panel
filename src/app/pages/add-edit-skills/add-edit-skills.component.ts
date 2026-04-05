@@ -124,7 +124,7 @@ export class AddEditSkillsComponent implements OnInit {
 
   getSkillCategories(): void {
     this.spinner.show();
-    this.skillsService.getSkillByCategory().subscribe({
+    this.skillsService.getSkillCategories().subscribe({
       next: (res: any) => {
         if (res?.success) {
           this.skillCategories = res.categories || [];
