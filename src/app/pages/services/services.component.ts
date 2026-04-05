@@ -5,6 +5,8 @@ import { ServicesService } from '../../services/service/services.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 export interface Service {
   _id: string;
@@ -17,7 +19,7 @@ export interface Service {
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })
@@ -28,6 +30,7 @@ export class ServicesComponent implements OnInit {
   total: number = 0;
   totalPages: number = 1;
   pages: number[] = [];
+  searchTerm: string = '';
 
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
@@ -38,14 +41,27 @@ export class ServicesComponent implements OnInit {
   showDeleteModal: boolean = false;
   deletingServiceId!: string;
   deletingServiceTitle!: string;
+  private searchSubject = new Subject<string>();
+
+  onSearch(): void {
+    this.searchSubject.next(this.searchTerm);
+  }
 
   ngOnInit(): void {
     this.getServices();
+
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.page = 1;
+      this.getServices();
+    });
   }
 
   getServices(): void {
     this.spinner.show();
-    this.servicesService.getServices(this.page, this.limit).subscribe({
+    this.servicesService.getServices(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.services = res?.services || [];
@@ -85,6 +101,16 @@ export class ServicesComponent implements OnInit {
     this.limit = n;
     this.page = 1;
     this.getServices();
+  }
+
+  // onSearch() {
+  //   this.page = 1;
+  //   this.getServices();
+  // }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.onSearch();
   }
 
   openDeleteModal(id: string, title: string) {
