@@ -25,9 +25,13 @@ export class ProjectsService {
     return this.cachedProjects$;
   }
 
-  getAllProjects(page: number = 1, limit: number = 5): Observable<any> {
-    const params = `?page=${page}&limit=${limit}`;
-    return this.http.get(`${environment.apiUrl}/projects${params}`);
+  getAllProjects(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
+    let url = `${environment.apiUrl}/projects`;
+    let params = `?page=${page}&limit=${limit}`;
+    if (search) {
+      params += `&search=${encodeURIComponent(search)}`;
+    }
+    return this.http.get(`${url}${params}`);
   }
 
   getProjectById(id: string): Observable<any> {
@@ -52,7 +56,7 @@ export class ProjectsService {
     );
   }
 
-  
+
 
 
 
@@ -73,7 +77,7 @@ export class ProjectsService {
   }
 
 
-  
+
 
   private invalidateCache() {
     this.cachedProjects$ = undefined;

@@ -201,6 +201,114 @@
     }
 }
 
-.page-item.disabled {
-    cursor: not-allowed;
+
+/* Search Box Styles */
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    transition: all 0.3s ease;
+
+    .search-icon {
+        position: absolute;
+        left: 14px;
+        color: var(--bs-primary);
+        font-size: 1rem;
+        z-index: 5;
+        transition: all 0.3s ease;
+        opacity: 0.7;
+    }
+
+    .search-input {
+        padding: 0.6rem 2.8rem 0.6rem 2.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+        background: rgba(var(--bs-emphasis-color-rgb), 0.02);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--bs-body-color);
+
+        &::placeholder {
+            color: var(--bs-secondary-color);
+            opacity: 0.6;
+        }
+
+        &:focus {
+            background: var(--bs-body-bg);
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.15);
+            outline: none;
+            transform: translateY(-1px);
+            
+            & ~ .search-icon {
+                opacity: 1;
+                color: var(--bs-primary);
+            }
+        }
+    }
+
+    .btn-clear {
+        position: absolute;
+        right: 10px;
+        background: rgba(var(--bs-emphasis-color-rgb), 0.05);
+        border: none;
+        color: var(--bs-secondary-color);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        z-index: 5;
+
+        &:hover {
+            background: var(--bs-danger-bg-subtle);
+            color: var(--bs-danger);
+            transform: scale(1.1);
+        }
+        
+        i {
+            font-size: 0.8rem;
+        }
+    }
 }
+
+// Mobile responsiveness for search and buttons
+@media (max-width: 767.98px) {
+    .card-header {
+        padding: 1rem 0.75rem !important;
+    }
+    
+    .search-wrapper {
+        margin-top: 0.25rem;
+
+        .search-input {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    .btn-primary {
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+        font-size: 0.85rem;
+    }
+}
+
+[data-bs-theme="dark"] {
+    .search-input {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.08);
+        
+        &:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--bs-primary);
+        }
+    }
+}

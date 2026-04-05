@@ -1,6 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ProjectsService } from '../../services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,11 +21,12 @@ interface Project {
 
 @Component({
   selector: 'app-project',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
 export class ProjectComponent implements OnInit {
+  protected readonly Math = Math;
   projects: Project[] = [];
   // pagination state
   page: number = 1;
@@ -38,14 +41,34 @@ export class ProjectComponent implements OnInit {
   showDeleteModal: boolean = false;
   deletingProjectId!: string;
   deletingProjectTitle!: string;
+  searchTerm: string = '';
+  private searchSubject = new Subject<string>();
 
+  onSearch(): void {
+    this.searchSubject.next(this.searchTerm);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.page = 1;
+    this.getProjects();
+  }
+  
   ngOnInit(): void {
     this.getProjects();
+    
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.page = 1;
+      this.getProjects();
+    });
   }
 
   getProjects(): void {
     this.spinner.show();
-    this.projectService.getAllProjects(this.page, this.limit).subscribe({
+    this.projectService.getAllProjects(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.projects = res?.projects || [];
