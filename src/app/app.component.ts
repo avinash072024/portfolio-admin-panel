@@ -5,7 +5,6 @@ import { Constants } from './models/constants';
 import { SessionService } from './services/session/session.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { PushNotificationService } from './services/push-notification/push-notification.service';
 import { filter } from 'rxjs';
 
 @Component({
@@ -24,7 +23,6 @@ export class AppComponent {
   constructor(
     private sessionService: SessionService,
     private toastr: ToastrService,
-    private pushNotificationService: PushNotificationService,
     private router: Router
   ) {
     // Automatically update DOM and localStorage when signals change
@@ -52,40 +50,5 @@ export class AppComponent {
       duration: 1000,
       mirror: false
     });
-
-    this.pushNotificationService.initializeForegroundVisitorNotificationHandler();
-    this.tryEnableGlobalNotificationPermission();
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => this.tryEnableGlobalNotificationPermission());
-  }
-
-  private async tryEnableGlobalNotificationPermission(): Promise<void> {
-    if (this.permissionPrompted) {
-      return;
-    }
-
-    if (!this.sessionService.isAuthenticated()) {
-      return;
-    }
-
-    if (!this.pushNotificationService.isPushSupported) {
-      return;
-    }
-
-    if (this.pushNotificationService.notificationPermission !== 'default') {
-      this.permissionPrompted = true;
-      return;
-    }
-
-    this.permissionPrompted = true;
-    try {
-      const permission = await this.pushNotificationService.requestNotificationPermission();
-      if (permission === 'granted') {
-        this.toastr.success('Notification permission enabled');
-      }
-    } catch (error) {
-      // Ignore permission API failures silently.
-    }
   }
 }
