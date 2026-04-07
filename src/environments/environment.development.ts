@@ -1,5 +1,8 @@
 export const environment = {
     production: true,
     // apiUrl: 'http://localhost:5000/api'
-    apiUrl: 'https://portfolio-backend-75va.onrender.com/api'
+    apiUrl: 'https://portfolio-backend-75va.onrender.com/api',
+    pushVapidPublicKey: '',
+    pushSubscribeEndpoint: '/visitor-notifications/subscribe',
+    pushUnsubscribeEndpoint: '/visitor-notifications/unsubscribe'
 };

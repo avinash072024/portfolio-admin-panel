@@ -1,10 +1,12 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import * as AOS from 'aos';
 import { Constants } from './models/constants';
 import { SessionService } from './services/session/session.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { PushNotificationService } from './services/push-notification/push-notification.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +16,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AppComponent {
   title = 'portfolio-admin-panel';
+  private permissionPrompted = false;
 
   theme = signal(localStorage.getItem(Constants.THEME_KEY) || 'light');
   skin = signal(localStorage.getItem(Constants.SKIN_KEY) || 'default-blue');
 
-  constructor(private sessionService: SessionService, private toastr: ToastrService) {
+  constructor(
+    private sessionService: SessionService,
+    private toastr: ToastrService,
+    private pushNotificationService: PushNotificationService,
+    private router: Router
+  ) {
     // Automatically update DOM and localStorage when signals change
     effect(() => {
       document.documentElement.setAttribute('data-bs-theme', this.theme());
@@ -44,11 +52,40 @@ export class AppComponent {
       duration: 1000,
       mirror: false
     });
-    // Example toast to demonstrate ngx-toastr integration
-    // try {
-    //   this.toastr.success('Welcome back!', 'Ready');
-    // } catch (e) {
-    //   // ignore if toastr not available yet during bootstrap
-    // }
+
+    this.pushNotificationService.initializeForegroundVisitorNotificationHandler();
+    this.tryEnableGlobalNotificationPermission();
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => this.tryEnableGlobalNotificationPermission());
+  }
+
+  private async tryEnableGlobalNotificationPermission(): Promise<void> {
+    if (this.permissionPrompted) {
+      return;
+    }
+
+    if (!this.sessionService.isAuthenticated()) {
+      return;
+    }
+
+    if (!this.pushNotificationService.isPushSupported) {
+      return;
+    }
+
+    if (this.pushNotificationService.notificationPermission !== 'default') {
+      this.permissionPrompted = true;
+      return;
+    }
+
+    this.permissionPrompted = true;
+    try {
+      const permission = await this.pushNotificationService.requestNotificationPermission();
+      if (permission === 'granted') {
+        this.toastr.success('Notification permission enabled');
+      }
+    } catch (error) {
+      // Ignore permission API failures silently.
+    }
   }
 }
