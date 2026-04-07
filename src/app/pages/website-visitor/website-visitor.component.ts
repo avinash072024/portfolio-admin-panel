@@ -4,6 +4,7 @@ import { VisitorService } from '../../services/visitor/visitor.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ThemeService } from '../../services/theme/theme.service';
+import { PushNotificationService } from '../../services/push-notification/push-notification.service';
 
 @Component({
   selector: 'app-website-visitor',
@@ -23,9 +24,15 @@ export class WebsiteVisitorComponent implements OnInit {
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
   themeService = inject(ThemeService);
+  private pushNotificationService = inject(PushNotificationService);
+
+  pushSupported = false;
+  pushSubscribed = false;
+  pushActionInProgress = false;
 
   ngOnInit(): void {
     this.getVisitor();
+    this.loadPushStatus();
   }
 
   getVisitor(): void {
@@ -67,6 +74,50 @@ export class WebsiteVisitorComponent implements OnInit {
 
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  private async loadPushStatus(): Promise<void> {
+    this.pushSupported = this.pushNotificationService.isPushSupported;
+    if (!this.pushSupported) {
+      return;
+    }
+
+    const subscription = await this.pushNotificationService.getSubscription();
+    this.pushSubscribed = !!subscription;
+  }
+
+  async subscribeVisitorNotification(): Promise<void> {
+    if (this.pushActionInProgress) {
+      return;
+    }
+
+    this.pushActionInProgress = true;
+    try {
+      await this.pushNotificationService.subscribeToVisitorNotifications();
+      this.pushSubscribed = true;
+      this.toastr.success('Visitor push notifications enabled');
+    } catch (err: any) {
+      this.toastr.error(err?.error?.message || err?.message || 'Unable to enable push notifications');
+    } finally {
+      this.pushActionInProgress = false;
+    }
+  }
+
+  async unsubscribeVisitorNotification(): Promise<void> {
+    if (this.pushActionInProgress) {
+      return;
+    }
+
+    this.pushActionInProgress = true;
+    try {
+      await this.pushNotificationService.unsubscribeFromVisitorNotifications();
+      this.pushSubscribed = false;
+      this.toastr.success('Visitor push notifications disabled');
+    } catch (err: any) {
+      this.toastr.error(err?.error?.message || err?.message || 'Unable to disable push notifications');
+    } finally {
+      this.pushActionInProgress = false;
+    }
   }
 
 }
