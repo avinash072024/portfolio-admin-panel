@@ -110,7 +110,7 @@
 			</div>
 
 			<!-- Pagination/Footer -->
-			<div class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
+			<div *ngIf="skills.length" class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
 				[attr.data-skin]="themeService.skin()">
 				<div class="d-flex align-items-center gap-2">
 					<span class="text-muted small">Rows:</span>

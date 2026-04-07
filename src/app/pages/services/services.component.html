@@ -91,15 +91,24 @@
 								</div>
 							</td>
 						</tr>
-						<tr *ngIf="!services.length">
+						<!-- <tr *ngIf="!services.length">
 							<td colspan="4" class="text-center py-4">No services found.</td>
+						</tr> -->
+						<tr *ngIf="!services.length">
+							<td colspan="5" class="text-center py-5">
+								<div class="text-muted">
+									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+									<span *ngIf="searchTerm">No services matching "<strong>{{searchTerm}}</strong>"</span>
+									<span *ngIf="!searchTerm">No services found. Please add services.</span>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 
 			<!-- Pagination/Footer -->
-			<div class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
+			<div *ngIf="services.length" class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
 				[attr.data-skin]="themeService.skin()">
 				<div class="d-flex align-items-center gap-2">
 					<span class="text-muted small">Rows:</span>

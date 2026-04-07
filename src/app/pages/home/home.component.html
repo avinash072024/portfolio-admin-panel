@@ -12,22 +12,6 @@
     </div>
 
     <div class="row g-4 mb-5">
-        <!-- <div class="col-sm-6 col-xl-3" *ngFor="let stat of stats; let i = index" [attr.data-aos]="'fade-up'"
-            [attr.data-aos-delay]="i * 100">
-            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="icon-shape rounded-3" [ngClass]="'bg-' + stat.color + '-subtle text-' + stat.color">
-                            <i class="bi {{ stat.icon }} fs-4"></i>
-                        </div>
-                        <span class="badge bg-success-subtle text-success small">+12% <i
-                                class="bi bi-arrow-up"></i></span>
-                    </div>
-                    <h3 class="fw-bold mb-1">{{ projectCount | number }}</h3>
-                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">{{ stat.label }}</p>
-                </div>
-            </div>
-        </div> -->
         <div class="col-sm-4 col-xl-3" data-aos="fade-up"
             data-aos-delay="100">
             <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
@@ -121,8 +105,8 @@
     <div class="row g-4 my-5">
         <div class="col-12" data-aos="fade-up">
             <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
-                <div class="card-header bg-transparent border-0 p-4 pb-4 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0">Recent Website Visitors</h5>
+                <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-primary"></i> Recent Visitors</h5>
                     <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
                 </div>
                 <div class="card-body p-0">

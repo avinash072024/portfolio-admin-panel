@@ -37,6 +37,8 @@ export class ContactComponent implements OnInit {
       whatsapp: [''],
       resumeUrl: ['']
     });
+
+    this.contactForm.disable(); // 👈 add this
   }
 
   ngOnInit(): void {
@@ -80,9 +82,11 @@ export class ContactComponent implements OnInit {
     }
   }
 
-  eidtableFiedls(): void{
+  enableEditableFields(): void {
     this.editableFields = !this.editableFields;
-    this.toastr.clear();
-    this.toastr.info(this.editableFields ? 'Fields are now editable' : 'Fields are now read-only'); 
+
+    this.editableFields
+      ? this.contactForm.enable()
+      : this.contactForm.disable();
   }
 }

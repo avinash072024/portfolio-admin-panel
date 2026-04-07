@@ -95,16 +95,25 @@
                             </td>
                         </tr>
                         }
-                        @if (!projects.length) {
+                        <!-- @if (!projects.length) {
                         <tr>
                             <td colspan="5" class="text-center">No projects found.</td>
                         </tr>
-                        }
+                        } -->
+                        <tr *ngIf="!projects.length">
+							<td colspan="5" class="text-center py-5">
+								<div class="text-muted">
+									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+									<span *ngIf="searchTerm">No projects matching "<strong>{{searchTerm}}</strong>"</span>
+									<span *ngIf="!searchTerm">No projects found. Please add projects.</span>
+								</div>
+							</td>
+						</tr>
                     </tbody>
                 </table>
             </div>
             <!-- Pagination -->
-            <div class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
+            <div *ngIf="projects.length" class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
                 [attr.data-skin]="themeService.skin()">
                 <div class="d-flex align-items-center gap-2">
                     <span class="text-muted small">Rows:</span>
