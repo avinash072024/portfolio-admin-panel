@@ -12,17 +12,6 @@
                         <p class="text-muted small mb-0 d-none d-md-block">Manage and oversee your website visitors
                         </p>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <button *ngIf="pushSupported && !pushSubscribed" type="button" class="btn btn-sm btn-primary"
-                            [disabled]="pushActionInProgress" (click)="subscribeVisitorNotification()">
-                            <i class="bi bi-bell me-1"></i> Enable Push
-                        </button>
-                        <button *ngIf="pushSupported && pushSubscribed" type="button" class="btn btn-sm btn-outline-danger"
-                            [disabled]="pushActionInProgress" (click)="unsubscribeVisitorNotification()">
-                            <i class="bi bi-bell-slash me-1"></i> Disable Push
-                        </button>
-                        <small *ngIf="!pushSupported" class="text-muted">Push unavailable in this mode/browser</small>
-                    </div>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
