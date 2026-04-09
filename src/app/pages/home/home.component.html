@@ -62,6 +62,23 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-4 col-xl-3" data-aos="fade-up"
+            data-aos-delay="300">
+            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="icon-shape rounded-3 bg-warning text-white">
+                            <i class="bi bi-chat-left-text fs-4"></i>
+                        </div>
+                        <span class="badge bg-warning-subtle text-warning small">+12% <i
+                                class="bi bi-arrow-up"></i></span>
+                    </div>
+                    <h3 class="fw-bold mb-1">{{ feedbackCount | number }}</h3>
+                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">Feedback Messages</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row g-4">
@@ -106,7 +123,7 @@
         <div class="col-12" data-aos="fade-up">
             <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
                 <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-primary"></i> Recent Visitors</h5>
+                    <h5 class="fw-bold mb-0"><i class="bi bi-people text-primary"></i> Recent Visitors</h5>
                     <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
                 </div>
                 <div class="card-body p-0">
@@ -120,7 +137,6 @@
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Network</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Organization</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Timezone</th>
-                                    <!-- <th class="pe-4 text-muted fw-semibold small uppercase-tracking border-0 text-center">Status</th> -->
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th>
                                 </tr>
                             </thead>
@@ -172,22 +188,75 @@
                                             <small class="text-muted mt-1">UTC {{ visitor.utc_offset }}</small>
                                         </div>
                                     </td>
-                                    <!-- <td class="pe-4 text-center">
-                                        <div class="dropdown">
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status === 'success'">
-                                                <i class="bi bi-check-circle-fill me-1"></i> Success
-                                            </span>
-                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 d-inline-flex align-items-center" *ngIf="visitor.status !== 'success'">
-                                                <i class="bi bi-x-circle-fill me-1"></i> Failed
-                                            </span>
-                                        </div>
-                                    </td> -->
                                     <td>
                                         <div class="d-flex flex-column">
                                             <span class="fw-medium text-dark">{{ visitor.currency_name }}</span>
                                             <small class="text-muted">{{ visitor.currency }}</small>
                                         </div>
                                     </td>
+                                </tr>
+                                <tr *ngIf="visitors.length === 0">
+                                    <td colspan="7" class="text-center text-muted py-4">No visitor records found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-12" data-aos="fade-up">
+            <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+                <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-chat-left-text text-primary"></i> Recent Feedback</h5>
+                    <a routerLink="/feedback" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 custom-table">
+                            <thead class="bg-light-subtle">
+                                <tr>
+                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0">Date</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Name</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Designation</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Message</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0 text-center">Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let feedback of feedbacks">
+                                    <td class="ps-3">
+                                        <div class="d-flex flex-column" style="width: 100px;">
+                                            <span class="fw-medium text-dark">{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
+                                            <small class="text-muted">
+                                                <i class="bi bi-clock me-1 small"></i>{{ feedback.createdAt | date:'HH:mm:ss' }}
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="fw-medium text-dark">{{ feedback.name || 'Anonymous' }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-medium text-dark">{{ feedback.designation || '-' }}</span>
+                                            <small class="text-muted">
+                                                &#64; {{ feedback.organization || '-' }}
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 500px;" [title]="feedback.message">
+                                            {{ feedback.message || '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="fw-medium text-dark">{{ feedback.rating }}</span>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="feedbacks.length === 0">
+                                    <td colspan="5" class="text-center text-muted py-4">No feedback records found.</td>
                                 </tr>
                             </tbody>
                         </table>

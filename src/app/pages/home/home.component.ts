@@ -7,6 +7,7 @@ import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectsService } from '../../services/projects/projects.service';
 import { SkillsService } from '../../services/skills/skills.service';
+import { FeedbackService } from '../../services/feedback/feedback.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -25,14 +26,17 @@ export class HomeComponent implements OnInit {
   ];
 
   visitors: any[] = [];
+  feedbacks: any[] = [];
   private visitorService = inject(VisitorService);
   private projectService = inject(ProjectsService);
   private skillsService = inject(SkillsService);
+  private feedbackService = inject(FeedbackService);
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
-  skillCount!: number;
-  visitorCount!: number;
-  projectCount!: number;
+  skillCount: number = 0;
+  visitorCount: number = 0;
+  feedbackCount: number = 0;
+  projectCount: number = 0;
 
   ngOnInit() {
     AOS.init({ duration: 1000, once: true });
@@ -46,7 +50,8 @@ export class HomeComponent implements OnInit {
     forkJoin({
       visitors: this.visitorService.getAllVisitors(),
       projects: this.projectService.getProjects(),
-      skills: this.skillsService.getSkills()
+      skills: this.skillsService.getSkills(),
+      feedbacks: this.feedbackService.getAllFeedbacks()
     }).subscribe({
       next: (res: any) => {
         // 2. Hide the spinner once everything completes successfully
@@ -73,6 +78,25 @@ export class HomeComponent implements OnInit {
         } else {
           this.toastr.error(res.skills?.message);
         }
+
+        // --- Handle Feedback Data ---
+        if (res.feedbacks?.success && res.feedbacks?.feedback) {
+          this.feedbacks = res.feedbacks.feedback || [];
+          this.feedbackCount = res.feedbacks?.total || 0;
+        } else {
+          this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
+        }
+
+        // --- Handle Feedback Data ---
+        // if (res.feedbacks?.success && res.feedbacks?.feedback) {
+        //   this.feedbacks = [...(res.feedbacks.feedback || [])]
+        //     .sort((a: any, b: any) =>
+        //       new Date(b?.createdAt || 0).getTime() - new Date(a?.createdAt || 0).getTime()
+        //     )
+        //     .slice(0, 5);
+        // } else {
+        //   this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
+        // }
       },
       error: (err: any) => {
         // 3. Hide the spinner if any request fails

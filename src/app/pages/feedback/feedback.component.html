@@ -1,0 +1,160 @@
+<div class="container py-5 mt-3">
+    <div class="row g-4 my-5">
+        <div class="col-12" data-aos="fade-up">
+            <div class="card feedback-card border-1 border-primary shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+                <div class="card-header bg-transparent border-1 border-primary py-3 px-3">
+                    <div class="row g-2 g-md-3 align-items-center">
+                        <div class="col-12 col-md-4 order-1">
+                            <h5 class="fw-bold mb-0 text-truncate"><i class="bi bi-chat-left-text text-primary"></i>
+                                Feedback <span class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">{{ total
+                                    }}</span></h5>
+                            <p class="text-muted small mb-0 d-none d-md-block">Review and manage all feedback messages
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-5 order-2">
+                            <div class="search-wrapper">
+                                <i class="bi bi-search search-icon"></i>
+                                <input type="text" class="form-control search-input" placeholder="Search feedback..."
+                                    [(ngModel)]="searchTerm" (input)="onSearch()">
+                                <button *ngIf="searchTerm" (click)="clearSearch()" class="btn-clear"
+                                    title="Clear search">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 custom-table">
+                            <thead class="bg-light-subtle">
+                                <tr>
+                                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Date</th>
+                                    <th class="py-3 text-uppercase small fw-bold text-muted">Name</th>
+                                    <th class="py-3 text-uppercase small fw-bold text-muted">Designation</th>
+                                    <th class="py-3 text-uppercase small fw-bold text-muted">Message</th>
+                                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Rating</th>
+                                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let feedback of feedbacks">
+                                    <td class="ps-4">
+                                        <div class="d-flex flex-column" style="width: 100px;">
+                                            <span class="fw-medium text-dark">{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
+                                            <small class="text-muted">
+                                                <i class="bi bi-clock me-1 small"></i>{{ feedback.createdAt |
+                                                date:'HH:mm:ss' }}
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 130px;" [title]="feedback.name">{{ feedback.name || 'Anonymous' }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column" style="width: 140px;">
+                                            <span class="fw-medium text-dark">{{ feedback.designation || '-' }}</span>
+                                            <small class="text-muted">
+                                                &#64; {{ feedback.organization || '-' }}
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-wrap d-inline-block fw-medium text-dark"
+                                            style="width: 500px;" [title]="feedback.message">
+                                            {{ feedback.message || '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="fw-medium text-dark">{{ feedback.rating }}</span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <button class="btn btn-action-edit"
+                                                [title]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
+                                                (click)="onUpdateVerified(feedback)">
+                                                <i class="bi" [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
+                                            </button>
+                                            <button class="btn btn-action-delete" title="Delete"
+                                                (click)="openDeleteModal(feedback)">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!feedbacks.length">
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+                                            <span *ngIf="searchTerm">No feedback matching
+                                                "<strong>{{searchTerm}}</strong>"</span>
+                                            <span *ngIf="!searchTerm">No feedback found.</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div *ngIf="feedbacks.length > 0" class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
+                        [attr.data-skin]="themeService.skin()">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="text-muted small">Rows:</span>
+                            <div class="btn-group" role="group" aria-label="rows per page">
+                                <button type="button" class="btn btn-sm" [class.active]="limit===5"
+                                    (click)="setLimit(5)">5</button>
+                                <button type="button" class="btn btn-sm mx-1" [class.active]="limit===10"
+                                    (click)="setLimit(10)">10</button>
+                                <button type="button" class="btn btn-sm" [class.active]="limit===20"
+                                    (click)="setLimit(20)">20</button>
+                            </div>
+                        </div>
+
+                        <nav class="pagination-wrapper" aria-label="Feedback pagination">
+                            <ul class="pagination mb-0">
+                                <li class="page-item" [class.disabled]="page<=1">
+                                    <button class="page-link" (click)="changePage(page-1)">Prev</button>
+                                </li>
+
+                                <li class="page-item" *ngFor="let p of pages" [class.active]="page===p"
+                                    [class.d-none]="totalPages>7 && (p>page+2 || p<page-2)">
+                                    <button class="page-link" (click)="changePage(p)">{{ p }}</button>
+                                </li>
+
+                                <li class="page-item" [class.disabled]="page>=totalPages">
+                                    <button class="page-link" (click)="changePage(page+1)">Next</button>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div class="text-muted small">Page {{page}} of {{totalPages}} • {{total}} items</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteFeedbackModal" tabindex="-1" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content delete-modal-content border-0 rounded-4">
+            <div class="modal-body p-4">
+                <h5 class="modal-title text-primary fw-bold mb-2">
+                    <i class="bi bi-trash3 me-1"></i> Confirm Deletion
+                </h5>
+                <p class="text-muted mb-0">
+                    Are you sure you want to delete feedback from <strong class="text-primary">{{ deletingFeedbackTitle }}</strong>?
+                    This action cannot be undone.
+                </p>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn btn-primary px-3" (click)="closeDeleteModal()">
+                        <i class="bi bi-x me-1"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-3" (click)="confirmDeleteFeedback()">
+                        <i class="bi bi-trash3 me-1"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
