@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
-import { ResumeService } from '../../services/resume/resume.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { ViewChild } from '@angular/core';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -19,7 +19,6 @@ import { ViewChild } from '@angular/core';
 export class SettingsComponent implements OnInit {
   private educationService = inject(EducationService);
   private experienceService = inject(ExperienceService);
-  private resumeService = inject(ResumeService);
   themeService = inject(ThemeService);
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
@@ -63,9 +62,42 @@ export class SettingsComponent implements OnInit {
       file: [null, Validators.required]
     });
 
-    this.loadEducations();
-    this.loadExperiences();
-    this.loadResumes();
+    // this.loadEducations();
+    // this.loadExperiences();
+    // this.loadResumes();
+
+    this.loadAllData();
+  }
+
+  loadAllData(): void {
+    debugger;
+    forkJoin({
+      educations: this.educationService.getEducation(),
+      experiences: this.experienceService.getExperience(),
+    }).subscribe({
+      next: (res: any) => {
+        debugger;
+        // ✅ Education
+        if (res.educations) {
+          this.educations = res.educations?.educations || res.educations || [];
+        } else {
+          this.educations = [];
+          this.toastr.warning('No education data found');
+        }
+
+        // ✅ Experience
+        if (res.experiences) {
+          this.experiences = res.experiences?.experiences || res.experiences || [];
+        } else {
+          this.experiences = [];
+          this.toastr.warning('No experience data found');
+        }
+      },
+      error: (err: any) => {
+        debugger;
+        this.toastr.error(err?.error?.message || 'Failed to load data');
+      }
+    });
   }
 
   // Education
@@ -230,16 +262,6 @@ export class SettingsComponent implements OnInit {
     if (this.experienceForm) this.experienceForm.reset();
   }
 
-  // Resumes
-  loadResumes(): void {
-    this.resumeService.getResumes().subscribe({
-      next: (res: any) => {
-        this.resumes = res || [];
-      },
-      error: (err) => this.toastr.error(err?.error?.message || 'Failed to load resumes')
-    });
-  }
-
   onResumeFileSelected(ev: any): void {
     const f = ev?.target?.files?.[0] || null;
     this.selectedResumeFile = f;
@@ -248,51 +270,6 @@ export class SettingsComponent implements OnInit {
       this.resumeForm.get('file')?.markAsDirty();
       this.resumeForm.get('file')?.markAsTouched();
     }
-  }
-
-  uploadResume(): void {
-    if (!this.resumeForm) return;
-    if (this.resumeForm.invalid) {
-      this.resumeForm.markAllAsTouched();
-      // this.toastr.error('Select file first');
-      return;
-    }
-
-    const fileControl = this.resumeForm.get('file');
-    const file = fileControl?.value || this.selectedResumeFile;
-    if (!file) { this.toastr.error('Select file first'); return; }
-
-    const fd = new FormData();
-    fd.append('file', file);
-    this.spinner.show();
-    this.resumeService.addResume(fd).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        this.toastr.success('Resume uploaded');
-        this.selectedResumeFile = null;
-        if (this.resumeForm) this.resumeForm.reset();
-        this.resumeForm.get('file')?.setValue(null);
-        this.loadResumes();
-      },
-      error: (err) => {
-        this.spinner.hide();
-        this.toastr.error(err?.error?.message || 'Upload failed');
-      }
-    });
-  }
-
-  deleteResume(id: string, itemName: string): void {
-    (async () => {
-      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete resume ${itemName}? This action cannot be undone.`, itemName, 'resume');
-      if (!confirmed) return;
-      this.resumeService.deleteResume(id).subscribe({
-        next: (res: any) => {
-          this.toastr.success(res?.message || 'Deleted');
-          this.loadResumes();
-        },
-        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
-      });
-    })();
   }
 
   // Theme / Skin

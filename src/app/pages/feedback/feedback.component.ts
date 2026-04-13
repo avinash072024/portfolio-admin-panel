@@ -26,13 +26,13 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   deletingFeedbackId: string = '';
   deletingFeedbackTitle: string = '';
-  private deleteModalInstance: any = null;
+  deleteModalInstance: any = null;
 
-  private feedbackService = inject(FeedbackService);
-  private spinner = inject(NgxSpinnerService);
-  private toastr = inject(ToastrService);
+  feedbackService = inject(FeedbackService);
+  spinner = inject(NgxSpinnerService);
+  toastr = inject(ToastrService);
   themeService = inject(ThemeService);
-  private searchSubject = new Subject<string>();
+  searchSubject = new Subject<string>();
 
   ngOnInit(): void {
     this.getFeedbacks();

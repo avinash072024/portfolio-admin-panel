@@ -236,10 +236,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="fw-medium text-dark">{{ feedback.name || 'Anonymous' }}</span>
+                                        <div class="fw-medium text-dark d-flex align-items-center" [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
+                                            <img [src]="feedbackService.getAvatar(feedback.name)" class="me-2" />
+                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ feedback.name || 'Anonymous' }}</span>
+                                        </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex flex-column">
+                                        <div class="d-flex flex-column" style="width: 160px;">
                                             <span class="fw-medium text-dark">{{ feedback.designation || '-' }}</span>
                                             <small class="text-muted">
                                                 &#64; {{ feedback.organization || '-' }}

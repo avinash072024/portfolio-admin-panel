@@ -27,12 +27,12 @@ export class HomeComponent implements OnInit {
 
   visitors: any[] = [];
   feedbacks: any[] = [];
-  private visitorService = inject(VisitorService);
-  private projectService = inject(ProjectsService);
-  private skillsService = inject(SkillsService);
-  private feedbackService = inject(FeedbackService);
-  private spinner = inject(NgxSpinnerService);
-  private toastr = inject(ToastrService);
+  visitorService = inject(VisitorService);
+  projectService = inject(ProjectsService);
+  skillsService = inject(SkillsService);
+  feedbackService = inject(FeedbackService);
+  spinner = inject(NgxSpinnerService);
+  toastr = inject(ToastrService);
   skillCount: number = 0;
   visitorCount: number = 0;
   feedbackCount: number = 0;
@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
   }
 
   loadDashboardData(): void {
-    // 1. Show the spinner once for all requests
     this.spinner.show();
 
     forkJoin({
@@ -86,20 +85,8 @@ export class HomeComponent implements OnInit {
         } else {
           this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
         }
-
-        // --- Handle Feedback Data ---
-        // if (res.feedbacks?.success && res.feedbacks?.feedback) {
-        //   this.feedbacks = [...(res.feedbacks.feedback || [])]
-        //     .sort((a: any, b: any) =>
-        //       new Date(b?.createdAt || 0).getTime() - new Date(a?.createdAt || 0).getTime()
-        //     )
-        //     .slice(0, 5);
-        // } else {
-        //   this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
-        // }
       },
       error: (err: any) => {
-        // 3. Hide the spinner if any request fails
         this.spinner.hide();
 
         const errorMessage = err?.error?.message || 'Failed to load dashboard data';
@@ -108,65 +95,4 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
-  // getVisitor(): void {
-  //   this.spinner.show();
-  //   this.visitorService.getAllVisitors().subscribe({
-  //     next: (res: any) => {
-  //       if (res?.success && res?.Visitors) {
-  //         this.visitors = res?.Visitors || [];
-  //         this.visitorCount = res?.Visitors?.count || 0;
-  //         this.spinner.hide();
-  //         // this.toastr.success(res?.message);
-  //       } else {
-  //         this.spinner.hide();
-  //         this.toastr.error(res?.message)
-  //       }
-  //     },
-  //     error: (err: any) => {
-  //       this.spinner.hide();
-  //       this.toastr.error(err.error.message || 'Failed to load visitor count');
-  //     }
-  //   });
-  // }
-
-  // getProject(): void {
-  //   this.spinner.show();
-  //   this.projectService.getProjects().subscribe({
-  //     next: (res: any) => {
-  //       if (res?.success && res?.Projects) {
-  //         this.projectCount = res?.Projects?.count || 0;
-  //         this.spinner.hide();
-  //         // this.toastr.success(res?.message);
-  //       } else {
-  //         this.spinner.hide();
-  //         this.toastr.error(res?.message)
-  //       }
-  //     },
-  //     error: (err: any) => {
-  //       this.spinner.hide();
-  //       this.toastr.error(err.error.message || 'Failed to load project count');
-  //     }
-  //   });
-  // }
-
-  // getSkill(): void {
-  //   this.spinner.show();
-  //   this.skillsService.getSkills().subscribe({
-  //     next: (res: any) => {
-  //       if (res?.success && res?.Skills) {
-  //         this.skillCount = res?.Skills?.count || 0;
-  //         this.spinner.hide();
-  //         // this.toastr.success(res?.message);
-  //       } else {
-  //         this.spinner.hide();
-  //         this.toastr.error(res?.message)
-  //       }
-  //     },
-  //     error: (err: any) => {
-  //       this.spinner.hide();
-  //       this.toastr.error(err.error.message || 'Failed to load skill count');
-  //     }
-  //   });
-  // }
 }
