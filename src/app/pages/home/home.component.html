@@ -268,4 +268,70 @@
             </div>
         </div>
     </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-12" data-aos="fade-up">
+            <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+                <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-envelope text-primary"></i> Recent Emails</h5>
+                    <a routerLink="/email" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 custom-table">
+                            <thead class="bg-light-subtle">
+                                <tr>
+                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0">Date</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Name</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Email</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Contact</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let email of emails">
+                                    <td class="ps-3">
+                                        <div class="d-flex flex-column" style="width: 100px;">
+                                            <span class="fw-medium text-dark">{{ email.createdAt | date:'dd MMM, yyyy' }}</span>
+                                            <small class="text-muted">
+                                                <i class="bi bi-clock me-1 small"></i>{{ email.createdAt | date:'HH:mm:ss' }}
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium text-dark d-flex align-items-center" [title]="email.firstname + ' ' + (email.lastname || '')" style="min-width: 170px;">
+                                            <img [src]="emailService.getAvatar(email.firstname + ' ' + (email.lastname || ''))" class="me-2" />
+                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ email.firstname }} {{ email.lastname }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium text-dark d-flex flex-wrap text-break" [title]="email.email" style="width: 250px;">
+                                            <a *ngIf="email.email" [href]="'mailto:' + email.email" class="text-decoration-none">{{ email.email }}</a>
+                                            <span *ngIf="!email.email">-</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column" style="width: 120px;">
+                                            <span class="fw-medium text-dark" [title]="email.contact || '-'">
+                                                <a *ngIf="email.contact" [href]="'tel:' + email.contact" class="text-decoration-none text-dark">{{ email.contact }}</a>
+                                                <span *ngIf="!email.contact">-</span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 400px;" [title]="email.message">
+                                            {{ email.message || '-' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="emails.length === 0">
+                                    <td colspan="5" class="text-center text-muted py-4">No email records found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

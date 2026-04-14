@@ -64,7 +64,8 @@ export class FeedbackService {
     const textColor = this.getTextColor(bgColor);
     const formattedName = safeName.replace(/ /g, '+');
 
-    return `https://ui-avatars.com/api/?name=${formattedName}&background=${bgColor}&color=${textColor}&rounded=true&size=24`;
+    // return `https://ui-avatars.com/api/?name=${formattedName}&background=${bgColor}&color=${textColor}&rounded=true&size=24`;
+    return `https://ui-avatars.com/api/?name=${formattedName}&background=0D8ABC&color=fff&rounded=true&size=24`;
   }
 
   // getAvatar(name: string): string {

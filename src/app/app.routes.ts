@@ -17,6 +17,7 @@ import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-ser
 import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
+import { EmailComponent } from './pages/email/email.component';
 
 export const routes: Routes = [
     {
@@ -113,6 +114,11 @@ export const routes: Routes = [
                 path: 'feedback',
                 component: FeedbackComponent,
                 title: `Feedback | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'email',
+                component: EmailComponent,
+                title: `Email | ${Constants.APP_NAME}`
             },
         ]
     },

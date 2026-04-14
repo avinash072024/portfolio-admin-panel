@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ProjectsService } from '../../services/projects/projects.service';
 import { SkillsService } from '../../services/skills/skills.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
+import { EmailService } from '../../services/email/email.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -27,15 +28,18 @@ export class HomeComponent implements OnInit {
 
   visitors: any[] = [];
   feedbacks: any[] = [];
+  emails: any[] = [];
   visitorService = inject(VisitorService);
   projectService = inject(ProjectsService);
   skillsService = inject(SkillsService);
   feedbackService = inject(FeedbackService);
+  emailService = inject(EmailService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   skillCount: number = 0;
   visitorCount: number = 0;
   feedbackCount: number = 0;
+  emailCount: number = 0;
   projectCount: number = 0;
 
   ngOnInit() {
@@ -50,7 +54,8 @@ export class HomeComponent implements OnInit {
       visitors: this.visitorService.getAllVisitors(),
       projects: this.projectService.getProjects(),
       skills: this.skillsService.getSkills(),
-      feedbacks: this.feedbackService.getAllFeedbacks()
+      feedbacks: this.feedbackService.getAllFeedbacks(),
+      emails: this.emailService.getAllEmail()
     }).subscribe({
       next: (res: any) => {
         // 2. Hide the spinner once everything completes successfully
@@ -84,6 +89,14 @@ export class HomeComponent implements OnInit {
           this.feedbackCount = res.feedbacks?.total || 0;
         } else {
           this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
+        }
+
+        // --- Handle Emails Data ---
+        if (res.emails?.success && res.emails?.email) {
+          this.emails = res.emails.email || [];
+          this.emailCount = res.emails?.total || 0;
+        } else {
+          this.toastr.error(res.emails?.message || 'Failed to load emails');
         }
       },
       error: (err: any) => {
