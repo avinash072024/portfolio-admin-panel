@@ -39,7 +39,7 @@
                     <tbody>
                         @for (eml of emails; track eml._id; let i = $index) {
                         <tr>
-                            <td class="ps-4" style="min-width: 120px;">
+                            <td class="ps-4" style="min-width: 135px;">
                                 <div>{{ eml.createdAt | date:'mediumDate' }}</div>
                                 <div class="text-muted smaller"><i class="bi bi-clock me-1"></i>{{ eml.createdAt | date:'shortTime' }}</div>
                             </td>
@@ -57,9 +57,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td style="min-width: 100px;">
+                            <td style="min-width: 130px;">
                                 <a *ngIf="eml.contact" [href]="'tel:' + eml.contact" class="text-decoration-none email_tel">{{ eml.contact }}</a>
-                                <span *ngIf="!eml.contact">-</span>
+                                <span *ngIf="!eml.contact" class="ms-4 text-center">-</span>
                             </td>
                             <td style="min-width: 500px;">
                                 <div class="text-wrap text-break">

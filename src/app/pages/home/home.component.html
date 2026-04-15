@@ -137,7 +137,7 @@
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Network</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Organization</th>
                                     <th class="text-muted fw-semibold small uppercase-tracking border-0">Timezone</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th>
+                                    <!-- <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -177,7 +177,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <span class="text-truncate d-inline-block fw-medium text-dark" style="max-width: 180px;" [title]="visitor.org">
+                                            <span class="d-inline-block fw-medium text-dark flex-wrap" style="width: 230px;" [title]="visitor.org">
                                                 {{ visitor.org }}
                                             </span>
                                         </div>
@@ -188,12 +188,12 @@
                                             <small class="text-muted mt-1">UTC {{ visitor.utc_offset }}</small>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div class="d-flex flex-column">
                                             <span class="fw-medium text-dark">{{ visitor.currency_name }}</span>
                                             <small class="text-muted">{{ visitor.currency }}</small>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 <tr *ngIf="visitors.length === 0">
                                     <td colspan="7" class="text-center text-muted py-4">No visitor records found.</td>
@@ -289,7 +289,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let email of emails">
-                                    <td class="ps-3" style="min-width: 120px;">
+                                    <td class="ps-3" style="min-width: 135px;">
                                         <div>{{ email.createdAt | date:'mediumDate' }}</div>
                                         <div class="text-muted smaller"><i class="bi bi-clock me-1"></i>{{ email.createdAt | date:'shortTime' }}</div>
                                     </td>
@@ -306,9 +306,9 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="min-width: 100px;">
+                                    <td style="min-width: 130px;">
                                         <a *ngIf="email.contact" [href]="'tel:' + email.contact" class="text-decoration-none email_tel">{{ email.contact }}</a>
-                                        <span *ngIf="!email.contact">-</span>
+                                        <span *ngIf="!email.contact" class="ms-4 text-center">-</span>
                                     </td>
                                     <td style="min-width: 500px;">
                                         <div class="text-wrap text-break">

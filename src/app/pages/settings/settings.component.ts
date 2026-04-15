@@ -62,21 +62,15 @@ export class SettingsComponent implements OnInit {
       file: [null, Validators.required]
     });
 
-    // this.loadEducations();
-    // this.loadExperiences();
-    // this.loadResumes();
-
     this.loadAllData();
   }
 
   loadAllData(): void {
-    debugger;
     forkJoin({
       educations: this.educationService.getEducation(),
       experiences: this.experienceService.getExperience(),
     }).subscribe({
       next: (res: any) => {
-        debugger;
         // ✅ Education
         if (res.educations) {
           this.educations = res.educations?.educations || res.educations || [];
@@ -94,7 +88,6 @@ export class SettingsComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        debugger;
         this.toastr.error(err?.error?.message || 'Failed to load data');
       }
     });

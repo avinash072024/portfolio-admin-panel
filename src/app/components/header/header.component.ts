@@ -53,6 +53,18 @@ export class HeaderComponent {
     this.router.navigate(['/reset-password']);
   }
 
+  onVisitors() {
+    this.router.navigate(['/website-visitor']);
+  }
+
+  onFeedback() {
+    this.router.navigate(['/feedback']);
+  }
+
+  onEmail() {
+    this.router.navigate(['/email']);
+  }
+
   onLogout() {
     this.sessionService.clearUserSession();
     this.router.navigate(['/login']);

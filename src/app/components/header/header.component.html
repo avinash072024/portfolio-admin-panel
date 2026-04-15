@@ -31,6 +31,15 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
+                    <li><button class="dropdown-item user-item" (click)="onVisitors()"><i
+                                class="bi bi-globe me-2"></i> Website Visitors</button></li>
+                    <li><button class="dropdown-item user-item" (click)="onFeedback()"><i
+                                class="bi bi-chat-dots me-2"></i> Feedback</button></li>
+                    <li><button class="dropdown-item user-item" (click)="onEmail()"><i
+                                class="bi bi-envelope me-2"></i> Email</button></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><button class="dropdown-item user-item text-danger" (click)="onLogout()"><i
                                 class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
                 </ul>
