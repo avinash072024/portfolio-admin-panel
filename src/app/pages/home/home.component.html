@@ -237,8 +237,8 @@
                                     </td>
                                     <td>
                                         <div class="fw-medium text-dark d-flex align-items-center" [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
-                                            <img [src]="feedbackService.getAvatar(feedback.name)" class="me-2" />
-                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ feedback.name || 'Anonymous' }}</span>
+                                            <img [src]="avatarService.getAvatar(feedback.name)" class="me-2" />
+                                            <span class="mb-0">{{ feedback.name || 'Anonymous' }}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -281,51 +281,43 @@
                         <table class="table table-hover align-middle mb-0 custom-table">
                             <thead class="bg-light-subtle">
                                 <tr>
-                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0">Date</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Name</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Email</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Contact</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Message</th>
+                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0" style="width: 10%;">Date</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0" style="width: 25%;">Sender</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0" style="width: 15%;">Contact</th>
+                                    <th class="text-muted fw-semibold small uppercase-tracking border-0" style="width: 50%;">Message</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let email of emails">
-                                    <td class="ps-3">
-                                        <div class="d-flex flex-column" style="width: 100px;">
-                                            <span class="fw-medium text-dark">{{ email.createdAt | date:'dd MMM, yyyy' }}</span>
-                                            <small class="text-muted">
-                                                <i class="bi bi-clock me-1 small"></i>{{ email.createdAt | date:'HH:mm:ss' }}
-                                            </small>
-                                        </div>
+                                    <td class="ps-3" style="min-width: 120px;">
+                                        <div>{{ email.createdAt | date:'mediumDate' }}</div>
+                                        <div class="text-muted smaller"><i class="bi bi-clock me-1"></i>{{ email.createdAt | date:'shortTime' }}</div>
                                     </td>
                                     <td>
-                                        <div class="fw-medium text-dark d-flex align-items-center" [title]="email.firstname + ' ' + (email.lastname || '')" style="min-width: 170px;">
-                                            <img [src]="emailService.getAvatar(email.firstname + ' ' + (email.lastname || ''))" class="me-2" />
-                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ email.firstname }} {{ email.lastname }}</span>
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-2">
+                                                <img [src]="avatarService.getAvatar(email.firstname + ' ' + (email.lastname || ''))" class="rounded-circle shadow-sm" alt="avatar">
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-body">{{ email.firstname }} {{ email.lastname }}</div>
+                                                <div class="text-muted smaller" [title]="email.email">
+                                                    <a [href]="'mailto:' + email.email" class="text-decoration-none text-muted email_tel">{{ email.email }}</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="fw-medium text-dark d-flex flex-wrap text-break" [title]="email.email" style="width: 250px;">
-                                            <a *ngIf="email.email" [href]="'mailto:' + email.email" class="text-decoration-none">{{ email.email }}</a>
-                                            <span *ngIf="!email.email">-</span>
-                                        </div>
+                                    <td style="min-width: 100px;">
+                                        <a *ngIf="email.contact" [href]="'tel:' + email.contact" class="text-decoration-none email_tel">{{ email.contact }}</a>
+                                        <span *ngIf="!email.contact">-</span>
                                     </td>
-                                    <td>
-                                        <div class="d-flex flex-column" style="width: 120px;">
-                                            <span class="fw-medium text-dark" [title]="email.contact || '-'">
-                                                <a *ngIf="email.contact" [href]="'tel:' + email.contact" class="text-decoration-none text-dark">{{ email.contact }}</a>
-                                                <span *ngIf="!email.contact">-</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 400px;" [title]="email.message">
+                                    <td style="min-width: 500px;">
+                                        <div class="text-wrap text-break">
                                             {{ email.message || '-' }}
-                                        </span>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr *ngIf="emails.length === 0">
-                                    <td colspan="5" class="text-center text-muted py-4">No email records found.</td>
+                                    <td colspan="4" class="text-center text-muted py-4">No email records found.</td>
                                 </tr>
                             </tbody>
                         </table>

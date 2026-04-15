@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FeedbackService } from '../../services/feedback/feedback.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { AvatarService } from '../../services/avatar/avatar.service';
 
 declare const bootstrap: any;
 
@@ -31,6 +32,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   feedbackService = inject(FeedbackService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
+  avatarService = inject(AvatarService);
   themeService = inject(ThemeService);
   searchSubject = new Subject<string>();
 

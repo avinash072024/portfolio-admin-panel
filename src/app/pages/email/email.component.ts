@@ -7,6 +7,7 @@ import { EmailService } from '../../services/email/email.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ThemeService } from '../../services/theme/theme.service';
+import { AvatarService } from '../../services/avatar/avatar.service';
 
 interface Email {
   _id: string;
@@ -35,6 +36,7 @@ export class EmailComponent implements OnInit {
   totalPages: number = 1;
   
   emailService = inject(EmailService);
+  avatarService = inject(AvatarService);
   themeService = inject(ThemeService);
   toastr = inject(ToastrService);
   spinner = inject(NgxSpinnerService);

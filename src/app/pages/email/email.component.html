@@ -29,42 +29,42 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="bg-light-subtle">
                         <tr>
-                            <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 25%;">Sender</th>
+                            <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 10%;">Date</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted" style="width: 25%;">Sender</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted" style="width: 15%;">Contact</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted" style="width: 40%;">Message</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted" style="width: 10%;">Date</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-center pe-4" style="width: 10%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @for (eml of emails; track eml._id; let i = $index) {
                         <tr>
-                            <td class="ps-4">
+                            <td class="ps-4" style="min-width: 120px;">
+                                <div>{{ eml.createdAt | date:'mediumDate' }}</div>
+                                <div class="text-muted smaller"><i class="bi bi-clock me-1"></i>{{ eml.createdAt | date:'shortTime' }}</div>
+                            </td>
+                            <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="me-3">
-                                        <img [src]="emailService.getAvatar(eml.firstname + ' ' + eml.lastname)" class="rounded-circle shadow-sm" style="width: 40px; height: 40px;" alt="avatar">
+                                    <div class="me-2">
+                                        <img [src]="avatarService.getAvatar(eml.firstname + ' ' + eml.lastname)" class="rounded-circle shadow-sm" alt="avatar">
                                     </div>
                                     <div>
                                         <div class="fw-bold text-body">{{ eml.firstname }} {{ eml.lastname }}</div>
                                         <div class="text-muted smaller"
                                             [title]="eml.email">
-                                            {{ eml.email }}
+                                            <a [href]="'mailto:' + eml.email" class="text-decoration-none text-muted email_tel">{{ eml.email }}</a>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td style="min-width: 100px;">
-                                <!-- <div class="text-secondary small"> -->
-                                    {{ eml.contact || '-' }}
-                                <!-- </div> -->
+                                <a *ngIf="eml.contact" [href]="'tel:' + eml.contact" class="text-decoration-none email_tel">{{ eml.contact }}</a>
+                                <span *ngIf="!eml.contact">-</span>
                             </td>
                             <td style="min-width: 500px;">
                                 <div class="text-wrap text-break">
                                     {{ eml.message }}
                                 </div>
-                            </td>
-                            <td style="min-width: 120px;">
-                                {{ eml.createdAt | date:'mediumDate' }}
                             </td>
                             <td class="text-center pe-4">
                                 <button (click)="openDeleteModal(eml._id, eml.firstname + ' ' + eml.lastname)"

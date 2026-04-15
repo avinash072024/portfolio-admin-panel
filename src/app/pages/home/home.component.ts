@@ -10,6 +10,7 @@ import { SkillsService } from '../../services/skills/skills.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
 import { EmailService } from '../../services/email/email.service';
 import { forkJoin } from 'rxjs';
+import { AvatarService } from '../../services/avatar/avatar.service';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
   projectService = inject(ProjectsService);
   skillsService = inject(SkillsService);
   feedbackService = inject(FeedbackService);
+  avatarService = inject(AvatarService);
   emailService = inject(EmailService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);

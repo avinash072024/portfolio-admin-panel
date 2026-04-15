@@ -242,8 +242,8 @@
             box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.15);
             outline: none;
             transform: translateY(-1px);
-            
-            & ~ .search-icon {
+
+            &~.search-icon {
                 opacity: 1;
                 color: var(--bs-primary);
             }
@@ -271,7 +271,7 @@
             color: var(--bs-danger);
             transform: scale(1.1);
         }
-        
+
         i {
             font-size: 0.8rem;
         }
@@ -283,7 +283,7 @@
     .card-header {
         padding: 1rem 0.75rem !important;
     }
-    
+
     .search-wrapper {
         margin-top: 0.25rem;
 
@@ -305,10 +305,19 @@
     .search-input {
         background: rgba(255, 255, 255, 0.03);
         border-color: rgba(255, 255, 255, 0.08);
-        
+
         &:focus {
             background: rgba(255, 255, 255, 0.05);
             border-color: var(--bs-primary);
         }
     }
-}
+}
+
+.email_tel {
+    color: inherit !important;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        color: var(--bs-primary) !important;
+    }
+}
