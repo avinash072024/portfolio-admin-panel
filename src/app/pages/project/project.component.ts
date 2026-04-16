@@ -7,6 +7,7 @@ import { ProjectsService } from '../../services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ThemeService } from '../../services/theme/theme.service';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Project {
   _id: string;
@@ -21,7 +22,7 @@ interface Project {
 
 @Component({
   selector: 'app-project',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent],
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })

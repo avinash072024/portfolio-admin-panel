@@ -7,12 +7,13 @@ import { FeedbackService } from '../../services/feedback/feedback.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AvatarService } from '../../services/avatar/avatar.service';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 declare const bootstrap: any;
 
 @Component({
   selector: 'app-feedback',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './feedback.component.html',
   styleUrl: './feedback.component.scss'
 })

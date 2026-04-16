@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 export interface Service {
   _id: string;
@@ -19,7 +20,7 @@ export interface Service {
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent],
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })

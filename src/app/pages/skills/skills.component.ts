@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 export interface Skill {
   _id: string;
@@ -19,7 +20,7 @@ export interface Skill {
 
 @Component({
   selector: 'app-skills',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })

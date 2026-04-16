@@ -62,13 +62,6 @@
 							</td>
 
 							<td>
-								<!-- <span class="badge rounded-pill px-3" [ngClass]="{
-								'bg-primary': s.category === 'Frontend Development',
-								'bg-success': s.category === 'Backend & Database',
-								'bg-warning text-dark': s.category === 'Tools & Design',
-								'bg-danger': s.category === 'Version Control & DevOps',
-								'bg-info text-dark': s.category === 'Payment Gateways'
-								}">{{ s.category }}</span> -->
 								<span class="badge bg-primary rounded-pill px-3" >{{ s.category }}</span>
 							</td>
 
@@ -110,37 +103,14 @@
 			</div>
 
 			<!-- Pagination/Footer -->
-			<div *ngIf="skills.length" class="px-3 py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2"
-				[attr.data-skin]="themeService.skin()">
-				<div class="d-flex align-items-center gap-2">
-					<span class="text-muted small">Rows:</span>
-					<div class="btn-group" role="group" aria-label="rows per page">
-						<button type="button" class="btn btn-sm" [class.active]="limit===5"
-							(click)="setLimit(5)">5</button>
-						<button type="button" class="btn btn-sm mx-1" [class.active]="limit===10"
-							(click)="setLimit(10)">10</button>
-						<button type="button" class="btn btn-sm" [class.active]="limit===20"
-							(click)="setLimit(20)">20</button>
-					</div>
-				</div>
-
-				<nav class="pagination-wrapper" aria-label="Skills pagination">
-					<ul class="pagination mb-0">
-						<li class="page-item" [class.disabled]="page<=1"><button class="page-link"
-								(click)="changePage(page-1)">Prev</button></li>
-
-						<li class="page-item" *ngFor="let p of pages; let i = index" [class.active]="page===p"
-							[class.d-none]="totalPages>7 && (p>page+2 || p<page-2)">
-							<button class="page-link" (click)="changePage(p)">{{ p }}</button>
-						</li>
-
-						<li class="page-item" [class.disabled]="page>=totalPages"><button class="page-link"
-								(click)="changePage(page+1)">Next</button></li>
-					</ul>
-				</nav>
-
-				<div class="text-muted small">Page {{page}} of {{totalPages}} • {{total}} items</div>
-			</div>
+			<app-pagination *ngIf="skills.length"
+				[page]="page"
+				[limit]="limit"
+				[total]="total"
+				[totalPages]="totalPages"
+				(pageChange)="changePage($event)"
+				(limitChange)="setLimit($event)">
+			</app-pagination>
 		</div>
 	</div>
 </div>

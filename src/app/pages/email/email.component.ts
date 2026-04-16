@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ThemeService } from '../../services/theme/theme.service';
 import { AvatarService } from '../../services/avatar/avatar.service';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 interface Email {
   _id: string;
@@ -23,7 +24,7 @@ interface Email {
 @Component({
   selector: 'app-email',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './email.component.html',
   styleUrl: './email.component.scss'
 })

@@ -4,10 +4,11 @@ import { VisitorService } from '../../services/visitor/visitor.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ThemeService } from '../../services/theme/theme.service';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 @Component({
   selector: 'app-website-visitor',
-  imports: [CommonModule],
+  imports: [CommonModule, PaginationComponent],
   templateUrl: './website-visitor.component.html',
   styleUrl: './website-visitor.component.scss'
 })
