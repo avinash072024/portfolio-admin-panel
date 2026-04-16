@@ -29,11 +29,10 @@ $primary-skin: var(--bs-primary);
     font-size: 0.75rem;
 }
 
-.placeholder-chart {
-    height: 250px;
-    background-image: linear-gradient(rgba(var(--bs-primary-rgb), 0.05) 2px, transparent 2px),
-        linear-gradient(90deg, rgba(var(--bs-primary-rgb), 0.05) 2px, transparent 2px);
-    background-size: 40px 40px;
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
 }
 
 // Ensure Dark Mode Text Contrast
