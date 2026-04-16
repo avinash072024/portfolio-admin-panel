@@ -24,8 +24,10 @@ export class AddEditServicesComponent implements OnInit {
 
   currentServiceId: string | null = null;
   isEdit: boolean = false;
+  page: number = 1;
 
   ngOnInit(): void {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.serviceForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       icon: ['', Validators.required],
@@ -104,7 +106,7 @@ export class AddEditServicesComponent implements OnInit {
           next: (res: any) => {
             if (res?.success) {
               this.toastr.success(res?.message || 'Service updated successfully');
-              this.router.navigate(['/services']);
+              this.router.navigate(['/services'], { queryParams: { page: this.page } });
             } else {
               this.toastr.error(res?.message || 'Update failed');
             }
@@ -120,7 +122,7 @@ export class AddEditServicesComponent implements OnInit {
           next: (res: any) => {
             if (res?.success) {
               this.toastr.success(res?.message || 'Service added successfully');
-              this.router.navigate(['/services']);
+              this.router.navigate(['/services'], { queryParams: { page: this.page } });
             } else {
               this.toastr.error(res?.message || 'Create failed');
             }

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ProjectsService } from '../../services/projects/projects.service';
 import { ToastrService } from 'ngx-toastr';
@@ -39,6 +39,7 @@ export class ProjectComponent implements OnInit {
   toastr = inject(ToastrService);
   spinner = inject(NgxSpinnerService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
   showDeleteModal: boolean = false;
   deletingProjectId!: string;
   deletingProjectTitle!: string;
@@ -56,6 +57,7 @@ export class ProjectComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getProjects();
     
     this.searchSubject.pipe(
@@ -111,7 +113,7 @@ export class ProjectComponent implements OnInit {
 
   onEdit(project: Project) {
     // navigate to add-edit page with project id for editing
-    this.router.navigate(['/edit-project', project._id]);
+    this.router.navigate(['/edit-project', project._id], { queryParams: { page: this.page } });
   }
 
   onDelete(id: string) {

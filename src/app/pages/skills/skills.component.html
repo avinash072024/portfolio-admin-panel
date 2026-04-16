@@ -82,7 +82,7 @@
 
 							<td class="text-end pe-4">
 								<div class="d-flex justify-content-end gap-2">
-									<a [routerLink]="['/edit-skill', s._id]" class="btn btn-action-edit" title="Edit"><i
+									<a [routerLink]="['/edit-skill', s._id]" [queryParams]="{ page: page }" class="btn btn-action-edit" title="Edit"><i
 											class="bi bi-pencil"></i></a>
 									<button class="btn btn-action-delete" title="Delete"
 										(click)="openDeleteModal(s._id, s.name)"><i class="bi bi-trash3"></i></button>

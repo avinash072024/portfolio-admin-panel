@@ -3,7 +3,7 @@
 		<div class="card-header d-flex justify-content-between align-items-center bg-primary py-3">
 			<h4 class="text-white mb-0"><i class="bi bi-patch-check me-2"></i>{{ isEdit ? 'Edit Skill' : 'Add New Skill'
 				}}</h4>
-			<a routerLink="/skills" class="btn btn-primary fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
+			<a [routerLink]="['/skills']" [queryParams]="{ page: page }" class="btn btn-primary fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
 		</div>
 
 		<div class="card-body p-4 p-md-5">
@@ -78,7 +78,7 @@
 				<div class="mt-5 d-flex gap-3">
 					<button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">{{ isEdit ? 'Update' : 'Save'
 						}}</button>
-					<a routerLink="/skills" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
+					<a [routerLink]="['/skills']" [queryParams]="{ page: page }" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
 				</div>
 			</form>
 		</div>

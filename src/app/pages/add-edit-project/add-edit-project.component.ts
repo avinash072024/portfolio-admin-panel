@@ -23,6 +23,7 @@ export class AddEditProjectComponent implements OnInit {
   route = inject(ActivatedRoute);
   currentProjectId: string | null = null;
   isEdit: boolean = false;
+  page: number = 1;
   projectCategories: any[] = [];
   newCategoryName: string = '';
   isCategoryEdit: boolean = false;
@@ -30,6 +31,7 @@ export class AddEditProjectComponent implements OnInit {
   categoryToDelete: any = null;
 
   ngOnInit(): void {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getProjectCategories();
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -110,7 +112,7 @@ export class AddEditProjectComponent implements OnInit {
             if (res?.success) {
               this.spinner.hide();
               this.toastr.success(res?.message || 'Project updated');
-              this.router.navigateByUrl('/projects');
+              this.router.navigate(['/projects'], { queryParams: { page: this.page } });
             } else {
               this.spinner.hide();
               this.toastr.error(res?.message);
@@ -128,7 +130,7 @@ export class AddEditProjectComponent implements OnInit {
               this.projectForm.reset();
               this.spinner.hide();
               this.toastr.success(res?.message);
-              this.router.navigateByUrl('/projects');
+              this.router.navigate(['/projects'], { queryParams: { page: this.page } });
             } else {
               this.spinner.hide();
               this.toastr.error(res?.message);

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SkillsService } from '../../services/skills/skills.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
@@ -39,12 +39,14 @@ export class SkillsComponent implements OnInit {
   skillsService = inject(SkillsService);
   themeService = inject(ThemeService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
 
   showDeleteModal: boolean = false;
   deletingSkillId!: string;
   deletingSkillTitle!: string;
 
   ngOnInit(): void {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getSkills();
 
     this.searchSubject.pipe(

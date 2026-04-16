@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from '../../services/service/services.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
@@ -38,6 +38,7 @@ export class ServicesComponent implements OnInit {
   servicesService = inject(ServicesService);
   themeService = inject(ThemeService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
 
   showDeleteModal: boolean = false;
   deletingServiceId!: string;
@@ -49,6 +50,7 @@ export class ServicesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getServices();
 
     this.searchSubject.pipe(

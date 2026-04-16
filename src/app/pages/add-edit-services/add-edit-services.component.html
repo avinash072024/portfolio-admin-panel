@@ -5,7 +5,7 @@
                 <i class="bi bi-briefcase me-2"></i>
                 {{ isEdit ? 'Edit Service' : 'Create New Service' }}
             </h4>
-            <a routerLink="/services" class="btn btn-primary fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
+            <a [routerLink]="['/services']" [queryParams]="{ page: page }" class="btn btn-primary fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
 
         <div class="card-body p-4 p-md-5">
@@ -71,7 +71,7 @@
                     <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">
                         {{ isEdit ? 'Update' : 'Save' }}
                     </button>
-                    <a routerLink="/services" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
+                    <a [routerLink]="['/services']" [queryParams]="{ page: page }" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
                 </div>
             </form>
         </div>

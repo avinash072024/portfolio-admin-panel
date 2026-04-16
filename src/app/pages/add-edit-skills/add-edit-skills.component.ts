@@ -24,6 +24,7 @@ export class AddEditSkillsComponent implements OnInit {
 
   isEdit: boolean = false;
   currentSkillId: string | null = null;
+  page: number = 1;
   skillCategories: any[] = [];
   newCategoryName: string = '';
   isCategoryEdit: boolean = false;
@@ -31,6 +32,7 @@ export class AddEditSkillsComponent implements OnInit {
   categoryToDelete: any = null;
 
   ngOnInit(): void {
+    this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getSkillCategories();
     this.skillForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -89,7 +91,7 @@ export class AddEditSkillsComponent implements OnInit {
             this.spinner.hide();
             if (res?.success) {
               this.toastr.success(res?.message || 'Skill updated');
-              this.router.navigateByUrl('/skills');
+              this.router.navigate(['/skills'], { queryParams: { page: this.page } });
             } else {
               this.toastr.error(res?.message);
             }
@@ -106,7 +108,7 @@ export class AddEditSkillsComponent implements OnInit {
             if (res?.success) {
               this.toastr.success(res?.message || 'Skill added');
               this.skillForm.reset({ level: 50, color: '#0d6efd' });
-              this.router.navigateByUrl('/skills');
+              this.router.navigate(['/skills'], { queryParams: { page: this.page } });
             } else {
               this.toastr.error(res?.message);
             }
