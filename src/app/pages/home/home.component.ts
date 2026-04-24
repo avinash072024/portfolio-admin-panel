@@ -156,25 +156,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const tooltipBg = isDark ? '#2b3035' : '#fff';
     const tooltipText = isDark ? '#f8f9fa' : '#333';
 
-    // Process data for the last 7 days
+    // Helper to format a Date as YYYY-MM-DD in local timezone
+    const toLocalDateStr = (d: Date): string => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    // Process data for the last 7 days (using local timezone)
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      return d.toISOString().split('T')[0];
+      return toLocalDateStr(d);
     }).reverse();
 
     const dataMap = new Map<string, number>();
     last7Days.forEach(day => dataMap.set(day, 0));
 
     allVisitors.forEach(v => {
-      const date = new Date(v.createdAt).toISOString().split('T')[0];
+      const date = toLocalDateStr(new Date(v.createdAt));
       if (dataMap.has(date)) {
         dataMap.set(date, (dataMap.get(date) || 0) + 1);
       }
     });
 
     const labels = last7Days.map(day => {
-      const date = new Date(day);
+      const [y, m, d] = day.split('-').map(Number);
+      const date = new Date(y, m - 1, d);
       return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     });
     const counts = last7Days.map(day => dataMap.get(day) || 0);
