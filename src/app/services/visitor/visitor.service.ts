@@ -24,4 +24,8 @@ export class VisitorService {
     }
     return this.cache.get(key)!;
   }
+
+  deleteDuplicateVisitors(): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/visitor/duplicates`);
+  }
 }

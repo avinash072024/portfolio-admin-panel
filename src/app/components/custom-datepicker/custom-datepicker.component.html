@@ -1,0 +1,37 @@
+<div class="custom-datepicker-container">
+  <div class="input-group" (click)="toggleDropdown()">
+    <input type="text" class="form-control" [value]="selectedDateString" placeholder="Select date..." readonly>
+    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+  </div>
+
+  <div class="calendar-dropdown" *ngIf="isOpen" (click)="$event.stopPropagation()">
+    <div class="calendar-header">
+      <button class="btn btn-sm btn-icon" (click)="prevMonth($event)"><i class="bi bi-chevron-left"></i></button>
+      <span class="month-title fw-bold">{{ monthNames[currentMonth.getMonth()] }} {{ currentMonth.getFullYear() }}</span>
+      <button class="btn btn-sm btn-icon" (click)="nextMonth($event)"><i class="bi bi-chevron-right"></i></button>
+    </div>
+    
+    <div class="calendar-grid">
+      <div class="calendar-weekdays">
+        <span *ngFor="let day of daysOfWeek" class="weekday">{{ day }}</span>
+      </div>
+      
+      <div class="calendar-days">
+        <div *ngFor="let day of calendarDays" 
+             class="calendar-day" 
+             [ngClass]="{
+               'other-month': !day.isCurrentMonth,
+               'today': day.isToday,
+               'selected': day.isSelected
+             }"
+             (click)="selectDate(day, $event)">
+          {{ day.date.getDate() }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="calendar-footer">
+      <button class="btn btn-sm btn-clear w-100" (click)="clearDate($event)">Clear Selection</button>
+    </div>
+  </div>
+</div>
