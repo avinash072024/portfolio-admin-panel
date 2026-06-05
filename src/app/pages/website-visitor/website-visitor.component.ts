@@ -18,6 +18,7 @@ export class WebsiteVisitorComponent implements OnInit {
   allVisitors: any[] = [];
   filteredVisitors: any[] = [];
   dataRecieved: boolean = false;
+  showDeleteModal: boolean = false;
 
   visitors: any[] = [];
 
@@ -36,11 +37,13 @@ export class WebsiteVisitorComponent implements OnInit {
   pushActionInProgress = false;
 
   ngOnInit(): void {
-    this.getVisitor();
+    this.getVisitor(true);
   }
 
-  getVisitor(): void {
-    this.spinner.show();
+  getVisitor(showSpinner: boolean): void {
+    if (showSpinner) {
+      this.spinner.show();
+    }
     this.visitorService.getAllVisitors(1, 10000).subscribe({
       next: (res: any) => {
         if (res?.success && res?.Visitors) {
@@ -115,9 +118,10 @@ export class WebsiteVisitorComponent implements OnInit {
     this.visitorService.deleteDuplicateVisitors().subscribe({
       next: (res: any) => {
         this.spinner.hide();
+        this.closeDeleteModal();
         if (res?.success) {
           this.toastr.success(res?.message || 'Duplicate visitors deleted successfully');
-          this.getVisitor(); // Refresh the visitor list after deletion
+          this.getVisitor(false); // Refresh the visitor list after deletion
         } else {
           this.toastr.error(res?.message || 'Failed to delete duplicate visitors');
         }
@@ -127,6 +131,17 @@ export class WebsiteVisitorComponent implements OnInit {
         this.toastr.error(err.error.message || 'Failed to delete duplicate visitors');
       }
     });
+  }
+
+  openDeleteModal() {
+    this.showDeleteModal = true;
+    // prevent body scroll when modal open
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    document.body.style.overflow = '';
   }
 
 }

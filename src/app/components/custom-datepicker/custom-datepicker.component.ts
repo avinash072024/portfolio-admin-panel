@@ -1,11 +1,20 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// interface CalendarDay {
+//   date: Date;
+//   isCurrentMonth: boolean;
+//   isToday: boolean;
+//   isSelected: boolean;
+// }
+
+// Add 'isFuture' to your interface
 interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   isToday: boolean;
   isSelected: boolean;
+  isFuture: boolean; // <-- Add this
 }
 
 @Component({
@@ -22,12 +31,12 @@ export class CustomDatepickerComponent implements OnInit {
   isOpen = false;
   currentMonth: Date = new Date();
   selectedDate: Date | null = null;
-  
+
   daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   calendarDays: CalendarDay[] = [];
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  constructor(private eRef: ElementRef) {}
+  constructor(private eRef: ElementRef) { }
 
   ngOnInit(): void {
     if (this.selectedDateString) {
@@ -75,8 +84,23 @@ export class CustomDatepickerComponent implements OnInit {
     this.generateCalendar();
   }
 
+  // selectDate(day: CalendarDay, event: Event) {
+  //   event.stopPropagation();
+  //   this.selectedDate = day.date;
+  //   this.selectedDateString = this.formatDate(this.selectedDate);
+  //   this.dateChange.emit(this.selectedDateString);
+  //   this.isOpen = false;
+  //   this.generateCalendar();
+  // }
+
   selectDate(day: CalendarDay, event: Event) {
     event.stopPropagation();
+
+    // Prevent selection if it's a future date
+    if (day.isFuture) {
+      return;
+    }
+
     this.selectedDate = day.date;
     this.selectedDateString = this.formatDate(this.selectedDate);
     this.dateChange.emit(this.selectedDateString);
@@ -97,28 +121,28 @@ export class CustomDatepickerComponent implements OnInit {
     this.calendarDays = [];
     const year = this.currentMonth.getFullYear();
     const month = this.currentMonth.getMonth();
-    
+
     const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
-    
+
     // Get the day of the week for the 1st of the month (0 = Sunday, 1 = Monday, ...)
     const firstDayOfWeek = firstDayOfMonth.getDay();
-    
+
     // Days from previous month to fill the first row
     const daysFromPrevMonth = firstDayOfWeek;
     const prevMonthLastDay = new Date(year, month, 0).getDate();
-    
+
     for (let i = daysFromPrevMonth - 1; i >= 0; i--) {
       const date = new Date(year, month - 1, prevMonthLastDay - i);
       this.calendarDays.push(this.createCalendarDay(date, false));
     }
-    
+
     // Days of current month
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
       const date = new Date(year, month, i);
       this.calendarDays.push(this.createCalendarDay(date, true));
     }
-    
+
     // Days from next month to fill the remaining rows (up to 42 days = 6 weeks)
     const remainingDays = 42 - this.calendarDays.length;
     for (let i = 1; i <= remainingDays; i++) {
@@ -127,22 +151,47 @@ export class CustomDatepickerComponent implements OnInit {
     }
   }
 
+  // private createCalendarDay(date: Date, isCurrentMonth: boolean): CalendarDay {
+  //   const today = new Date();
+  //   const isToday = date.getDate() === today.getDate() &&
+  //     date.getMonth() === today.getMonth() &&
+  //     date.getFullYear() === today.getFullYear();
+
+  //   const isSelected = this.selectedDate !== null &&
+  //     date.getDate() === this.selectedDate.getDate() &&
+  //     date.getMonth() === this.selectedDate.getMonth() &&
+  //     date.getFullYear() === this.selectedDate.getFullYear();
+
+  //   return {
+  //     date,
+  //     isCurrentMonth,
+  //     isToday,
+  //     isSelected
+  //   };
+  // }
+
   private createCalendarDay(date: Date, isCurrentMonth: boolean): CalendarDay {
     const today = new Date();
-    const isToday = date.getDate() === today.getDate() && 
-                    date.getMonth() === today.getMonth() && 
-                    date.getFullYear() === today.getFullYear();
-                    
-    const isSelected = this.selectedDate !== null && 
-                       date.getDate() === this.selectedDate.getDate() && 
-                       date.getMonth() === this.selectedDate.getMonth() && 
-                       date.getFullYear() === this.selectedDate.getFullYear();
-                       
+    // Clear hours for an accurate day-by-day comparison
+    const compareToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const compareDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    const isToday = compareDate.getTime() === compareToday.getTime();
+
+    // Check if the grid date is strictly after today
+    const isFuture = compareDate.getTime() > compareToday.getTime();
+
+    const isSelected = this.selectedDate !== null &&
+      date.getDate() === this.selectedDate.getDate() &&
+      date.getMonth() === this.selectedDate.getMonth() &&
+      date.getFullYear() === this.selectedDate.getFullYear();
+
     return {
       date,
       isCurrentMonth,
       isToday,
-      isSelected
+      isSelected,
+      isFuture // <-- Pass it here
     };
   }
 
