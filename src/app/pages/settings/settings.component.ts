@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
 import { ThemeService } from '../../services/theme/theme.service';
+import { ResumesService } from '../../services/resume/resumes.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
@@ -19,7 +20,8 @@ import { forkJoin } from 'rxjs';
 export class SettingsComponent implements OnInit {
   private educationService = inject(EducationService);
   private experienceService = inject(ExperienceService);
-  themeService = inject(ThemeService);
+  private resumesService = inject(ResumesService);
+  private themeService = inject(ThemeService);
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
@@ -42,6 +44,8 @@ export class SettingsComponent implements OnInit {
   // resume upload
   selectedResumeFile: File | null = null;
   resumeForm!: FormGroup;
+  editResumeId: string | null = null;
+  showHideResetButtonInResumeForm = false;
 
   ngOnInit(): void {
     this.educationForm = this.fb.group({
@@ -59,6 +63,7 @@ export class SettingsComponent implements OnInit {
     });
 
     this.resumeForm = this.fb.group({
+      title: ['', Validators.required],
       file: [null, Validators.required]
     });
 
@@ -69,6 +74,7 @@ export class SettingsComponent implements OnInit {
     forkJoin({
       educations: this.educationService.getEducation(),
       experiences: this.experienceService.getExperience(),
+      resumes: this.resumesService.getResumes(),
     }).subscribe({
       next: (res: any) => {
         // ✅ Education
@@ -85,6 +91,13 @@ export class SettingsComponent implements OnInit {
         } else {
           this.experiences = [];
           this.toastr.warning('No experience data found');
+        }
+
+        // resumes
+        if (res.resumes.success) {
+          this.resumes = res.resumes?.resumes || res.resumes || [];
+        } else {
+          this.resumes = [];
         }
       },
       error: (err: any) => {
@@ -256,23 +269,152 @@ export class SettingsComponent implements OnInit {
   }
 
   onResumeFileSelected(ev: any): void {
-    const f = ev?.target?.files?.[0] || null;
+    const f: File | null = ev?.target?.files?.[0] || null;
     this.selectedResumeFile = f;
+
     if (this.resumeForm) {
-      this.resumeForm.get('file')?.setValue(f);
-      this.resumeForm.get('file')?.markAsDirty();
-      this.resumeForm.get('file')?.markAsTouched();
+      const fileControl = this.resumeForm.get('file');
+
+      if (f) {
+        // Check if the file type is application/pdf
+        if (f.type === 'application/pdf') {
+          fileControl?.setValue(f);
+          fileControl?.setErrors(null); // Clear any previous file type errors
+        } else {
+          // Reset the control value and throw an error
+          fileControl?.setValue(null);
+          this.selectedResumeFile = null; // Clear the local property too
+
+          // Set a custom error on the form control
+          fileControl?.setErrors({ invalidFileType: true });
+        }
+      } else {
+        fileControl?.setValue(null);
+      }
+
+      fileControl?.markAsDirty();
+      fileControl?.markAsTouched();
     }
   }
 
-  // Theme / Skin
-  toggleTheme(theme: string): void {
-    this.themeService.toggleTheme(theme);
-    this.toastr.success('Theme updated');
+  loadResumes(): void {
+    this.resumesService.getResumes().subscribe({
+      next: (res: any) => {
+        // this.resumes = res?.resumes || res || [];
+        this.resumes = res.resumes?.resumes || res.resumes || [];
+      },
+      error: (err) => this.toastr.error(err?.error?.message || 'Failed to load resumes')
+    });
   }
 
-  setSkin(s: string): void {
-    this.themeService.setSkin(s);
-    this.toastr.success('Skin updated');
+  saveResume(): void {
+    if (!this.resumeForm) return;
+
+    if (!this.editResumeId && !this.selectedResumeFile) {
+      this.resumeForm.get('file')?.setValidators(Validators.required);
+      this.resumeForm.get('file')?.updateValueAndValidity();
+      this.resumeForm.markAllAsTouched();
+      return;
+    }
+
+    if (this.editResumeId) {
+      this.resumeForm.get('file')?.clearValidators();
+      this.resumeForm.get('file')?.updateValueAndValidity();
+    }
+
+    if (this.resumeForm.invalid) {
+      this.resumeForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = new FormData();
+    const title = this.resumeForm.get('title')?.value?.trim();
+    if (title) {
+      formData.append('title', title);
+    }
+    if (this.selectedResumeFile) {
+      formData.append('resume', this.selectedResumeFile);
+    }
+
+    this.spinner.show();
+    const request$ = this.editResumeId
+      ? this.resumesService.updateResume(this.editResumeId, formData)
+      : this.resumesService.uploadResume(formData);
+
+    request$.subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        this.resetResumeForm();
+        this.loadResumes();
+        this.toastr.success(res?.message || 'Resume saved successfully');
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || 'Resume save failed');
+      }
+    });
+  }
+
+  editResume(resume: any): void {
+    this.editResumeId = resume?._id || resume?.id || null;
+    this.showHideResetButtonInResumeForm = true;
+    this.selectedResumeFile = null;
+    this.resumeForm.get('file')?.clearValidators();
+    this.resumeForm.patchValue({
+      title: resume?.title || '',
+      file: null
+    });
+  }
+
+  deleteResume(id: string, itemName: string): void {
+    (async () => {
+      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete resume ${itemName}? This action cannot be undone.`, itemName, 'resume');
+      if (!confirmed) return;
+      this.resumesService.deleteResume(id).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res?.message || 'Resume deleted');
+          this.loadResumes();
+        },
+        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
+      });
+    })();
+  }
+
+  viewResume(resume: any): void {
+    const id = resume?._id || resume?.id;
+    if (!id) return;
+
+    this.resumesService.getResumeById(id).subscribe({
+      next: (res: any) => {
+        const resumeData = res?.resume || res;
+        this.openResumePdf(resumeData);
+      },
+      error: (err) => this.toastr.error(err?.error?.message || 'Failed to open resume')
+    });
+  }
+
+  resetResumeForm(): void {
+    this.editResumeId = null;
+    this.selectedResumeFile = null;
+    this.showHideResetButtonInResumeForm = false;
+    this.resumeForm.reset();
+    this.resumeForm.get('file')?.setValidators(Validators.required);
+    this.resumeForm.get('file')?.updateValueAndValidity();
+  }
+
+  private openResumePdf(resume: any): void {
+    if (!resume?.pdfData) {
+      this.toastr.error('Resume PDF data not found');
+      return;
+    }
+
+    const contentType = resume.contentType || 'application/pdf';
+    const byteCharacters = atob(resume.pdfData);
+    const byteNumbers = Array.from(byteCharacters, char => char.charCodeAt(0));
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: contentType });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
 }
