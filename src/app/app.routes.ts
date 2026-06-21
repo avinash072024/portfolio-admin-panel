@@ -15,9 +15,9 @@ import { ForgotPasswordFormComponent } from './pages/forgot-password-form/forgot
 import { ServicesComponent } from './pages/services/services.component';
 import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-services.component';
 import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor.component';
-import { SettingsComponent } from './pages/settings/settings.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { EmailComponent } from './pages/email/email.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const routes: Routes = [
     {
@@ -45,11 +45,11 @@ export const routes: Routes = [
                 component: HomeComponent,
                 title: `Home | ${Constants.APP_NAME}`
             },
-            // {
-            //     path: 'about',
-            //     component: AboutComponent,
-            //     title: `About | ${Constants.APP_NAME}`
-            // },
+            {
+                path: 'about',
+                component: AboutComponent,
+                title: `About | ${Constants.APP_NAME}`
+            },
             {
                 path: 'contact',
                 component: ContactComponent,
@@ -106,11 +106,6 @@ export const routes: Routes = [
                 title: `Website Visitor | ${Constants.APP_NAME}`
             },
             {
-                path: 'settings',
-                component: SettingsComponent,
-                title: `Settings | ${Constants.APP_NAME}`
-            },
-            {
                 path: 'feedback',
                 component: FeedbackComponent,
                 title: `Feedback | ${Constants.APP_NAME}`
@@ -120,6 +115,11 @@ export const routes: Routes = [
                 component: EmailComponent,
                 title: `Email | ${Constants.APP_NAME}`
             },
+            {
+                path: 'reset-password',
+                component: ResetPasswordComponent,
+                title: `Reset Password | ${Constants.APP_NAME}`
+            }
         ]
     },
     {

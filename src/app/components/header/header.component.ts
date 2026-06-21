@@ -34,19 +34,16 @@ export class HeaderComponent {
 
   navLinks = [
     { id: 1, path: '/home', label: 'Home' },
-    { id: 2, path: '/services', label: 'Services' },
-    { id: 3, path: '/projects', label: 'Projects' },
-    { id: 4, path: '/skills', label: 'Skills' },
-    { id: 5, path: '/contact', label: 'Contact' },
+    { id: 2, path: '/about', label: 'About' },
+    { id: 3, path: '/services', label: 'Services' },
+    { id: 4, path: '/projects', label: 'Projects' },
+    { id: 5, path: '/skills', label: 'Skills' },
+    { id: 6, path: '/contact', label: 'Contact' },
   ]
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.isScrolled.set(window.scrollY > 50);
-  }
-
-  onSettings() {
-    this.router.navigate(['/settings']);
   }
 
   onResetPassword() {

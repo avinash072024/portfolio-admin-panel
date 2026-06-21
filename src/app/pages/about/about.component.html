@@ -1,1 +1,263 @@
-<p>about works!</p>
+<div class="settings-page container py-4 my-5">
+	<div class="page-header mt-5 mb-3 d-flex justify-content-between align-items-center">
+		<div>
+			<div class="d-flex align-items-center gap-3">
+				<h2 class="fw-bold mb-1">Settings</h2>
+			</div>
+			<p class="text-secondary mb-0">Manage your profile data and uploads</p>
+		</div>
+	</div>
+
+	<div class="row g-4">
+		<div class="col-lg-6">
+			<!-- Education Card -->
+			<div class="card shadow border-1 border-primary rounded-4 h-100">
+				<div class="card-header bg-transparent border-1 border-primary py-3">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="mb-0"><i class="fa-solid fa-graduation-cap text-primary"></i> Education</h5>
+						<div class="text-muted small">Add or edit entries</div>
+					</div>
+					<!-- confirm modal -->
+					<app-confirm-modal></app-confirm-modal>
+				</div>
+				<div class="card-body">
+					<form [formGroup]="educationForm" (ngSubmit)="saveEducation()" class="row g-2 mb-3 align-items-end">
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Title</label>
+							<input class="form-control"
+								[class.is-invalid]="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
+								formControlName="title" placeholder="e.g. B.Sc. Computer Science" />
+							<div *ngIf="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
+								class="invalid-feedback d-block small">
+								Title is required.
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Institution</label>
+							<input class="form-control"
+								[class.is-invalid]="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
+								formControlName="institution" placeholder="University / College" />
+							<div *ngIf="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
+								class="invalid-feedback d-block small">
+								Institution is required.
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Duration</label>
+							<input class="form-control"
+								[class.is-invalid]="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
+								formControlName="duration" placeholder="2018 - 2022" />
+							<div *ngIf="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
+								class="invalid-feedback d-block small">
+								Duration is required.
+							</div>
+						</div>
+
+						<div class="col-12 col-md-12">
+							<label class="form-label small mb-1">Description</label>
+							<textarea class="form-control" rows="2" formControlName="description"
+								placeholder="Short notes"></textarea>
+						</div>
+						<div class="col-3 col-md-2 mt-3 d-grid">
+							<button class="btn btn-primary w-100" type="submit">Save</button>
+						</div>
+						@if (showHideResetButtonInEducationForm) {
+						<div class="col-3 col-md-2 mt-3 d-grid">
+							<button class="btn btn-outline-secondary w-100" type="button"
+								(click)="resetEducationForm(); showHideResetButtonInEducationForm = false;">Cancel</button>
+						</div>
+						}
+					</form>
+
+					<div class="list-entries">
+						<div *ngIf="educations.length === 0" class="text-muted small">No education records yet.
+						</div>
+						<div class="entry d-flex justify-content-between align-items-start py-2"
+							*ngFor="let e of educations">
+							<div style="max-width: 80%;">
+								<div class="fw-semibold">{{ e.title }}</div>
+								<div class="small text-muted d-none d-md-block">{{ e.institution }} • {{
+									e.duration }}</div>
+								<div class="small text-muted d-block d-md-none">{{ e.institution }}</div>
+								<div class="small text-muted d-block d-md-none my-1">{{ e.duration }}</div>
+								<div class="small mt-1">{{ e.description }}</div>
+							</div>
+							<div
+								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
+								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
+									(click)="editEducation(e)"><i class="bi bi-pencil"></i></button>
+								<button class="btn btn-sm btn-outline-danger"
+									(click)="deleteEducation(e._id || e.id, e.title)"><i
+										class="bi bi-trash3"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<!-- Experience Card -->
+			<div class="card shadow border-1 border-primary rounded-4 h-100">
+				<div class="card-header bg-transparent border-1 border-primary py-3">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="mb-0"><i class="fa-solid fa-business-time text-primary"></i> Experience</h5>
+						<div class="text-muted small">Company roles & durations</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<form [formGroup]="experienceForm" (ngSubmit)="saveExperience()"
+						class="row g-2 mb-3 align-items-end">
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Title</label>
+							<input class="form-control"
+								[class.is-invalid]="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
+								formControlName="title" placeholder="e.g. Frontend Developer" />
+							<div *ngIf="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
+								class="invalid-feedback d-block small">Title is required.</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Company</label>
+							<input class="form-control"
+								[class.is-invalid]="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
+								formControlName="company" placeholder="Company name" />
+							<div *ngIf="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
+								class="invalid-feedback d-block small">Company is required.</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<label class="form-label small mb-1">Duration</label>
+							<input class="form-control"
+								[class.is-invalid]="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
+								formControlName="duration" placeholder="2022 - Present" />
+							<div *ngIf="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
+								class="invalid-feedback d-block small">Duration is required.</div>
+						</div>
+						<div class="col-12">
+							<label class="form-label small mb-1">Description</label>
+							<textarea class="form-control" rows="2" formControlName="description"
+								placeholder="Short summary"></textarea>
+						</div>
+						<div class="col-3 col-md-2 mt-3 d-grid">
+							<button class="btn btn-primary w-100" type="submit">Save</button>
+						</div>
+						@if (showHideResetButtonInExperienceForm) {
+						<div class="col-3 col-md-2 mt-3 d-grid">
+							<button class="btn btn-outline-secondary w-100" type="button"
+								(click)="resetExperienceForm(); showHideResetButtonInExperienceForm = false;">Cancel</button>
+						</div>
+						}
+					</form>
+
+					<div class="list-entries">
+						<div *ngIf="experiences.length === 0" class="text-muted small">No experience records
+							yet.</div>
+						<div class="entry d-flex justify-content-between align-items-start py-2"
+							*ngFor="let ex of experiences">
+							<div style="max-width: 80%;">
+								<div class="fw-semibold">{{ ex.title }}</div>
+								<div class="small text-muted d-none d-md-block">{{ ex.company }} • {{ ex.duration }}
+								</div>
+								<div class="small text-muted d-block d-md-none">{{ ex.company }}</div>
+								<div class="small text-muted d-block d-md-none my-1">{{ ex.duration }}</div>
+								<div class="small mt-1">{{ ex.description }}</div>
+							</div>
+							<div
+								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
+								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
+									(click)="editExperience(ex)"><i class="bi bi-pencil"></i></button>
+								<button class="btn btn-sm btn-outline-danger"
+									(click)="deleteExperience(ex._id || ex.id, ex.title)"><i
+										class="bi bi-trash3"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-6">
+			<!-- Resumes Card -->
+			<div class="card shadow border-1 border-primary rounded-4">
+				<div class="card-header bg-transparent border-1 border-primary py-3">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="mb-0"><i class="bi bi-file-earmark-pdf text-primary"></i> Resumes</h5>
+						<div class="text-muted small">Upload and manage files</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="mb-3">
+						<form [formGroup]="resumeForm" (ngSubmit)="saveResume()" class="row g-2 align-items-end">
+							<div class="col-12 col-md-5">
+								<label class="form-label small mb-1">Title</label>
+								<input class="form-control" formControlName="title" placeholder="Resume title"
+									[class.is-invalid]="resumeForm.get('title')?.invalid && (resumeForm.get('title')?.touched || resumeForm.get('title')?.dirty)" />
+								<div *ngIf="resumeForm.get('title')?.invalid && (resumeForm.get('title')?.touched || resumeForm.get('title')?.dirty)"
+									class="invalid-feedback d-block small">Title is required.</div>
+							</div>
+							<div class="col-12 col-md-7">
+								<label class="form-label small mb-1">PDF File</label>
+								<input type="file" accept="application/pdf" class="form-control"
+									(change)="onResumeFileSelected($event)"
+									[class.is-invalid]="resumeForm.get('file')?.invalid && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)" />
+								<!-- <div *ngIf="resumeForm.get('file')?.invalid && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)"
+									class="invalid-feedback d-block small">PDF File is required.</div>
+								<div class="invalid-feedback d-block small"
+									*ngIf="resumeForm.get('file')?.hasError('invalidFileType')">
+									Please select a valid PDF file.
+								</div> -->
+								<div *ngIf="resumeForm.get('file')?.hasError('required') && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)"
+									class="invalid-feedback d-block small">
+									PDF File is required.
+								</div>
+
+								<div *ngIf="resumeForm.get('file')?.hasError('invalidFileType') && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)"
+									class="invalid-feedback d-block small">
+									Please select a valid PDF file.
+								</div>
+							</div>
+							<div class="col-3 col-md-2 mt-3 d-grid">
+								<button class="btn btn-primary" type="submit">
+									<!-- {{ editResumeId ? 'Update' : 'Upload' }} -->
+									Save
+								</button>
+							</div>
+							@if (showHideResetButtonInResumeForm) {
+							<div class="col-3 col-md-2 mt-3 d-grid">
+								<button class="btn btn-outline-secondary" type="button"
+									(click)="resetResumeForm()">Cancel</button>
+							</div>
+							}
+						</form>
+						<!-- <div *ngIf="resumeForm.get('file')?.invalid && (resumeForm.get('file')?.touched || resumeForm.get('file')?.dirty)"
+							class="invalid-feedback d-block small">
+							Please select a file to upload.
+						</div> -->
+					</div>
+
+					<div *ngIf="resumes.length === 0" class="text-muted small">No resumes uploaded yet.</div>
+					<div class="list-entries">
+						<div class="entry d-flex justify-content-between align-items-center py-2"
+							*ngFor="let r of resumes">
+							<div>
+								<div class="fw-semibold">{{ r.title || r.fileName || 'Untitled Resume' }}</div>
+								<div class="small text-muted">{{ r.fileName || r.originalName || r.originalname ||
+									r.name }}</div>
+								<div class="small text-muted">{{ r.contentType || r.mimeType || r.mimetype ||
+									'application/pdf' }}</div>
+							</div>
+							<div
+								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
+								<button class="btn btn-sm btn-outline-primary me-0 me-md-2 mb-2 mb-md-0"
+									(click)="viewResume(r)" type="button"><i class="bi bi-eye"></i></button>
+								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
+									(click)="editResume(r)" type="button"><i class="bi bi-pencil"></i></button>
+								<button class="btn btn-sm btn-outline-danger"
+									(click)="deleteResume(r._id || r.id, r.title || r.fileName || 'resume')"
+									type="button"><i class="bi bi-trash3"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

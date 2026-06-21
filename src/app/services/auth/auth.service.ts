@@ -14,4 +14,8 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${environment.apiUrl}/admin/login`, credentials);
   }
+
+  resetPassword(data: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/admin/reset-password`, data);
+  }
 }
