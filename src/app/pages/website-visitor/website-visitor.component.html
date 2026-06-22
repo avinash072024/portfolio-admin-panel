@@ -99,11 +99,14 @@
                                         </div>
                                     </td> -->
                                 </tr>
-                                <!-- @if(visitors.length === 0){
-                                <tr>
-                                    <td colspan="6" class="text-center">No visitors found.</td>
+                                <tr *ngIf="!visitors.length">
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+                                            <span>No visitor found.</span>
+                                        </div>
+                                    </td>
                                 </tr>
-                                } -->
                             </tbody>
                         </table>
                     </div>
@@ -128,16 +131,17 @@
 
 <!-- Delete Confirmation Modal (static backdrop) -->
 <div class="custom-modal-backdrop" *ngIf="showDeleteModal">
-	<div class="custom-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-		<div class="modal-body">
-			<h5 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm Deletion</h5>
-			<p class="text-muted">Are you sure you want to delete duplicate visitors?
-				This action cannot be undone.
-			</p>
-			<div class="d-flex justify-content-end gap-2 mt-3">
-				<button class="btn btn-primary" (click)="closeDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-				<button class="btn btn-danger" (click)="deleteDuplicateVisitors()"><i class="bi bi-trash3"></i> Delete</button>
-			</div>
-		</div>
-	</div>
+    <div class="custom-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="modal-body">
+            <h5 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm Deletion</h5>
+            <p class="text-muted">Are you sure you want to delete duplicate visitors?
+                This action cannot be undone.
+            </p>
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button class="btn btn-primary" (click)="closeDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
+                <button class="btn btn-danger" (click)="deleteDuplicateVisitors()"><i class="bi bi-trash3"></i>
+                    Delete</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,11 +1,9 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import * as AOS from 'aos';
 import { Constants } from './models/constants';
-import { SessionService } from './services/session/session.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { filter } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -15,14 +13,12 @@ import { filter } from 'rxjs';
 })
 export class AppComponent {
   title = 'portfolio-admin-panel';
-  private permissionPrompted = false;
+  private platformId = inject(PLATFORM_ID);
 
   theme = signal(localStorage.getItem(Constants.THEME_KEY) || 'light');
   skin = signal(localStorage.getItem(Constants.SKIN_KEY) || 'default-blue');
 
   constructor(
-    private sessionService: SessionService,
-    private toastr: ToastrService,
     private router: Router
   ) {
     // Automatically update DOM and localStorage when signals change
@@ -41,6 +37,12 @@ export class AppComponent {
         }
       } catch (e) {
         // ignore on server or if not available
+      }
+    });
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd && isPlatformBrowser(this.platformId)) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   }

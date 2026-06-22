@@ -54,6 +54,7 @@ export class PaginationComponent {
   changePage(newPage: number) {
     if (newPage < 1 || newPage > this.totalPages || newPage === this.page) return;
     this.pageChange.emit(newPage);
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 
   setLimit(newLimit: number) {

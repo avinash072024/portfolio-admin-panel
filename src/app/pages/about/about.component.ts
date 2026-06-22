@@ -21,7 +21,6 @@ export class AboutComponent  implements OnInit {
   private educationService = inject(EducationService);
   private experienceService = inject(ExperienceService);
   private resumesService = inject(ResumesService);
-  private themeService = inject(ThemeService);
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
@@ -71,6 +70,7 @@ export class AboutComponent  implements OnInit {
   }
 
   loadAllData(): void {
+    this.spinner.show();
     forkJoin({
       educations: this.educationService.getEducation(),
       experiences: this.experienceService.getExperience(),
@@ -78,6 +78,7 @@ export class AboutComponent  implements OnInit {
     }).subscribe({
       next: (res: any) => {
         // ✅ Education
+        this.spinner.hide();
         if (res.educations) {
           this.educations = res.educations?.educations || res.educations || [];
         } else {
@@ -98,9 +99,11 @@ export class AboutComponent  implements OnInit {
           this.resumes = res.resumes?.resumes || res.resumes || [];
         } else {
           this.resumes = [];
+          this.toastr.warning('No resume data found');
         }
       },
       error: (err: any) => {
+        this.spinner.hide();
         this.toastr.error(err?.error?.message || 'Failed to load data');
       }
     });
