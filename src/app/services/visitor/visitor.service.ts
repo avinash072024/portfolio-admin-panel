@@ -11,18 +11,53 @@ export class VisitorService {
 
   constructor(private http: HttpClient) { }
 
+  /** Fetch all visitors without pagination (used for summary/count widgets) */
   getVisitor(): Observable<any> {
     return this.http.get(environment.apiUrl + '/visitor/all');
   }
 
-  getAllVisitors(page: number = 1, limit: number = 5): Observable<any> {
-    const key = `${page}_${limit}`;
+  /**
+   * Fetch visitors with optional pagination and/or date filtering.
+   *
+   * @param page  - Page number (1-based). Pass 0 / undefined to skip pagination.
+   * @param limit - Page size.            Pass 0 / undefined to skip pagination.
+   * @param date  - Optional date filter in YYYY-MM-DD format.
+   */
+  getAllVisitors(page: number = 1, limit: number = 5, date?: string): Observable<any> {
+    const key = `${page}_${limit}_${date ?? ''}`;
+
     if (!this.cache.has(key)) {
-      const params = `?page=${page}&limit=${limit}`;
-      const req$ = this.http.get(`${environment.apiUrl}/visitor/all${params}`);
+      const queryParams: string[] = [];
+
+      if (page && limit) {
+        queryParams.push(`page=${page}`, `limit=${limit}`);
+      }
+
+      if (date) {
+        queryParams.push(`date=${encodeURIComponent(date)}`);
+      }
+
+      const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+      const req$ = this.http.get(`${environment.apiUrl}/visitor/all${queryString}`);
       this.cache.set(key, req$);
     }
+
     return this.cache.get(key)!;
+  }
+
+  /** Clears the request cache (call before re-fetching after filter/page changes). */
+  clearCache(): void {
+    this.cache.clear();
+  }
+
+
+  /**
+   * Convenience method — fetch all visitors for a specific date (no pagination).
+   *
+   * @param date - Date string in YYYY-MM-DD format.
+   */
+  getVisitorsByDate(date: string): Observable<any> {
+    return this.getAllVisitors(0, 0, date);
   }
 
   deleteDuplicateVisitors(): Observable<any> {

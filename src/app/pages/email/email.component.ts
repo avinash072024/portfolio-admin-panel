@@ -48,6 +48,66 @@ export class EmailComponent implements OnInit {
   searchTerm: string = '';
   private searchSubject = new Subject<string>();
 
+  // Bulk delete
+  selectedIds: Set<string> = new Set();
+  showBulkDeleteModal: boolean = false;
+
+  get allSelected(): boolean {
+    return this.emails.length > 0 && this.emails.every(e => this.selectedIds.has(e._id));
+  }
+
+  toggleSelectAll(): void {
+    if (this.allSelected) {
+      this.emails.forEach(e => this.selectedIds.delete(e._id));
+    } else {
+      this.emails.forEach(e => this.selectedIds.add(e._id));
+    }
+  }
+
+  toggleSelect(id: string): void {
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+  }
+
+  openBulkDeleteModal(): void {
+    if (this.selectedIds.size === 0) return;
+    this.showBulkDeleteModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeBulkDeleteModal(): void {
+    this.showBulkDeleteModal = false;
+    document.body.style.overflow = '';
+  }
+
+  confirmBulkDelete(): void {
+    this.toastr.clear();
+    this.spinner.show();
+    const ids = Array.from(this.selectedIds);
+    this.emailService.deleteMultipleEmails(ids).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.closeBulkDeleteModal();
+          this.selectedIds.clear();
+          this.page = 1;
+          this.getEmails();
+          this.spinner.hide();
+          this.toastr.success(res?.message);
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
+  }
+
   onSearch(): void {
     this.searchSubject.next(this.searchTerm);
   }
@@ -72,6 +132,7 @@ export class EmailComponent implements OnInit {
 
   getEmails(): void {
     this.spinner.show();
+    this.selectedIds.clear();
     this.emailService.getAllEmail(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {

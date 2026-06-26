@@ -217,7 +217,8 @@ thead th {
     border-left: 5px solid var(--primary-color) !important;
 
     &::before {
-        content: "\F26A"; /* BI: check-circle */
+        content: "\F26A";
+        /* BI: check-circle */
         color: var(--primary-color);
     }
 
@@ -232,7 +233,8 @@ thead th {
     border-left: 5px solid #dc3545 !important;
 
     &::before {
-        content: "\F331"; /* BI: exclamation-triangle */
+        content: "\F331";
+        /* BI: exclamation-triangle */
         color: #dc3545;
     }
 
@@ -247,7 +249,8 @@ thead th {
     border-left: 5px solid #0dcaf0 !important;
 
     &::before {
-        content: "\F431"; /* BI: info-circle */
+        content: "\F431";
+        /* BI: info-circle */
         color: #0dcaf0;
     }
 
@@ -262,13 +265,24 @@ thead th {
     border-left: 5px solid #ffc107 !important;
 
     &::before {
-        content: "\F33A"; /* BI: exclamation-circle */
+        content: "\F33A";
+        /* BI: exclamation-circle */
         color: #ffc107;
     }
 
     .toast-progress {
         background-color: #ffc107 !important;
     }
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.form-check-input[type=checkbox]:indeterminate {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
 }
 
 /* Theme-Specific Adjustments */

@@ -31,4 +31,8 @@ export class EmailService {
   deleteEmail(id: string): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/emails/${id}`);
   }
+
+  deleteMultipleEmails(ids: string[]): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/emails/bulk`, { body: { ids } });
+  }
 }

@@ -15,8 +15,6 @@ import { CustomDatepickerComponent } from '../../components/custom-datepicker/cu
 })
 export class WebsiteVisitorComponent implements OnInit {
   dateFilter: string = '';
-  allVisitors: any[] = [];
-  filteredVisitors: any[] = [];
   dataRecieved: boolean = false;
   showDeleteModal: boolean = false;
 
@@ -32,81 +30,54 @@ export class WebsiteVisitorComponent implements OnInit {
   private toastr = inject(ToastrService);
   themeService = inject(ThemeService);
 
-  pushSupported = false;
-  pushSubscribed = false;
-  pushActionInProgress = false;
-
   ngOnInit(): void {
-    this.getVisitor(true);
+    this.loadVisitors(true);
   }
 
-  getVisitor(showSpinner: boolean): void {
+  loadVisitors(showSpinner: boolean): void {
     if (showSpinner) {
       this.spinner.show();
     }
-    this.visitorService.getAllVisitors(1, 10000).subscribe({
+
+    const date = this.dateFilter || undefined;
+
+    this.visitorService.clearCache();
+    this.visitorService.getAllVisitors(this.page, this.limit, date).subscribe({
       next: (res: any) => {
-        if (res?.success && res?.Visitors) {
-          this.allVisitors = res?.Visitors || [];
-          this.applyFilter();
+        this.spinner.hide();
+        if (res?.success) {
+          this.visitors = res?.Visitors ?? [];
+          this.total = res?.total ?? 0;
+          this.totalPages = res?.totalPages ?? Math.max(1, Math.ceil(this.total / this.limit));
           this.dataRecieved = true;
-          this.spinner.hide();
         } else {
-          this.spinner.hide();
-          this.toastr.error(res?.message)
+          this.toastr.error(res?.message || 'Failed to load visitors');
         }
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err.error.message || 'Failed to load visitor count');
+        this.toastr.error(err?.error?.message || 'Failed to load visitors');
       }
     });
   }
 
-  onDateFilterChange(dateStr: string) {
+  onDateFilterChange(dateStr: string): void {
     this.dateFilter = dateStr;
     this.page = 1;
-    this.applyFilter();
+    this.loadVisitors(true);
   }
 
-  applyFilter() {
-    let tempVisitors = [...this.allVisitors];
-
-    if (this.dateFilter) {
-      tempVisitors = tempVisitors.filter(v => {
-        const d = new Date(v.createdAt);
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const dateStr = `${year}-${month}-${day}`;
-        return dateStr === this.dateFilter;
-      });
-    }
-
-    this.filteredVisitors = tempVisitors;
-    this.total = this.filteredVisitors.length;
-    this.totalPages = Math.max(1, Math.ceil(this.total / this.limit));
-    this.updatePagination();
-  }
-
-  updatePagination() {
-    const startIndex = (this.page - 1) * this.limit;
-    const endIndex = startIndex + this.limit;
-    this.visitors = this.filteredVisitors.slice(startIndex, endIndex);
-  }
-
-  changePage(newPage: number) {
+  changePage(newPage: number): void {
     if (newPage < 1 || newPage > this.totalPages || newPage === this.page) return;
     this.page = newPage;
-    this.updatePagination();
+    this.loadVisitors(true);
   }
 
-  setLimit(newLimit: number) {
+  setLimit(newLimit: number): void {
     if (newLimit === this.limit) return;
     this.limit = newLimit;
     this.page = 1;
-    this.totalPages = Math.max(1, Math.ceil(this.total / this.limit));
-    this.updatePagination();
+    this.loadVisitors(true);
   }
 
   get pages(): number[] {
@@ -121,27 +92,27 @@ export class WebsiteVisitorComponent implements OnInit {
         this.closeDeleteModal();
         if (res?.success) {
           this.toastr.success(res?.message || 'Duplicate visitors deleted successfully');
-          this.getVisitor(false); // Refresh the visitor list after deletion
+          this.page = 1;
+          this.loadVisitors(false);
         } else {
           this.toastr.error(res?.message || 'Failed to delete duplicate visitors');
         }
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err.error.message || 'Failed to delete duplicate visitors');
+        this.toastr.error(err?.error?.message || 'Failed to delete duplicate visitors');
       }
     });
   }
 
-  openDeleteModal() {
+  openDeleteModal(): void {
     this.showDeleteModal = true;
-    // prevent body scroll when modal open
     document.body.style.overflow = 'hidden';
   }
 
-  closeDeleteModal() {
+  closeDeleteModal(): void {
     this.showDeleteModal = false;
     document.body.style.overflow = '';
   }
-
 }
+
