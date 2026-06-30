@@ -56,6 +56,12 @@ export class ProjectsService {
     );
   }
 
+  deleteMultipleProjects(ids: string[]): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/projects/bulk`, { body: { ids } }).pipe(
+      tap(() => this.invalidateCache())
+    );
+  }
+
 
 
 

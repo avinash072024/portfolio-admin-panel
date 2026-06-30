@@ -44,6 +44,10 @@ export class ProjectComponent implements OnInit {
   deletingProjectId!: string;
   deletingProjectTitle!: string;
   searchTerm: string = '';
+
+  // Bulk delete
+  selectedIds: Set<string> = new Set();
+  showBulkDeleteModal: boolean = false;
   private searchSubject = new Subject<string>();
 
   onSearch(): void {
@@ -71,6 +75,7 @@ export class ProjectComponent implements OnInit {
 
   getProjects(): void {
     this.spinner.show();
+    this.selectedIds.clear();
     this.projectService.getAllProjects(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -156,5 +161,61 @@ export class ProjectComponent implements OnInit {
         this.toastr.error(err?.message);
       }
     })
+  }
+
+  get allSelected(): boolean {
+    return this.projects.length > 0 && this.projects.every(p => this.selectedIds.has(p._id));
+  }
+
+  toggleSelectAll(): void {
+    if (this.allSelected) {
+      this.projects.forEach(p => this.selectedIds.delete(p._id));
+    } else {
+      this.projects.forEach(p => this.selectedIds.add(p._id));
+    }
+  }
+
+  toggleSelect(id: string): void {
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+  }
+
+  openBulkDeleteModal(): void {
+    if (this.selectedIds.size === 0) return;
+    this.showBulkDeleteModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeBulkDeleteModal(): void {
+    this.showBulkDeleteModal = false;
+    document.body.style.overflow = '';
+  }
+
+  confirmBulkDelete(): void {
+    this.toastr.clear();
+    this.spinner.show();
+    const ids = Array.from(this.selectedIds);
+    this.projectService.deleteMultipleProjects(ids).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.closeBulkDeleteModal();
+          this.selectedIds.clear();
+          this.page = 1;
+          this.getProjects();
+          this.spinner.hide();
+          this.toastr.success(res?.message);
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
   }
 }

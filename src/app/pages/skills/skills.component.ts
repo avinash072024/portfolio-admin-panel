@@ -45,6 +45,66 @@ export class SkillsComponent implements OnInit {
   deletingSkillId!: string;
   deletingSkillTitle!: string;
 
+  // Bulk delete
+  selectedIds: Set<string> = new Set();
+  showBulkDeleteModal: boolean = false;
+
+  get allSelected(): boolean {
+    return this.skills.length > 0 && this.skills.every(s => this.selectedIds.has(s._id));
+  }
+
+  toggleSelectAll(): void {
+    if (this.allSelected) {
+      this.skills.forEach(s => this.selectedIds.delete(s._id));
+    } else {
+      this.skills.forEach(s => this.selectedIds.add(s._id));
+    }
+  }
+
+  toggleSelect(id: string): void {
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+  }
+
+  openBulkDeleteModal(): void {
+    if (this.selectedIds.size === 0) return;
+    this.showBulkDeleteModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeBulkDeleteModal(): void {
+    this.showBulkDeleteModal = false;
+    document.body.style.overflow = '';
+  }
+
+  confirmBulkDelete(): void {
+    this.toastr.clear();
+    this.spinner.show();
+    const ids = Array.from(this.selectedIds);
+    this.skillsService.deleteMultipleSkills(ids).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.closeBulkDeleteModal();
+          this.selectedIds.clear();
+          this.page = 1;
+          this.getSkills();
+          this.spinner.hide();
+          this.toastr.success(res?.message);
+        } else {
+          this.spinner.hide();
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getSkills();
@@ -60,6 +120,7 @@ export class SkillsComponent implements OnInit {
 
   getSkills(): void {
     this.spinner.show();
+    this.selectedIds.clear();
     this.skillsService.getAllSkills(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {

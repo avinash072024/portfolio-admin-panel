@@ -109,11 +109,11 @@
 </div>
 
 @if(selectedIds.size !== 0){
-<div class="container">
+<div class="container mb-5">
     <div class="row">
         <div class="col-md-12">
             <!-- Bulk Delete Button -->
-            <div *ngIf="emails.length" class="d-flex justify-content-center align-items-center px-3 pt-3 pb-1">
+            <div *ngIf="emails.length" class="d-flex justify-content-center align-items-center">
                 <button class="btn btn-danger d-flex align-items-center gap-2"
                     [disabled]="selectedIds.size === 0" (click)="openBulkDeleteModal()" id="bulk-delete-btn"
                     title="Delete selected emails">

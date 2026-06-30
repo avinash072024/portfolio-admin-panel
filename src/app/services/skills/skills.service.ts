@@ -55,11 +55,12 @@ export class SkillsService {
       tap(() => this.invalidateCache())
     );
   }
- 
- 
- 
- 
- 
+
+  deleteMultipleSkills(ids: string[]): Observable<any> {
+    return this.http.delete(environment.apiUrl + `/skills/bulk`, { body: { ids } }).pipe(
+      tap(() => this.invalidateCache())
+    );
+  }
   getSkillCategories(): Observable<any> {
     return this.http.get(environment.apiUrl + `/skill-categories`);
   }

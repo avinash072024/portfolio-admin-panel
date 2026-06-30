@@ -48,6 +48,13 @@ export class ServicesService {
     );
   }
 
+  // DELETE /api/services/bulk
+  deleteMultipleServices(ids: string[]): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/services/bulk`, { body: { ids } }).pipe(
+      tap(() => this.invalidateCache())
+    );
+  }
+
   private invalidateCache() {
     this.cachedServices$ = undefined;
   }
