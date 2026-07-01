@@ -29,6 +29,9 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   deletingFeedbackId: string = '';
   deletingFeedbackTitle: string = '';
   deleteModalInstance: any = null;
+  bulkDeleteModalInstance: any = null;
+  selectedIds: Set<string> = new Set<string>();
+  showBulkDeleteModal: boolean = false;
 
   feedbackService = inject(FeedbackService);
   spinner = inject(NgxSpinnerService);
@@ -36,6 +39,10 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   avatarService = inject(AvatarService);
   themeService = inject(ThemeService);
   searchSubject = new Subject<string>();
+
+  get allSelected(): boolean {
+    return this.feedbacks.length > 0 && this.feedbacks.every((feedback) => this.selectedIds.has(feedback._id));
+  }
 
   ngOnInit(): void {
     this.getFeedbacks();
@@ -55,10 +62,17 @@ export class FeedbackComponent implements OnInit, OnDestroy {
       this.deleteModalInstance.dispose();
       this.deleteModalInstance = null;
     }
+    if (this.bulkDeleteModalInstance) {
+      this.bulkDeleteModalInstance.hide();
+      this.bulkDeleteModalInstance.dispose();
+      this.bulkDeleteModalInstance = null;
+    }
+    document.body.style.overflow = '';
   }
 
   getFeedbacks(): void {
     this.spinner.show();
+    this.selectedIds.clear();
     this.feedbackService.getAllFeedbacks(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         this.spinner.hide();
@@ -81,6 +95,24 @@ export class FeedbackComponent implements OnInit, OnDestroy {
         this.toastr.error(err?.error?.message || 'Failed to load feedback');
       }
     });
+  }
+
+  toggleSelectAll(): void {
+    if (this.allSelected) {
+      this.feedbacks.forEach((feedback) => this.selectedIds.delete(feedback._id));
+      return;
+    }
+
+    this.feedbacks.forEach((feedback) => this.selectedIds.add(feedback._id));
+  }
+
+  toggleSelect(id: string): void {
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+      return;
+    }
+
+    this.selectedIds.add(id);
   }
 
   onSearch(): void {
@@ -121,6 +153,84 @@ export class FeedbackComponent implements OnInit, OnDestroy {
         this.spinner.hide();
         if (res?.success) {
           feedback.verified = nextVerifiedValue;
+          this.toastr.success(res?.message || 'Feedback verification status updated successfully');
+          return;
+        }
+        this.toastr.error(res?.message || 'Failed to update feedback verification status');
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || 'Failed to update feedback verification status');
+      }
+    });
+  }
+
+  openBulkDeleteModal(): void {
+    if (this.selectedIds.size === 0) return;
+
+    const modalElement = document.getElementById('bulkDeleteFeedbackModal');
+    if (!modalElement) {
+      this.toastr.error('Bulk delete modal not found');
+      return;
+    }
+
+    this.bulkDeleteModalInstance = new bootstrap.Modal(modalElement, {
+      backdrop: 'static',
+      keyboard: false
+    });
+    this.showBulkDeleteModal = true;
+    this.bulkDeleteModalInstance.show();
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeBulkDeleteModal(): void {
+    this.bulkDeleteModalInstance?.hide();
+    this.showBulkDeleteModal = false;
+    document.body.style.overflow = '';
+  }
+
+  confirmBulkDelete(): void {
+    const ids = Array.from(this.selectedIds);
+    if (!ids.length) {
+      this.toastr.error('Please select feedback to delete');
+      return;
+    }
+
+    this.spinner.show();
+    this.feedbackService.deleteMultipleFeedbacks(ids).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.closeBulkDeleteModal();
+          this.selectedIds.clear();
+          this.page = 1;
+          this.getFeedbacks();
+          this.toastr.success(res?.message || 'Selected feedback deleted successfully');
+          return;
+        }
+        this.toastr.error(res?.message || 'Failed to delete selected feedback');
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || 'Failed to delete selected feedback');
+      }
+    });
+  }
+
+  bulkVerifySelected(verified: boolean): void {
+    const ids = Array.from(this.selectedIds);
+    if (!ids.length) {
+      this.toastr.error('Please select feedback to update');
+      return;
+    }
+
+    this.spinner.show();
+    this.feedbackService.updateMultipleFeedbackVerified(ids, verified).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.selectedIds.clear();
+          this.getFeedbacks();
           this.toastr.success(res?.message || 'Feedback verification status updated successfully');
           return;
         }

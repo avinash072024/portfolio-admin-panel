@@ -28,4 +28,12 @@ export class FeedbackService {
   deleteFeedback(id: string): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/feedback/${id}`);
   }
+
+  deleteMultipleFeedbacks(ids: string[]): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/feedback/bulk`, { body: { ids } });
+  }
+
+  updateMultipleFeedbackVerified(ids: string[], verified: boolean): Observable<any> {
+    return this.http.patch(`${environment.apiUrl}/feedback/bulk/verified`, { ids, verified });
+  }
 }

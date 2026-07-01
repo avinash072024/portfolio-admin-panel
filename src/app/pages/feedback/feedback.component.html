@@ -1,7 +1,7 @@
-<div class="container py-5 mt-3">
-    <div class="row g-4 my-5">
-        <div class="col-12" data-aos="fade-up">
-            <div class="card feedback-card border-1 border-primary shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+<div class="container py-5 mt-5" data-aos="fade-up">
+    <!-- <div class="row g-4 my-5"> -->
+        <!-- <div class="col-12" data-aos="fade-up"> -->
+            <div class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden">
                 <div class="card-header bg-transparent border-1 border-primary py-3 px-3">
                     <div class="row g-2 g-md-3 align-items-center">
                         <div class="col-12 col-md-4 order-1">
@@ -26,10 +26,23 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0 custom-table">
+                        <table class="table table-hover align-middle mb-0">
                             <thead class="bg-light-subtle">
                                 <tr>
-                                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Date</th>
+                                    <!-- <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 3%;">
+                                        <input type="checkbox" class="form-check-input" id="select-all-feedback"
+                                            [checked]="allSelected"
+                                            [indeterminate]="selectedIds.size > 0 && !allSelected"
+                                            (change)="toggleSelectAll()"
+                                            title="Select all on this page">
+                                    </th> -->
+                                    <th class="ps-4 py-3" style="width: 4%;">
+                                        <input type="checkbox" class="form-check-input" id="select-all-checkbox"
+                                            [checked]="allSelected"
+                                            [indeterminate]="selectedIds.size > 0 && !allSelected"
+                                            (change)="toggleSelectAll()" title="Select all on this page">
+                                    </th>
+                                    <th class="py-3 text-uppercase small fw-bold text-muted">Date</th>
                                     <th class="py-3 text-uppercase small fw-bold text-muted">Name</th>
                                     <th class="py-3 text-uppercase small fw-bold text-muted">Designation</th>
                                     <th class="py-3 text-uppercase small fw-bold text-muted">Message</th>
@@ -38,8 +51,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let feedback of feedbacks">
+                                <tr *ngFor="let feedback of feedbacks"
+                                    [class.table-active]="selectedIds.has(feedback._id)">
                                     <td class="ps-4">
+                                        <input type="checkbox" class="form-check-input"
+                                            [checked]="selectedIds.has(feedback._id)"
+                                            (change)="toggleSelect(feedback._id)" [id]="'feedback-' + feedback._id">
+                                    </td>
+                                    <td>
                                         <div class="d-flex flex-column" style="width: 100px;">
                                             <span class="fw-medium text-dark">{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
                                             <small class="text-muted">
@@ -49,9 +68,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="fw-medium text-dark d-flex align-items-center" [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
+                                        <div class="fw-medium text-dark d-flex align-items-center"
+                                            [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
                                             <img [src]="avatarService.getAvatar(feedback.name)" class="me-2" />
-                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ feedback.name || 'Anonymous' }}</span>
+                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ feedback.name ||
+                                                'Anonymous' }}</span>
                                         </div>
                                     </td>
                                     <td>
@@ -63,8 +84,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="text-wrap d-inline-block fw-medium text-dark"
-                                            style="width: 500px;" [title]="feedback.message">
+                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 500px;"
+                                            [title]="feedback.message">
                                             {{ feedback.message || '-' }}
                                         </span>
                                     </td>
@@ -76,7 +97,8 @@
                                             <button class="btn btn-action-edit"
                                                 [title]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
                                                 (click)="onUpdateVerified(feedback)">
-                                                <i class="bi" [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
+                                                <i class="bi"
+                                                    [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
                                             </button>
                                             <button class="btn btn-action-delete" title="Delete"
                                                 (click)="openDeleteModal(feedback)">
@@ -86,7 +108,7 @@
                                     </td>
                                 </tr>
                                 <tr *ngIf="!feedbacks.length">
-                                    <td colspan="6" class="text-center py-5">
+                                    <td colspan="7" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
                                             <span *ngIf="searchTerm">No feedback matching
@@ -98,22 +120,62 @@
                             </tbody>
                         </table>
                     </div>
-                    <app-pagination *ngIf="feedbacks.length > 0"
-                        [page]="page"
-                        [limit]="limit"
-                        [total]="total"
-                        [totalPages]="totalPages"
-                        (pageChange)="changePage($event)"
-                        (limitChange)="setLimit($event)">
+                    <app-pagination *ngIf="feedbacks.length > 0" [page]="page" [limit]="limit" [total]="total"
+                        [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
                     </app-pagination>
+                </div>
+            </div>
+        <!-- </div> -->
+    <!-- </div> -->
+</div>
+
+<div class="container mb-5" *ngIf="selectedIds.size !== 0">
+    <div class="row">
+        <div class="col-12">
+            <div class="bulk-actions-bar">
+                <span class="me-3 fw-semibold text-primary">{{ selectedIds.size }} selected</span>
+                <button class="btn btn-primary" (click)="bulkVerifySelected(true)">
+                    <i class="bi bi-check2-circle me-1"></i> Mark as verified
+                </button>
+                <button class="btn btn-outline-primary" (click)="bulkVerifySelected(false)">
+                    <i class="bi bi-x-circle me-1"></i> Mark as unverified
+                </button>
+                <button class="btn btn-danger" (click)="openBulkDeleteModal()">
+                    <i class="bi bi-trash3 me-1"></i> Delete selected
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bulkDeleteFeedbackModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content delete-modal-content border-0 rounded-4">
+            <div class="modal-body p-4">
+                <h5 class="modal-title text-danger fw-bold mb-2">
+                    <i class="bi bi-trash3 me-1"></i> Confirm Bulk Deletion
+                </h5>
+                <p class="text-muted mb-0">
+                    Are you sure you want to delete <strong class="text-danger">{{ selectedIds.size }} feedback{{
+                        selectedIds.size === 1 ? '' : 's' }}</strong>?
+                    This action cannot be undone.
+                </p>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn btn-primary px-3" (click)="closeBulkDeleteModal()">
+                        <i class="bi bi-x me-1"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-3" (click)="confirmBulkDelete()">
+                        <i class="bi bi-trash3 me-1"></i> Delete {{selectedIds.size}} selected
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="deleteFeedbackModal" tabindex="-1" aria-hidden="true"
-    data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="deleteFeedbackModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+    data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content delete-modal-content border-0 rounded-4">
             <div class="modal-body p-4">
@@ -121,7 +183,8 @@
                     <i class="bi bi-trash3 me-1"></i> Confirm Deletion
                 </h5>
                 <p class="text-muted mb-0">
-                    Are you sure you want to delete feedback from <strong class="text-primary">{{ deletingFeedbackTitle }}</strong>?
+                    Are you sure you want to delete feedback from <strong class="text-primary">{{ deletingFeedbackTitle
+                        }}</strong>?
                     This action cannot be undone.
                 </p>
                 <div class="d-flex justify-content-end gap-2 mt-4">

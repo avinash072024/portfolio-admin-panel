@@ -41,6 +41,19 @@ $primary-skin: var(--bs-primary);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
+.bulk-actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
+    // border-radius: 999px;
+    border-radius: 1rem;
+    background: rgba(var(--bs-primary-rgb), 0.06);
+}
+
 .text-dark {
     color: var(--bs-emphasis-color) !important;
 }
@@ -220,6 +233,12 @@ $primary-skin: var(--bs-primary);
             padding-bottom: 0.5rem;
             font-size: 0.9rem;
         }
+    }
+
+    .bulk-actions-bar {
+        border-radius: 1rem;
+        justify-content: flex-start;
+        flex-direction: column;
     }
 }
 
