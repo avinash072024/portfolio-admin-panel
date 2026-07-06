@@ -38,12 +38,25 @@
                         <div class="invalid-feedback">Please select a category.</div>
                     </div>
 
+					<div class="col-md-6">
+                        <label class="form-label fw-bold">Client Name</label>
+                        <input type="text" formControlName="clientName" class="form-control" placeholder="e.g. John Doe">
+                    </div>
+
+					<div class="col-md-6">
+                        <label class="form-label fw-bold">Team Size</label>
+                        <input type="text" formControlName="teamSize" class="form-control" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                            [class.is-invalid]="isInvalid('teamSize')" placeholder="e.g. 5">
+                        <div class="invalid-feedback">Team size is required.</div>
+                    </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Completion Date</label>
-                        <input type="text" formControlName="date" class="form-control"
+                        <input type="text" formControlName="date" class="form-control" placeholder="e.g. 2020 or Current"
                             [class.is-invalid]="isInvalid('date')">
                         <div class="invalid-feedback">Please select Date.</div>
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Live Link (Optional)</label>
                         <input type="url" formControlName="link" class="form-control" placeholder="https://...">
@@ -80,7 +93,7 @@
                             <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap custom-input-group"
                                 >
                                 <input [formControlName]="i" class="form-control form-control-sm"
-                                    placeholder="e.g. Angular" [class.is-invalid]="isInvalid(['tools', i])">
+                                    [placeholder]="`Technology ${i + 1}`" [class.is-invalid]="isInvalid(['tools', i])">
                                 <button *ngIf="toolsArray.length > 1" type="button" (click)="removeItem(toolsArray, i)"
                                     class="btn btn-outline-danger">
                                     <i class="bi bi-trash3"></i>

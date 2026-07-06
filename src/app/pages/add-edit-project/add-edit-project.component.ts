@@ -36,6 +36,8 @@ export class AddEditProjectComponent implements OnInit {
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       category: ['', Validators.required],
+      clientName: [''],
+      teamSize: ['', Validators.required],
       date: ['', Validators.required],
       image: [''],
       link: [''],
@@ -73,7 +75,9 @@ export class AddEditProjectComponent implements OnInit {
     this.projectForm.patchValue({
       title: project.title || '',
       category: project.category || '',
-      date: project.date || '',
+      clientName: project.clientName || '',
+      teamSize: project.teamSize || '',
+      date: project.completedYear || '',
       image: project.image || '',
       link: project.link || ''
     });

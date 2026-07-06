@@ -13,7 +13,7 @@ interface Project {
   _id: string;
   title: string;
   category: string;
-  date: string;
+  completedYear: string;
   desc: string[];
   image?: string;
   tools: string[];
