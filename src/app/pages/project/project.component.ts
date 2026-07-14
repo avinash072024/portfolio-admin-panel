@@ -118,7 +118,7 @@ export class ProjectComponent implements OnInit {
 
   onEdit(project: Project) {
     // navigate to add-edit page with project id for editing
-    this.router.navigate(['/edit-project', project._id], { queryParams: { page: this.page } });
+    this.router.navigate(['/projects/edit', project._id], { queryParams: { page: this.page } });
   }
 
   onDelete(id: string) {

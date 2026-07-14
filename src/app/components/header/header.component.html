@@ -53,8 +53,7 @@
             <ul class="navbar-nav desktop-nav">
                 @for (item of navLinks; track item.id) {
                 <li class="nav-item">
-                    <a class="nav-link mx-2" [routerLink]="item.path" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link mx-2" [routerLink]="item.path" routerLinkActive="active">
                         {{item.label}}
                     </a>
                 </li>

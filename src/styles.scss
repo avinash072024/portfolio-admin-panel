@@ -111,10 +111,30 @@ body {
     color: var(--primary-color) !important;
 }
 
-/* Custom scrollbar matching the skin */
-::-webkit-scrollbar-thumb {
+::selection {
     background: var(--primary-color);
+    color: #fff;
+}
+
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-rgb), 0.5);
     border-radius: 10px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }
 
 // Modern Table Header

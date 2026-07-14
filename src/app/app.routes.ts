@@ -66,12 +66,12 @@ export const routes: Routes = [
                 title: `Projects | ${Constants.APP_NAME}`
             },
             {
-                path: 'add-project',
+                path: 'projects/add',
                 component: AddEditProjectComponent,
                 title: `Add Project | ${Constants.APP_NAME}`
             },
             {
-                path: 'edit-project/:id',
+                path: 'projects/edit/:id',
                 component: AddEditProjectComponent,
                 title: `Edit Project | ${Constants.APP_NAME}`
             },
@@ -81,22 +81,22 @@ export const routes: Routes = [
                 title: `Skills | ${Constants.APP_NAME}`
             },
             {
-                path: 'add-skill',
+                path: 'skills/add',
                 component: AddEditSkillsComponent,
                 title: `Add Skill | ${Constants.APP_NAME}`
             },
             {
-                path: 'edit-skill/:id',
+                path: 'skills/edit/:id',
                 component: AddEditSkillsComponent,
                 title: `Edit Skill | ${Constants.APP_NAME}`
             },
             {
-                path: 'add-service',
+                path: 'services/add',
                 component: AddEditServicesComponent,
                 title: `Add Service | ${Constants.APP_NAME}`
             },
             {
-                path: 'edit-service/:id',
+                path: 'services/edit/:id',
                 component: AddEditServicesComponent,
                 title: `Edit Service | ${Constants.APP_NAME}`
             },
