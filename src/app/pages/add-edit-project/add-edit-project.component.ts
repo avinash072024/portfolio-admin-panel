@@ -38,7 +38,7 @@ export class AddEditProjectComponent implements OnInit {
       category: ['', Validators.required],
       clientName: [''],
       teamSize: ['', Validators.required],
-      date: ['', Validators.required],
+      completedYear: ['', Validators.required],
       image: [''],
       link: [''],
       desc: this.fb.array([this.fb.control('', Validators.required)]),
