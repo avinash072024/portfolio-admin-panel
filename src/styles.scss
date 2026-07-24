@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 :root {
-    --font-family: "Nunito Sans", sans-serif;
+    // --font-family: "Nunito Sans", sans-serif;
     --font-family: "Outfit", sans-serif;
 }
 
@@ -13,6 +13,10 @@ body {
 
 .cursor-pointer {
     cursor: pointer !important;
+}
+
+.fs-7 {
+    font-size: 0.75rem !important;
 }
 
 /* Default Bootstrap Blue */
@@ -115,7 +119,6 @@ body {
     background: var(--primary-color);
     color: #fff;
 }
-
 
 /* Smooth scrollbar */
 ::-webkit-scrollbar {

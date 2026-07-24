@@ -77,7 +77,7 @@ export class AddEditProjectComponent implements OnInit {
       category: project.category || '',
       clientName: project.clientName || '',
       teamSize: project.teamSize || '',
-      date: project.completedYear || '',
+      completedYear: project.completedYear || '',
       image: project.image || '',
       link: project.link || ''
     });
