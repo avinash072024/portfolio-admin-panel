@@ -1,14 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { EmailService } from '../../services/email/email.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ThemeService } from '../../services/theme/theme.service';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { SocketService } from '../../services/socket/socket.service';
 
 interface Email {
   _id: string;
@@ -28,7 +29,7 @@ interface Email {
   templateUrl: './email.component.html',
   styleUrl: './email.component.scss'
 })
-export class EmailComponent implements OnInit {
+export class EmailComponent implements OnInit, OnDestroy {
   protected readonly Math = Math;
   emails: Email[] = [];
   page: number = 1;
@@ -41,6 +42,8 @@ export class EmailComponent implements OnInit {
   themeService = inject(ThemeService);
   toastr = inject(ToastrService);
   spinner = inject(NgxSpinnerService);
+  socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
   
   showDeleteModal: boolean = false;
   deletingEmailId!: string;
@@ -120,6 +123,7 @@ export class EmailComponent implements OnInit {
   
   ngOnInit(): void {
     this.getEmails();
+    this.subscribeToSocketUpdates();
     
     this.searchSubject.pipe(
       debounceTime(500),
@@ -130,9 +134,16 @@ export class EmailComponent implements OnInit {
     });
   }
 
-  getEmails(): void {
-    this.spinner.show();
-    this.selectedIds.clear();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getEmails(silent: boolean = false): void {
+    if (!silent) {
+      this.spinner.show();
+      this.selectedIds.clear();
+    }
     this.emailService.getAllEmail(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -206,5 +217,14 @@ export class EmailComponent implements OnInit {
         this.toastr.error(err?.message);
       }
     });
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['email', 'emails'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getEmails(true);
+      });
   }
 }

@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { VisitorService } from '../../services/visitor/visitor.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ThemeService } from '../../services/theme/theme.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { CustomDatepickerComponent } from '../../components/custom-datepicker/custom-datepicker.component';
+import { SocketService } from '../../services/socket/socket.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-website-visitor',
@@ -13,7 +15,7 @@ import { CustomDatepickerComponent } from '../../components/custom-datepicker/cu
   templateUrl: './website-visitor.component.html',
   styleUrl: './website-visitor.component.scss'
 })
-export class WebsiteVisitorComponent implements OnInit {
+export class WebsiteVisitorComponent implements OnInit, OnDestroy {
   dateFilter: string = '';
   dataRecieved: boolean = false;
   showDeleteModal: boolean = false;
@@ -29,9 +31,17 @@ export class WebsiteVisitorComponent implements OnInit {
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
   themeService = inject(ThemeService);
+  private socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.loadVisitors(true);
+    this.subscribeToSocketUpdates();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadVisitors(showSpinner: boolean): void {
@@ -113,6 +123,15 @@ export class WebsiteVisitorComponent implements OnInit {
   closeDeleteModal(): void {
     this.showDeleteModal = false;
     document.body.style.overflow = '';
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['visitor', 'visitors'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.loadVisitors(true);
+      });
   }
 }
 

@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { ProjectsService } from '../../services/projects/projects.service';
+import { SocketService } from '../../services/socket/socket.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ThemeService } from '../../services/theme/theme.service';
@@ -26,7 +27,7 @@ interface Project {
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
   protected readonly Math = Math;
   projects: Project[] = [];
   // pagination state
@@ -49,6 +50,8 @@ export class ProjectComponent implements OnInit {
   selectedIds: Set<string> = new Set();
   showBulkDeleteModal: boolean = false;
   private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+  socketService = inject(SocketService);
 
   onSearch(): void {
     this.searchSubject.next(this.searchTerm);
@@ -63,7 +66,8 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getProjects();
-    
+    this.subscribeToSocketUpdates();
+
     this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged()
@@ -73,9 +77,16 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  getProjects(): void {
-    this.spinner.show();
-    this.selectedIds.clear();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getProjects(silent: boolean = false): void {
+    if (!silent) {
+      this.spinner.show();
+      this.selectedIds.clear();
+    }
     this.projectService.getAllProjects(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -103,6 +114,15 @@ export class ProjectComponent implements OnInit {
     if (newPage < 1 || newPage > this.totalPages || newPage === this.page) return;
     this.page = newPage;
     this.getProjects();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['projects', 'project'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getProjects(true);
+      });
   }
 
   setLimit(newLimit: number) {

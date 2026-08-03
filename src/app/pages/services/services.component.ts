@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from '../../services/service/services.service';
@@ -6,8 +6,9 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { SocketService } from '../../services/socket/socket.service';
 
 export interface Service {
   _id: string;
@@ -24,7 +25,7 @@ export interface Service {
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })
-export class ServicesComponent implements OnInit {
+export class ServicesComponent implements OnInit, OnDestroy {
   services: Service[] = [];
   page: number = 1;
   limit: number = 5;
@@ -39,6 +40,8 @@ export class ServicesComponent implements OnInit {
   themeService = inject(ThemeService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
 
   showDeleteModal: boolean = false;
   deletingServiceId!: string;
@@ -112,6 +115,7 @@ export class ServicesComponent implements OnInit {
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getServices();
+    this.subscribeToSocketUpdates();
 
     this.searchSubject.pipe(
       debounceTime(500),
@@ -122,9 +126,16 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  getServices(): void {
-    this.spinner.show();
-    this.selectedIds.clear();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getServices(silent: boolean = false): void {
+    if (!silent) {
+      this.spinner.show();
+      this.selectedIds.clear();
+    }
     this.servicesService.getServices(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -165,6 +176,15 @@ export class ServicesComponent implements OnInit {
     this.limit = n;
     this.page = 1;
     this.getServices();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['services', 'service'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getServices(true);
+      });
   }
 
   // onSearch() {

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SkillsService } from '../../services/skills/skills.service';
@@ -6,8 +6,9 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { SocketService } from '../../services/socket/socket.service';
 
 export interface Skill {
   _id: string;
@@ -24,7 +25,7 @@ export interface Skill {
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
-export class SkillsComponent implements OnInit {
+export class SkillsComponent implements OnInit, OnDestroy {
   skills: Skill[] = [];
   page: number = 1;
   limit: number = 5;
@@ -33,6 +34,8 @@ export class SkillsComponent implements OnInit {
   pages: number[] = [];
   searchTerm: string = '';
   private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+  socketService = inject(SocketService);
 
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
@@ -108,6 +111,7 @@ export class SkillsComponent implements OnInit {
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getSkills();
+    this.subscribeToSocketUpdates();
 
     this.searchSubject.pipe(
       debounceTime(500),
@@ -118,9 +122,16 @@ export class SkillsComponent implements OnInit {
     });
   }
 
-  getSkills(): void {
-    this.spinner.show();
-    this.selectedIds.clear();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getSkills(silent: boolean = false): void {
+    if (!silent) {
+      this.spinner.show();
+      this.selectedIds.clear();
+    }
     this.skillsService.getAllSkills(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -186,6 +197,15 @@ export class SkillsComponent implements OnInit {
     this.limit = n;
     this.page = 1;
     this.getSkills();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['skills', 'skill'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getSkills(true);
+      });
   }
 
   get rangeStart() {

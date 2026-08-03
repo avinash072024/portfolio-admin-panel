@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit, effect } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, effect } from '@angular/core';
 import { Chart, registerables } from 'chart.js/auto';
 Chart.register(...registerables);
 import { CommonModule } from '@angular/common';
@@ -11,9 +11,10 @@ import { ProjectsService } from '../../services/projects/projects.service';
 import { SkillsService } from '../../services/skills/skills.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
 import { EmailService } from '../../services/email/email.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { ThemeService } from '../../services/theme/theme.service';
+import { SocketService } from '../../services/socket/socket.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ import { ThemeService } from '../../services/theme/theme.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('trafficChart') trafficChartCanvas!: ElementRef<HTMLCanvasElement>;
   chart: Chart | undefined;
   allVisitorsForChart: any[] = [];
@@ -42,9 +43,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   skillsService = inject(SkillsService);
   feedbackService = inject(FeedbackService);
   avatarService = inject(AvatarService);
+  socketService = inject(SocketService);
   emailService = inject(EmailService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
+  private destroy$ = new Subject<void>();
 
   constructor() {
     // Automatically re-initialize chart when theme or skin changes
@@ -69,14 +72,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     AOS.init({ duration: 1000, once: true });
     this.loadDashboardData();
+    this.subscribeToSocketUpdates();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewInit() {
     // Chart will be initialized after data is loaded
   }
 
-  loadDashboardData(): void {
-    this.spinner.show();
+  loadDashboardData(silent: boolean = false): void {
+    if (!silent) {
+      this.spinner.show();
+    }
 
     forkJoin({
       visitors: this.visitorService.getAllVisitors(1, 100), // Get last 100 visitors for the chart
@@ -130,7 +141,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       },
       error: (err: any) => {
-        this.spinner.hide();
+        if (!silent) {
+          this.spinner.hide();
+        }
 
         const errorMessage = err?.error?.message || 'Failed to load dashboard data';
         this.toastr.error(errorMessage);
@@ -251,5 +264,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['dashboard', 'home', 'projects', 'skills', 'feedback', 'email', 'visitors', 'visitor'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.loadDashboardData(true);
+      });
   }
 }

@@ -5,7 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { FeedbackService } from '../../services/feedback/feedback.service';
 import { ThemeService } from '../../services/theme/theme.service';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { SocketService } from '../../services/socket/socket.service';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 
@@ -38,6 +39,8 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   toastr = inject(ToastrService);
   avatarService = inject(AvatarService);
   themeService = inject(ThemeService);
+  socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
   searchSubject = new Subject<string>();
 
   get allSelected(): boolean {
@@ -46,6 +49,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getFeedbacks();
+    this.subscribeToSocketUpdates();
 
     this.searchSubject.pipe(
       debounceTime(500),
@@ -57,6 +61,9 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
     if (this.deleteModalInstance) {
       this.deleteModalInstance.hide();
       this.deleteModalInstance.dispose();
@@ -70,9 +77,11 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     document.body.style.overflow = '';
   }
 
-  getFeedbacks(): void {
-    this.spinner.show();
-    this.selectedIds.clear();
+  getFeedbacks(silent: boolean = false): void {
+    if (!silent) {
+      this.spinner.show();
+      this.selectedIds.clear();
+    }
     this.feedbackService.getAllFeedbacks(this.page, this.limit, this.searchTerm).subscribe({
       next: (res: any) => {
         this.spinner.hide();
@@ -302,5 +311,14 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['feedback', 'feedbacks'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getFeedbacks(true);
+      });
   }
 }
