@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SkillsService } from '../../services/skills/skills.service';
+import { SocketService } from '../../services/socket/socket.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-skills',
@@ -13,7 +15,7 @@ import { SkillsService } from '../../services/skills/skills.service';
   templateUrl: './add-edit-skills.component.html',
   styleUrl: './add-edit-skills.component.scss'
 })
-export class AddEditSkillsComponent implements OnInit {
+export class AddEditSkillsComponent implements OnInit, OnDestroy {
   skillForm!: FormGroup;
   fb = inject(FormBuilder);
   skillsService = inject(SkillsService);
@@ -21,6 +23,8 @@ export class AddEditSkillsComponent implements OnInit {
   toastr = inject(ToastrService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
 
   isEdit: boolean = false;
   currentSkillId: string | null = null;
@@ -33,6 +37,7 @@ export class AddEditSkillsComponent implements OnInit {
 
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
+    this.subscribeToSocketUpdates();
     this.getSkillCategories();
     this.skillForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -64,6 +69,20 @@ export class AddEditSkillsComponent implements OnInit {
         })
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['skill-categories', 'skill-category'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getSkillCategories();
+      });
   }
 
   private populateForm(skill: any) {

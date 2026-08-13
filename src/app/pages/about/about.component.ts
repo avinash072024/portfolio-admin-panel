@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EducationService } from '../../services/education/education.service';
@@ -9,7 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { ViewChild } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { SocketService } from '../../services/socket/socket.service';
 
 @Component({
   selector: 'app-about',
@@ -17,13 +18,15 @@ import { forkJoin } from 'rxjs';
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
-export class AboutComponent  implements OnInit {
+export class AboutComponent implements OnInit, OnDestroy {
   private educationService = inject(EducationService);
   private experienceService = inject(ExperienceService);
   private resumesService = inject(ResumesService);
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
+  private socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
   @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
 
   educations: any[] = [];
@@ -66,7 +69,22 @@ export class AboutComponent  implements OnInit {
       file: [null, Validators.required]
     });
 
+    this.subscribeToSocketUpdates();
     this.loadAllData();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['educations', 'education', 'experiences', 'experience', 'resumes', 'resume'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.loadAllData();
+      });
   }
 
   loadAllData(): void {

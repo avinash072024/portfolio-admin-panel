@@ -1,9 +1,11 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService, ContactInfo } from '../../services/contact/contact.service';
 import { CommonModule } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { SocketService } from '../../services/socket/socket.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-contact',
@@ -12,11 +14,13 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private contactService = inject(ContactService);
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
+  private socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
 
   editableFields: boolean = false;
 
@@ -42,7 +46,22 @@ export class ContactComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscribeToSocketUpdates();
     this.loadContact();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['contact'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.loadContact();
+      });
   }
 
   loadContact() {

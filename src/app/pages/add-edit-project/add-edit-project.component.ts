@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
 import { ProjectsService } from '../../services/projects/projects.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { SocketService } from '../../services/socket/socket.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-project',
@@ -13,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './add-edit-project.component.html',
   styleUrl: './add-edit-project.component.scss'
 })
-export class AddEditProjectComponent implements OnInit {
+export class AddEditProjectComponent implements OnInit, OnDestroy {
   projectForm!: FormGroup;
   fb = inject(FormBuilder);
   projectService = inject(ProjectsService);
@@ -21,6 +23,8 @@ export class AddEditProjectComponent implements OnInit {
   toastr = inject(ToastrService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  socketService = inject(SocketService);
+  private destroy$ = new Subject<void>();
   currentProjectId: string | null = null;
   isEdit: boolean = false;
   page: number = 1;
@@ -32,6 +36,7 @@ export class AddEditProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
+    this.subscribeToSocketUpdates();
     this.getProjectCategories();
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -68,6 +73,20 @@ export class AddEditProjectComponent implements OnInit {
         })
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private subscribeToSocketUpdates(): void {
+    this.socketService
+      .onRefreshOrDataUpdated(['project-categories', 'project-category'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getProjectCategories();
+      });
   }
 
   private populateForm(project: any) {
