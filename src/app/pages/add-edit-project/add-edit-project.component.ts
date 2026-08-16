@@ -38,6 +38,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.subscribeToSocketUpdates();
     this.getProjectCategories();
+    
+    // Initialize form with showOnResume control included
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       category: ['', Validators.required],
@@ -46,6 +48,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       completedYear: ['', Validators.required],
       image: [''],
       link: [''],
+      showOnResume: [false], // Added here
       desc: this.fb.array([this.fb.control('', Validators.required)]),
       tools: this.fb.array([this.fb.control('', Validators.required)])
     });
@@ -70,9 +73,9 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastr.error(err?.message || 'Error loading project');
           }
-        })
+        });
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -90,7 +93,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   }
 
   private populateForm(project: any) {
-    // patch simple fields
+    // patch simple fields including showOnResume
     this.projectForm.patchValue({
       title: project.title || '',
       category: project.category || '',
@@ -98,7 +101,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       teamSize: project.teamSize || '',
       completedYear: project.completedYear || '',
       image: project.image || '',
-      link: project.link || ''
+      link: project.link || '',
+      showOnResume: project.showOnResume ?? false
     });
 
     // populate desc array
@@ -145,7 +149,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastr.error(err?.message);
           }
-        })
+        });
       } else {
         this.projectService.addProject(this.projectForm.value).subscribe({
           next: (res: any) => {
@@ -163,7 +167,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastr.error(err?.message);
           }
-        })
+        });
       }
     } else {
       this.projectForm.markAllAsTouched();

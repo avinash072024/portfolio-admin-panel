@@ -19,6 +19,7 @@ interface Project {
   image?: string;
   tools: string[];
   link?: string;
+  showOnResume: Boolean
 }
 
 @Component({
