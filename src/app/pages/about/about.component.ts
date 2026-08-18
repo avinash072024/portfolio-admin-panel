@@ -9,10 +9,11 @@ import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-mo
 import { ViewChild } from '@angular/core';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { SocketService } from '../../services/socket/socket.service';
+import { CapitalizeDirective } from '../../directives/capitalize.directive';
 
 @Component({
   selector: 'app-about',
-  imports: [CommonModule, ReactiveFormsModule, ConfirmModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, ConfirmModalComponent, CapitalizeDirective],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })

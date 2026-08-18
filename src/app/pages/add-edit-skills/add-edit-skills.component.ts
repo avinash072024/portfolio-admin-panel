@@ -8,10 +8,11 @@ import { ToastrService } from 'ngx-toastr';
 import { SkillsService } from '../../services/skills/skills.service';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
+import { CapitalizeDirective } from '../../directives/capitalize.directive';
 
 @Component({
   selector: 'app-add-edit-skills',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, CapitalizeDirective],
   templateUrl: './add-edit-skills.component.html',
   styleUrl: './add-edit-skills.component.scss'
 })

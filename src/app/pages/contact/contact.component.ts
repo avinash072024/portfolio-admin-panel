@@ -6,11 +6,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
+import { CapitalizeDirective } from '../../directives/capitalize.directive';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, CapitalizeDirective],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
@@ -35,11 +36,11 @@ export class ContactComponent implements OnInit, OnDestroy {
       address: [''],
       linkedin: [''],
       github: [''],
-      twitter: [''],
+      // twitter: [''],
       instagram: [''],
       facebook: [''],
       whatsapp: [''],
-      resumeUrl: ['']
+      portfolioURL: ['']
     });
 
     this.contactForm.disable(); // 👈 add this
@@ -89,7 +90,8 @@ export class ContactComponent implements OnInit, OnDestroy {
             this.toastr.success(res.message);
           }
           this.spinner.hide();
-          this.editableFields = !this.editableFields;
+          // this.editableFields = !this.editableFields;
+          this.enableEditableFields();
         },
         error: (err: any) => {
           this.spinner.hide();
@@ -103,9 +105,6 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   enableEditableFields(): void {
     this.editableFields = !this.editableFields;
-
-    this.editableFields
-      ? this.contactForm.enable()
-      : this.contactForm.disable();
+    this.editableFields ? this.contactForm.enable() : this.contactForm.disable();
   }
 }

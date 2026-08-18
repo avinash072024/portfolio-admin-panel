@@ -5,11 +5,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from '../../services/service/services.service';
+import { CapitalizeDirective } from '../../directives/capitalize.directive';
 
 @Component({
   selector: 'app-add-edit-services',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, CapitalizeDirective],
   templateUrl: './add-edit-services.component.html',
   styleUrl: './add-edit-services.component.scss'
 })

@@ -26,7 +26,7 @@
 							<label class="form-label small mb-1">Title</label>
 							<input class="form-control"
 								[class.is-invalid]="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
-								formControlName="title" placeholder="e.g. B.Sc. Computer Science" />
+								formControlName="title" placeholder="e.g. B.Sc. Computer Science" appCapitalize="space" />
 							<div *ngIf="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
 								class="invalid-feedback d-block small">
 								Title is required.
@@ -36,7 +36,7 @@
 							<label class="form-label small mb-1">Institution</label>
 							<input class="form-control"
 								[class.is-invalid]="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
-								formControlName="institution" placeholder="University / College" />
+								formControlName="institution" placeholder="University / College" appCapitalize="space" />
 							<div *ngIf="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
 								class="invalid-feedback d-block small">
 								Institution is required.
@@ -46,7 +46,7 @@
 							<label class="form-label small mb-1">Duration</label>
 							<input class="form-control"
 								[class.is-invalid]="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
-								formControlName="duration" placeholder="2018 - 2022" />
+								formControlName="duration" placeholder="2018 - 2022" appCapitalize="space" />
 							<div *ngIf="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
 								class="invalid-feedback d-block small">
 								Duration is required.
@@ -56,7 +56,7 @@
 						<div class="col-12 col-md-12">
 							<label class="form-label small mb-1">Description</label>
 							<textarea class="form-control" rows="2" formControlName="description"
-								placeholder="Short notes"></textarea>
+								placeholder="Short notes" appCapitalize="dot-space"></textarea>
 						</div>
 						<div class="col-3 col-md-2 mt-3 d-grid">
 							<button class="btn btn-primary w-100" type="submit">Save</button>
@@ -111,7 +111,7 @@
 							<label class="form-label small mb-1">Title</label>
 							<input class="form-control"
 								[class.is-invalid]="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
-								formControlName="title" placeholder="e.g. Frontend Developer" />
+								formControlName="title" placeholder="e.g. Frontend Developer" appCapitalize="space" />
 							<div *ngIf="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
 								class="invalid-feedback d-block small">Title is required.</div>
 						</div>
@@ -119,7 +119,7 @@
 							<label class="form-label small mb-1">Company</label>
 							<input class="form-control"
 								[class.is-invalid]="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
-								formControlName="company" placeholder="Company name" />
+								formControlName="company" placeholder="Company name" appCapitalize="space" />
 							<div *ngIf="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
 								class="invalid-feedback d-block small">Company is required.</div>
 						</div>
@@ -127,14 +127,14 @@
 							<label class="form-label small mb-1">Duration</label>
 							<input class="form-control"
 								[class.is-invalid]="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
-								formControlName="duration" placeholder="2022 - Present" />
+								formControlName="duration" placeholder="2022 - Present" appCapitalize="space" />
 							<div *ngIf="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
 								class="invalid-feedback d-block small">Duration is required.</div>
 						</div>
 						<div class="col-12">
 							<label class="form-label small mb-1">Description</label>
 							<textarea class="form-control" rows="2" formControlName="description"
-								placeholder="Short summary"></textarea>
+								placeholder="Short summary" appCapitalize="dot-space"></textarea>
 						</div>
 						<div class="col-3 col-md-2 mt-3 d-grid">
 							<button class="btn btn-primary w-100" type="submit">Save</button>

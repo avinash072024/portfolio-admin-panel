@@ -23,12 +23,12 @@
             <div class="col-md-6 mb-3">
               <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
               <input type="text" id="firstName" formControlName="firstName" class="form-control"
-                 placeholder="Enter your first name">
+                 placeholder="Enter your first name" appCapitalize="space">
             </div>
             <div class="col-md-6 mb-3">
               <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
               <input type="text" id="lastName" formControlName="lastName" class="form-control"
-                [readOnly]="!editableFields" placeholder="Enter your last name">
+                [readOnly]="!editableFields" placeholder="Enter your last name" appCapitalize="space">
             </div>
           </div>
           <div class="mb-3">
@@ -44,7 +44,7 @@
           <div class="mb-0">
             <label for="address" class="form-label">Address / Location</label>
             <textarea id="address" formControlName="address" class="form-control" rows="3" [readOnly]="!editableFields"
-              placeholder="City, Country"></textarea>
+              placeholder="City, Country" appCapitalize="space"></textarea>
           </div>
         </div>
       </div>
@@ -68,11 +68,11 @@
               <input type="url" id="github" formControlName="github" class="form-control" placeholder="GitHub URL"
                 [readOnly]="!editableFields">
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <label for="twitter" class="form-label"><i class="bi bi-twitter-x me-1"></i> Twitter / X</label>
               <input type="url" id="twitter" formControlName="twitter" class="form-control" placeholder="Twitter URL"
                 [readOnly]="!editableFields">
-            </div>
+            </div> -->
             <div class="col-md-6">
               <label for="instagram" class="form-label"><i class="bi bi-instagram me-1"></i> Instagram</label>
               <input type="url" id="instagram" formControlName="instagram" class="form-control"
@@ -87,6 +87,11 @@
               <label for="whatsapp" class="form-label"><i class="bi bi-whatsapp me-1"></i> WhatsApp</label>
               <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control"
                 [readOnly]="!editableFields" placeholder="WhatsApp Number">
+            </div>
+            <div class="col-md-6">
+              <label for="portfolioURL" class="form-label"><i class="bi bi-globe me-1"></i> Portfolio URL</label>
+              <input type="text" id="portfolioURL" formControlName="portfolioURL" class="form-control"
+                [readOnly]="!editableFields" placeholder="Portfolio URL">
             </div>
           </div>
         </div>

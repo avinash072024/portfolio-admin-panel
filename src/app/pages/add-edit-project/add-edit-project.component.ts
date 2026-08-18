@@ -8,10 +8,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
+import { CapitalizeDirective } from '../../directives/capitalize.directive';
 
 @Component({
   selector: 'app-add-edit-project',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, CapitalizeDirective],
   templateUrl: './add-edit-project.component.html',
   styleUrl: './add-edit-project.component.scss'
 })

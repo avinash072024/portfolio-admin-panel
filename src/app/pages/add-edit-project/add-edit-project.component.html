@@ -12,7 +12,7 @@
                     <div class="col-md-6 col-lg-4">
                         <label class="form-label fw-bold">Project Title</label>
                         <input type="text" formControlName="title" class="form-control"
-                            [class.is-invalid]="isInvalid('title')" placeholder="e.g. E-Commerce Dashboard">
+                            [class.is-invalid]="isInvalid('title')" placeholder="e.g. E-Commerce Dashboard" appCapitalize="space">
                         <div class="invalid-feedback">Title is required (min 3 chars).</div>
                     </div>
 
@@ -36,7 +36,7 @@
 
                     <div class="col-md-6 col-lg-4">
                         <label class="form-label fw-bold">Client Name</label>
-                        <input type="text" formControlName="clientName" class="form-control" placeholder="e.g. John Doe">
+                        <input type="text" formControlName="clientName" class="form-control" placeholder="e.g. John Doe" appCapitalize="space">
                     </div>
 
                     <div class="col-md-6 col-lg-4">
@@ -61,31 +61,35 @@
                     <div class="col-12" formArrayName="desc">
                         <div class="form-label fw-bold d-flex justify-content-between">
                             <label>Description Points</label>
-                            <button type="button" (click)="addItem(descArray)"
+                            <!-- <button type="button" (click)="addItem(descArray)"
                                 class="btn btn-sm btn-outline-primary border-0">
                                 <i class="bi bi-plus-circle"></i> Add Point
-                            </button>
+                            </button> -->
                         </div>
                         <div *ngFor="let d of descArray.controls; let i=index" class="input-group mb-2">
                             <input [formControlName]="i" class="form-control" placeholder="Describe a feature..."
-                                [class.is-invalid]="isInvalid(['desc', i])">
+                                [class.is-invalid]="isInvalid(['desc', i])" appCapitalize="dot-space">
                             <button *ngIf="descArray.length > 1" type="button" (click)="removeItem(descArray, i)"
                                 class="btn btn-outline-danger">
                                 <i class="bi bi-trash3"></i>
                             </button>
                         </div>
                         <div class="invalid-feedback">Please enter description</div>
+                        <button type="button" (click)="addItem(descArray)"
+                            class="btn btn-sm btn-outline-primary border-0">
+                            <i class="bi bi-plus-circle"></i> Add Point
+                        </button>
                     </div>
 
                     <div class="col-12" formArrayName="tools">
                         <div class="form-label fw-bold d-flex justify-content-between">
                             <label>Tools & Technologies</label>
-                            <button type="button" (click)="addItem(toolsArray)"
+                            <!-- <button type="button" (click)="addItem(toolsArray)"
                                 class="btn btn-sm btn-outline-primary border-0">
                                 <i class="bi bi-plus-circle"></i> Add Tool
-                            </button>
+                            </button> -->
                         </div>
-                        <div class="d-flex flex-wrap gap-2">
+                        <div class="d-flex flex-wrap gap-2 mb-2">
                             <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap custom-input-group"
                                 >
                                 <input [formControlName]="i" class="form-control form-control-sm"
@@ -96,6 +100,10 @@
                                 </button>
                             </div>
                         </div>
+                        <button type="button" (click)="addItem(toolsArray)"
+                            class="btn btn-sm btn-outline-primary border-0">
+                            <i class="bi bi-plus-circle"></i> Add Tool
+                        </button>
                     </div>
 
                     <div class="col-md-6 col-lg-4">
