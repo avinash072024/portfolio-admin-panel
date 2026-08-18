@@ -73,7 +73,7 @@ export class AddEditServicesComponent implements OnInit {
     const featuresArr = this.featuresArray;
     while (featuresArr.length) featuresArr.removeAt(0);
     (service.features || []).forEach((f: any) => featuresArr.push(this.fb.control(f, Validators.required)));
-    
+
     if (featuresArr.length === 0) {
       featuresArr.push(this.fb.control('', Validators.required));
     }
@@ -98,13 +98,15 @@ export class AddEditServicesComponent implements OnInit {
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
-  onSubmit() {
+  onSubmit(addNewMode: boolean) {
+    debugger;
     if (this.serviceForm.valid) {
       this.spinner.show();
       if (this.isEdit && this.currentServiceId) {
         this.servicesService.updateService(this.currentServiceId, this.serviceForm.value).subscribe({
           next: (res: any) => {
             if (res?.success) {
+              debugger;
               this.toastr.success(res?.message || 'Service updated successfully');
               this.router.navigate(['/services'], { queryParams: { page: this.page } });
             } else {
@@ -122,7 +124,14 @@ export class AddEditServicesComponent implements OnInit {
           next: (res: any) => {
             if (res?.success) {
               this.toastr.success(res?.message || 'Service added successfully');
-              this.router.navigate(['/services'], { queryParams: { page: this.page } });
+              // this.router.navigate(['/services'], { queryParams: { page: this.page } });
+              if (addNewMode) {
+                debugger;
+                this.resetForm();
+              } else {
+                debugger;
+                this.router.navigate(['/services'], { queryParams: { page: this.page } });
+              }
             } else {
               this.toastr.error(res?.message || 'Create failed');
             }
@@ -137,5 +146,13 @@ export class AddEditServicesComponent implements OnInit {
     } else {
       this.serviceForm.markAllAsTouched();
     }
+  }
+
+  resetForm(): void {
+    this.serviceForm.reset();
+
+    // Optional: reset validation state
+    this.serviceForm.markAsPristine();
+    this.serviceForm.markAsUntouched();
   }
 }

@@ -38,7 +38,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.subscribeToSocketUpdates();
     this.getProjectCategories();
-    
+
     // Initialize form with showOnResume control included
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -130,7 +130,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
-  onSubmit() {
+  onSubmit(addNewMode: boolean) {
     if (this.projectForm.valid) {
       this.spinner.show();
       if (this.isEdit && this.currentProjectId) {
@@ -157,7 +157,14 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
               this.projectForm.reset();
               this.spinner.hide();
               this.toastr.success(res?.message);
-              this.router.navigate(['/projects'], { queryParams: { page: this.page } });
+              // this.router.navigate(['/projects'], { queryParams: { page: this.page } });
+              if (addNewMode) {
+                debugger;
+                this.resetForm();
+              } else {
+                debugger;
+                this.router.navigate(['/projects'], { queryParams: { page: this.page } });
+              }
             } else {
               this.spinner.hide();
               this.toastr.error(res?.message);
@@ -273,5 +280,26 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  // Reset Form
+  resetForm(): void {
+    this.projectForm.reset({ category: '', showOnResume: false });
+
+    // Reset Description array
+    this.descArray.clear();
+    this.descArray.push(
+      this.fb.control('', Validators.required)
+    );
+
+    // Reset Tools array
+    this.toolsArray.clear();
+    this.toolsArray.push(
+      this.fb.control('', Validators.required)
+    );
+
+    // Optional: reset validation state
+    this.projectForm.markAsPristine();
+    this.projectForm.markAsUntouched();
   }
 }

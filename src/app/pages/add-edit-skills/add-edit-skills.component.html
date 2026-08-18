@@ -7,7 +7,7 @@
 		</div>
 
 		<div class="card-body p-4 p-md-5">
-			<form [formGroup]="skillForm" (ngSubmit)="onSubmit()">
+			<form [formGroup]="skillForm">
 				<div class="row g-4">
 					<div class="col-md-4">
 						<label class="form-label fw-bold">Skill Name</label>
@@ -75,11 +75,23 @@
 
 				</div>
 
-				<div class="mt-5 d-flex gap-3">
+				<!-- <div class="mt-5 d-flex gap-3">
 					<button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow">{{ isEdit ? 'Update' : 'Save'
 						}}</button>
 					<a [routerLink]="['/skills']" [queryParams]="{ page: page }" class="btn btn-light px-5 py-2 fw-bold border">Cancel</a>
-				</div>
+				</div> -->
+				<!-- Footer Buttons -->
+                <div class="mt-5 d-flex justify-content-center align-items-center gap-2">
+                    <button type="button" class="btn btn-primary px-3 rounded-3" (click)="onSubmit(false)">
+                        {{ isEdit ? 'Update' : 'Save' }}
+                    </button>
+                    @if(!isEdit){
+                        <button type="button" class="btn btn-outline-primary px-3 rounded-3" (click)="onSubmit(true)">
+                            Save & Add New
+                        </button>
+                    }
+                    <a [routerLink]="['/skills']" [queryParams]="{ page: page }" class="btn btn-light px-3 rounded-3 border">Cancel</a>
+                </div>
 			</form>
 		</div>
 	</div>

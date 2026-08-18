@@ -100,7 +100,7 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
-  onSubmit() {
+  onSubmit(addNewMode: boolean) {
     if (this.skillForm.valid) {
       this.spinner.show();
       const payload = this.skillForm.value;
@@ -126,8 +126,15 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             if (res?.success) {
               this.toastr.success(res?.message || 'Skill added');
-              this.skillForm.reset({ level: 50, color: '#0d6efd' });
-              this.router.navigate(['/skills'], { queryParams: { page: this.page } });
+              // this.skillForm.reset({ level: 50, color: '#0d6efd' });
+              // this.router.navigate(['/skills'], { queryParams: { page: this.page } });
+              if (addNewMode) {
+                debugger;
+                this.resetForm();
+              } else {
+                debugger;
+                this.router.navigate(['/skills'], { queryParams: { page: this.page } });
+              }
             } else {
               this.toastr.error(res?.message);
             }
@@ -242,5 +249,13 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  resetForm(): void {
+    this.skillForm.reset({ category: '', level: 50, color: '#0d6efd' });
+
+    // Optional: reset validation state
+    this.skillForm.markAsPristine();
+    this.skillForm.markAsUntouched();
   }
 }
