@@ -88,6 +88,7 @@ export class ContactComponent implements OnInit, OnDestroy {
         next: (res: any) => {
           if (res.success) {
             this.toastr.success(res.message);
+            this.loadContact();
           }
           this.spinner.hide();
           // this.editableFields = !this.editableFields;
