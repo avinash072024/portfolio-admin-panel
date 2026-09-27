@@ -37,7 +37,7 @@ export class EmailComponent implements OnInit, OnDestroy {
   total: number = 0;
   totalPages: number = 1;
   
-  emailService = inject(EmailService);
+  // emailService = inject(EmailService);
   avatarService = inject(AvatarService);
   themeService = inject(ThemeService);
   toastr = inject(ToastrService);
@@ -86,30 +86,30 @@ export class EmailComponent implements OnInit, OnDestroy {
     document.body.style.overflow = '';
   }
 
-  confirmBulkDelete(): void {
-    this.toastr.clear();
-    this.spinner.show();
-    const ids = Array.from(this.selectedIds);
-    this.emailService.deleteMultipleEmails(ids).subscribe({
-      next: (res: any) => {
-        if (res?.success) {
-          this.closeBulkDeleteModal();
-          this.selectedIds.clear();
-          this.page = 1;
-          this.getEmails();
-          this.spinner.hide();
-          this.toastr.success(res?.message);
-        } else {
-          this.spinner.hide();
-          this.toastr.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.spinner.hide();
-        this.toastr.error(err?.error?.message || err?.message);
-      }
-    });
-  }
+  // confirmBulkDelete(): void {
+  //   this.toastr.clear();
+  //   this.spinner.show();
+  //   const ids = Array.from(this.selectedIds);
+  //   this.emailService.deleteMultipleEmails(ids).subscribe({
+  //     next: (res: any) => {
+  //       if (res?.success) {
+  //         this.closeBulkDeleteModal();
+  //         this.selectedIds.clear();
+  //         this.page = 1;
+  //         this.getEmails();
+  //         this.spinner.hide();
+  //         this.toastr.success(res?.message);
+  //       } else {
+  //         this.spinner.hide();
+  //         this.toastr.error(res?.message);
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.spinner.hide();
+  //       this.toastr.error(err?.error?.message || err?.message);
+  //     }
+  //   });
+  // }
 
   onSearch(): void {
     this.searchSubject.next(this.searchTerm);
@@ -118,20 +118,20 @@ export class EmailComponent implements OnInit, OnDestroy {
   clearSearch(): void {
     this.searchTerm = '';
     this.page = 1;
-    this.getEmails();
+    // this.getEmails();
   }
   
   ngOnInit(): void {
-    this.getEmails();
-    this.subscribeToSocketUpdates();
+    // this.getEmails();
+    // this.subscribeToSocketUpdates();
     
-    this.searchSubject.pipe(
-      debounceTime(500),
-      distinctUntilChanged()
-    ).subscribe(() => {
-      this.page = 1;
-      this.getEmails();
-    });
+    // this.searchSubject.pipe(
+    //   debounceTime(500),
+    //   distinctUntilChanged()
+    // ).subscribe(() => {
+    //   this.page = 1;
+    //   this.getEmails();
+    // });
   }
 
   ngOnDestroy(): void {
@@ -139,43 +139,43 @@ export class EmailComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getEmails(silent: boolean = false): void {
-    if (!silent) {
-      this.spinner.show();
-      this.selectedIds.clear();
-    }
-    this.emailService.getAllEmail(this.page, this.limit, this.searchTerm).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.emails = res?.email || [];
-          this.page = res.page || this.page;
-          this.limit = res.limit || this.limit;
-          this.total = res.total || 0;
-          this.totalPages = res.totalPages || Math.max(1, Math.ceil(this.total / this.limit));
-          this.spinner.hide();
-        } else {
-          this.spinner.hide();
-          this.toastr.error("Error fetching emails");
-        }
-      },
-      error: (err: any) => {
-        this.spinner.hide();
-        this.toastr.error(err.message);
-      },
-    });
-  }
+  // getEmails(silent: boolean = false): void {
+  //   if (!silent) {
+  //     this.spinner.show();
+  //     this.selectedIds.clear();
+  //   }
+  //   this.emailService.getAllEmail(this.page, this.limit, this.searchTerm).subscribe({
+  //     next: (res: any) => {
+  //       if (res.success) {
+  //         this.emails = res?.email || [];
+  //         this.page = res.page || this.page;
+  //         this.limit = res.limit || this.limit;
+  //         this.total = res.total || 0;
+  //         this.totalPages = res.totalPages || Math.max(1, Math.ceil(this.total / this.limit));
+  //         this.spinner.hide();
+  //       } else {
+  //         this.spinner.hide();
+  //         this.toastr.error("Error fetching emails");
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.spinner.hide();
+  //       this.toastr.error(err.message);
+  //     },
+  //   });
+  // }
 
   changePage(newPage: number) {
     if (newPage < 1 || newPage > this.totalPages || newPage === this.page) return;
     this.page = newPage;
-    this.getEmails();
+    // this.getEmails();
   }
 
   setLimit(newLimit: number) {
     if (newLimit === this.limit) return;
     this.limit = newLimit;
     this.page = 1;
-    this.getEmails();
+    // this.getEmails();
   }
 
   get pages(): number[] {
@@ -196,35 +196,35 @@ export class EmailComponent implements OnInit, OnDestroy {
     document.body.style.overflow = '';
   }
 
-  confirmDelete() {
-    this.toastr.clear();
-    this.spinner.show();
-    this.emailService.deleteEmail(this.deletingEmailId).subscribe({
-      next: (res: any) => {
-        if (res?.success) {
-          this.closeDeleteModal();
-          this.page = 1; // resetting to page 1 to avoid empty page lists after delete if it was the last item
-          this.getEmails();
-          this.spinner.hide();
-          this.toastr.success(res?.message);
-        } else {
-          this.spinner.hide();
-          this.toastr.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.spinner.hide();
-        this.toastr.error(err?.message);
-      }
-    });
-  }
+  // confirmDelete() {
+  //   this.toastr.clear();
+  //   this.spinner.show();
+  //   this.emailService.deleteEmail(this.deletingEmailId).subscribe({
+  //     next: (res: any) => {
+  //       if (res?.success) {
+  //         this.closeDeleteModal();
+  //         this.page = 1; // resetting to page 1 to avoid empty page lists after delete if it was the last item
+  //         this.getEmails();
+  //         this.spinner.hide();
+  //         this.toastr.success(res?.message);
+  //       } else {
+  //         this.spinner.hide();
+  //         this.toastr.error(res?.message);
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.spinner.hide();
+  //       this.toastr.error(err?.message);
+  //     }
+  //   });
+  // }
 
-  private subscribeToSocketUpdates(): void {
-    this.socketService
-      .onRefreshOrDataUpdated(['email', 'emails'])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getEmails(true);
-      });
-  }
+  // private subscribeToSocketUpdates(): void {
+  //   this.socketService
+  //     .onRefreshOrDataUpdated(['email', 'emails'])
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe(() => {
+  //       this.getEmails(true);
+  //     });
+  // }
 }

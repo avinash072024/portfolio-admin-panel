@@ -16,7 +16,7 @@ import { ServicesComponent } from './pages/services/services.component';
 import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-services.component';
 import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
-import { EmailComponent } from './pages/email/email.component';
+// import { EmailComponent } from './pages/email/email.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const routes: Routes = [
@@ -110,11 +110,11 @@ export const routes: Routes = [
                 component: FeedbackComponent,
                 title: `Feedback | ${Constants.APP_NAME}`
             },
-            {
-                path: 'email',
-                component: EmailComponent,
-                title: `Email | ${Constants.APP_NAME}`
-            },
+            // {
+            //     path: 'email',
+            //     component: EmailComponent,
+            //     title: `Email | ${Constants.APP_NAME}`
+            // },
             {
                 path: 'reset-password',
                 component: ResetPasswordComponent,

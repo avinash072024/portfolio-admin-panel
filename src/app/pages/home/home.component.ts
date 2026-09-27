@@ -37,14 +37,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   visitors: any[] = [];
   feedbacks: any[] = [];
-  emails: any[] = [];
+  // emails: any[] = [];
   visitorService = inject(VisitorService);
   projectService = inject(ProjectsService);
   skillsService = inject(SkillsService);
   feedbackService = inject(FeedbackService);
   avatarService = inject(AvatarService);
   socketService = inject(SocketService);
-  emailService = inject(EmailService);
+  // emailService = inject(EmailService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   private destroy$ = new Subject<void>();
@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   skillCount: number = 0;
   visitorCount: number = 0;
   feedbackCount: number = 0;
-  emailCount: number = 0;
+  // emailCount: number = 0;
   projectCount: number = 0;
 
   ngOnInit() {
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       projects: this.projectService.getProjects(),
       skills: this.skillsService.getSkills(),
       feedbacks: this.feedbackService.getAllFeedbacks(),
-      emails: this.emailService.getAllEmail()
+      // emails: this.emailService.getAllEmail()
     }).subscribe({
       next: (res: any) => {
         // 2. Hide the spinner once everything completes successfully
@@ -133,12 +133,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // --- Handle Emails Data ---
-        if (res.emails?.success && res.emails?.email) {
-          this.emails = res.emails.email || [];
-          this.emailCount = res.emails?.total || 0;
-        } else {
-          this.toastr.error(res.emails?.message || 'Failed to load emails');
-        }
+        // if (res.emails?.success && res.emails?.email) {
+        //   this.emails = res.emails.email || [];
+        //   this.emailCount = res.emails?.total || 0;
+        // } else {
+        //   this.toastr.error(res.emails?.message || 'Failed to load emails');
+        // }
       },
       error: (err: any) => {
         if (!silent) {
