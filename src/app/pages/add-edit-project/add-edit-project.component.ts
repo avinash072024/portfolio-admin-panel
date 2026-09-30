@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CapitalizeDirective } from '../../directives/capitalize.directive';
+import { Constants } from '../../models/constants';
 
 @Component({
   selector: 'app-add-edit-project',
@@ -34,6 +35,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   isCategoryEdit: boolean = false;
   categoryEditId: string | null = null;
   categoryToDelete: any = null;
+  projecImageUrl: string = Constants.PROJECT_IMAGE_URL;
 
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
@@ -105,6 +107,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       link: project.link || '',
       showOnResume: project.showOnResume ?? false
     });
+    this.projecImageUrl = project.image || Constants.PROJECT_IMAGE_URL;
 
     // populate desc array
     const descArr = this.projectForm.get('desc') as FormArray;
@@ -132,10 +135,13 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(addNewMode: boolean) {
+    debugger;
     if (this.projectForm.valid) {
+      let formValue: any = this.projectForm.value;
+      formValue.image = this.projecImageUrl;
       this.spinner.show();
       if (this.isEdit && this.currentProjectId) {
-        this.projectService.updateProject(this.currentProjectId, this.projectForm.value).subscribe({
+        this.projectService.updateProject(this.currentProjectId, formValue).subscribe({
           next: (res: any) => {
             if (res?.success) {
               this.spinner.hide();
@@ -152,7 +158,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        this.projectService.addProject(this.projectForm.value).subscribe({
+        this.projectService.addProject(formValue).subscribe({
           next: (res: any) => {
             if (res?.success) {
               this.projectForm.reset();
@@ -160,10 +166,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
               this.toastr.success(res?.message);
               // this.router.navigate(['/projects'], { queryParams: { page: this.page } });
               if (addNewMode) {
-                debugger;
                 this.resetForm();
               } else {
-                debugger;
                 this.router.navigate(['/projects'], { queryParams: { page: this.page } });
               }
             } else {
@@ -286,6 +290,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   // Reset Form
   resetForm(): void {
     this.projectForm.reset({ category: '', showOnResume: false });
+    this.projecImageUrl = Constants.PROJECT_IMAGE_URL;
 
     // Reset Description array
     this.descArray.clear();
@@ -302,5 +307,14 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
     // Optional: reset validation state
     this.projectForm.markAsPristine();
     this.projectForm.markAsUntouched();
+  }
+
+  onInputChange(event: any) {
+    let value = event.target.value;
+    if(value) {
+      this.projecImageUrl = value;
+    } else {
+      this.projecImageUrl = Constants.PROJECT_IMAGE_URL;
+    }
   }
 }
