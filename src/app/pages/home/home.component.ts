@@ -25,7 +25,8 @@ import { SocketService } from '../../services/socket/socket.service';
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('trafficChart') trafficChartCanvas!: ElementRef<HTMLCanvasElement>;
   chart: Chart | undefined;
-  allVisitorsForChart: any[] = [];
+  visitorChartDates: string[] = [];
+  visitorChartCounts: number[] = [];
   themeService = inject(ThemeService);
   // Analytics Data
   stats = [
@@ -55,10 +56,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.themeService.theme(); // track theme change
       this.themeService.skin();  // track skin change
       
-      if (this.allVisitorsForChart.length > 0) {
+      if (this.visitorChartDates.length > 0) {
         // Wait a small bit for CSS transitions/variables to update in DOM
         setTimeout(() => {
-          this.initChart(this.allVisitorsForChart);
+          this.initChart(this.visitorChartDates, this.visitorChartCounts);
         }, 100);
       }
     });
@@ -89,8 +90,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.spinner.show();
     }
 
+    const chartDates = this.getLast7Days();
+
     forkJoin({
-      visitors: this.visitorService.getAllVisitors(1, 100), // Get last 100 visitors for the chart
+      visitors: this.visitorService.getAllVisitors(1, 5),
+      visitorDailyCounts: forkJoin(chartDates.map(date => this.visitorService.getVisitorsByDate(date))),
       projects: this.projectService.getProjects(),
       skills: this.skillsService.getSkills(),
       feedbacks: this.feedbackService.getAllFeedbacks(),
@@ -102,12 +106,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // --- Handle Visitors Data ---
         if (res.visitors?.success && res.visitors?.Visitors) {
-          this.visitors = (res.visitors.Visitors || []).slice(0, 5); // Keep only 5 for the table
+          this.visitors = res.visitors.Visitors || [];
           this.visitorCount = res.visitors?.total || 0;
-          this.allVisitorsForChart = res.visitors.Visitors || [];
-          this.initChart(this.allVisitorsForChart);
         } else {
           this.toastr.error(res.visitors?.message);
+        }
+
+        if (res.visitorDailyCounts?.every((daily: any) => daily?.success)) {
+          this.visitorChartDates = chartDates;
+          this.visitorChartCounts = res.visitorDailyCounts.map((daily: any) => daily.total ?? daily.Visitors?.length ?? 0);
+          this.initChart(this.visitorChartDates, this.visitorChartCounts);
+        } else {
+          this.toastr.error('Failed to load visitor chart data');
         }
 
         // --- Handle Projects Data ---
@@ -152,7 +162,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  initChart(allVisitors: any[]): void {
+  private getLast7Days(): string[] {
+    const toLocalDateStr = (date: Date): string => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    return Array.from({ length: 7 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (6 - i));
+      return toLocalDateStr(date);
+    });
+  }
+
+  initChart(chartDates: string[], counts: number[]): void {
     if (!this.trafficChartCanvas) return;
 
     const ctx = this.trafficChartCanvas.nativeElement.getContext('2d');
@@ -169,37 +194,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const tooltipBg = isDark ? '#2b3035' : '#fff';
     const tooltipText = isDark ? '#f8f9fa' : '#333';
 
-    // Helper to format a Date as YYYY-MM-DD in local timezone
-    const toLocalDateStr = (d: Date): string => {
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-
-    // Process data for the last 7 days (using local timezone)
-    const last7Days = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      return toLocalDateStr(d);
-    }).reverse();
-
-    const dataMap = new Map<string, number>();
-    last7Days.forEach(day => dataMap.set(day, 0));
-
-    allVisitors.forEach(v => {
-      const date = toLocalDateStr(new Date(v.createdAt));
-      if (dataMap.has(date)) {
-        dataMap.set(date, (dataMap.get(date) || 0) + 1);
-      }
-    });
-
-    const labels = last7Days.map(day => {
+    const labels = chartDates.map(day => {
       const [y, m, d] = day.split('-').map(Number);
       const date = new Date(y, m - 1, d);
       return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     });
-    const counts = last7Days.map(day => dataMap.get(day) || 0);
 
     if (this.chart) {
       this.chart.destroy();
