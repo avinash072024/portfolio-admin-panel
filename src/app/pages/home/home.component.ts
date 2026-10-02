@@ -15,6 +15,7 @@ import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { SocketService } from '../../services/socket/socket.service';
+import { ServicesService } from '../../services/service/services.service';
 
 @Component({
   selector: 'app-home',
@@ -28,24 +29,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   visitorChartDates: string[] = [];
   visitorChartCounts: number[] = [];
   themeService = inject(ThemeService);
-  // Analytics Data
-  stats = [
-    { label: 'Total Projects', count: 42, icon: 'bi-kanban', color: 'primary' },
-    { label: 'Skills Mastered', count: 18, icon: 'bi-award', color: 'success' },
-    { label: 'Site Visitors', count: 1250, icon: 'bi-people', color: 'info' },
-    { label: 'Resume Downloads', count: 89, icon: 'bi-cloud-download', color: 'warning' }
-  ];
-
+  
   visitors: any[] = [];
   feedbacks: any[] = [];
-  // emails: any[] = [];
   visitorService = inject(VisitorService);
   projectService = inject(ProjectsService);
   skillsService = inject(SkillsService);
   feedbackService = inject(FeedbackService);
+  serviceService = inject(ServicesService);
   avatarService = inject(AvatarService);
   socketService = inject(SocketService);
-  // emailService = inject(EmailService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   private destroy$ = new Subject<void>();
@@ -67,8 +60,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   skillCount: number = 0;
   visitorCount: number = 0;
   feedbackCount: number = 0;
-  // emailCount: number = 0;
   projectCount: number = 0;
+  serviceCount: number = 0;
 
   ngOnInit() {
     AOS.init({ duration: 1000, once: true });
@@ -98,7 +91,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       projects: this.projectService.getProjects(),
       skills: this.skillsService.getSkills(),
       feedbacks: this.feedbackService.getAllFeedbacks(),
-      // emails: this.emailService.getAllEmail()
+      services: this.serviceService.getServices()
     }).subscribe({
       next: (res: any) => {
         // 2. Hide the spinner once everything completes successfully
@@ -142,13 +135,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
         }
 
-        // --- Handle Emails Data ---
-        // if (res.emails?.success && res.emails?.email) {
-        //   this.emails = res.emails.email || [];
-        //   this.emailCount = res.emails?.total || 0;
-        // } else {
-        //   this.toastr.error(res.emails?.message || 'Failed to load emails');
-        // }
+        // --- Handle Services Data ---
+        if (res.services?.success && res.services?.services) {
+          this.serviceCount = res.services?.total || 0;
+        } else {
+          this.toastr.error(res.services?.message || 'Failed to load services');
+        }
       },
       error: (err: any) => {
         if (!silent) {
