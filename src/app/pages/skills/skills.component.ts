@@ -16,6 +16,7 @@ export interface Skill {
   icon: string;
   level: number;
   color: string;
+  isActive: boolean;
   category: string;
 }
 
@@ -257,5 +258,26 @@ export class SkillsComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  updateSkillStatus(skill: Skill): void {
+      this.toastr.clear();
+      const isActive = skill.isActive === false;
+      this.spinner.show();
+      this.skillsService.updateSkill(skill._id, { ...skill, isActive }).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res?.success) {
+            this.getSkills(true);
+            this.toastr.success(res?.message);
+          } else {
+            this.toastr.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || err?.message);
+        }
+      });
+    }
 
 }

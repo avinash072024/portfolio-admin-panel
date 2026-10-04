@@ -26,7 +26,7 @@ export class SkillsService {
   }
 
   getAllSkills(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
-    let url = `${environment.apiUrl}/skills`;
+    let url = `${environment.apiUrl}/skills/all`;
     let params = `?page=${page}&limit=${limit}`;
     if (search) {
       params += `&search=${encodeURIComponent(search)}`;
