@@ -43,6 +43,7 @@
 									(change)="toggleSelectAll()" title="Select all on this page">
 							</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Service</th>
+							<th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Key Features</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
@@ -69,7 +70,15 @@
 									</div>
 								</div>
 							</td>
-
+							<td class="text-center">
+                                <button type="button" class="btn btn-sm rounded-pill px-3"
+                                    [ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
+                                    (click)="updateServiceStatus(s)"
+                                    [attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title"
+                                    [title]="s.isActive === false ? 'Activate service' : 'Deactivate service'">
+                                    {{ s.isActive === false ? 'Inactive' : 'Active' }}
+                                </button>
+                            </td>
 							<td>
 								<div class="text-muted small text-truncate" [title]="s.description" style="max-width: 400px;">
 									{{ s.description }}

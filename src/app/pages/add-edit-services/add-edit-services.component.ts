@@ -33,7 +33,8 @@ export class AddEditServicesComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3)]],
       icon: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      features: this.fb.array([this.fb.control('', Validators.required)])
+      features: this.fb.array([this.fb.control('', Validators.required)]),
+      isActive: [true]
     });
 
     this.route.paramMap.subscribe(params => {
@@ -68,7 +69,8 @@ export class AddEditServicesComponent implements OnInit {
     this.serviceForm.patchValue({
       title: service.title || '',
       icon: service.icon || '',
-      description: service.description || ''
+      description: service.description || '',
+      isActive: service.isActive !== undefined ? service.isActive : true
     });
 
     const featuresArr = this.featuresArray;

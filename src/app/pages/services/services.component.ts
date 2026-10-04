@@ -16,6 +16,7 @@ export interface Service {
   icon: string;
   description: string;
   features: string[];
+  isActive: boolean;
 }
 
 @Component({
@@ -231,5 +232,26 @@ export class ServicesComponent implements OnInit, OnDestroy {
         this.toastr.error(err?.message);
       }
     })
+  }
+
+  updateServiceStatus(service: Service): void {
+    this.toastr.clear();
+    const isActive = service.isActive === false;
+    this.spinner.show();
+    this.servicesService.updateService(service._id, { ...service, isActive }).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.getServices(true);
+          this.toastr.success(res?.message);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
   }
 }

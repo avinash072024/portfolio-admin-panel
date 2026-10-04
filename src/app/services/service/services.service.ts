@@ -14,7 +14,7 @@ export class ServicesService {
 
   // GET /api/services
   getServices(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
-    let url = `${environment.apiUrl}/services`;
+    let url = `${environment.apiUrl}/services/all`;
     let params = `?page=${page}&limit=${limit}`;
     if (search) {
       params += `&search=${encodeURIComponent(search)}`;
