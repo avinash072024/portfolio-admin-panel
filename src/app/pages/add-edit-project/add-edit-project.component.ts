@@ -35,7 +35,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   isCategoryEdit: boolean = false;
   categoryEditId: string | null = null;
   categoryToDelete: any = null;
-  projecImageUrl: string = Constants.PROJECT_IMAGE_URL;
+  projectImageUrl: string = Constants.PROJECT_IMAGE_URL;
 
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
@@ -51,9 +51,10 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       completedYear: ['', Validators.required],
       image: [''],
       link: [''],
-      showOnResume: [false], // Added here
       desc: this.fb.array([this.fb.control('', Validators.required)]),
-      tools: this.fb.array([this.fb.control('', Validators.required)])
+      tools: this.fb.array([this.fb.control('', Validators.required)]),
+      showOnResume: [false], // Added here
+      isActive: [true] // Added here
     });
 
     // Check for route param to determine edit mode
@@ -105,9 +106,10 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       completedYear: project.completedYear || '',
       image: project.image || '',
       link: project.link || '',
-      showOnResume: project.showOnResume ?? false
+      showOnResume: project.showOnResume ?? false,
+      isActive: project.isActive ?? true
     });
-    this.projecImageUrl = project.image || Constants.PROJECT_IMAGE_URL;
+    this.projectImageUrl = project.image || Constants.PROJECT_IMAGE_URL;
 
     // populate desc array
     const descArr = this.projectForm.get('desc') as FormArray;
@@ -138,7 +140,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
     debugger;
     if (this.projectForm.valid) {
       let formValue: any = this.projectForm.value;
-      formValue.image = this.projecImageUrl;
+      formValue.image = this.projectImageUrl;
       this.spinner.show();
       if (this.isEdit && this.currentProjectId) {
         this.projectService.updateProject(this.currentProjectId, formValue).subscribe({
@@ -290,7 +292,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   // Reset Form
   resetForm(): void {
     this.projectForm.reset({ category: '', showOnResume: false });
-    this.projecImageUrl = Constants.PROJECT_IMAGE_URL;
+    this.projectImageUrl = Constants.PROJECT_IMAGE_URL;
 
     // Reset Description array
     this.descArray.clear();
@@ -312,9 +314,9 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   onInputChange(event: any) {
     let value = event.target.value;
     if(value) {
-      this.projecImageUrl = value;
+      this.projectImageUrl = value;
     } else {
-      this.projecImageUrl = Constants.PROJECT_IMAGE_URL;
+      this.projectImageUrl = Constants.PROJECT_IMAGE_URL;
     }
   }
 }

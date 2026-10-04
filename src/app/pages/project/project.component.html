@@ -43,6 +43,7 @@
                                     (change)="toggleSelectAll()" title="Select all on this page">
                             </th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Project</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-center">On&nbsp;Resume</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-center">Category</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Technology&nbsp;Stack</th>
@@ -71,6 +72,15 @@
                                         </div>
                                     </div>
                                 </div>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm rounded-pill px-3"
+                                    [ngClass]="project.isActive === false ? 'btn-secondary' : 'btn-primary'"
+                                    (click)="updateProjectStatus(project)"
+                                    [attr.aria-label]="(project.isActive === false ? 'Activate ' : 'Deactivate ') + project.title"
+                                    [title]="project.isActive === false ? 'Activate project' : 'Deactivate project'">
+                                    {{ project.isActive === false ? 'Inactive' : 'Active' }}
+                                </button>
                             </td>
                             <td class="text-center">
                                 <span class="badge rounded-pill px-3" [ngClass]="project.showOnResume ? 'bg-primary': 'bg-secondary'">
@@ -116,7 +126,7 @@
                         </tr>
                         } -->
                         <tr *ngIf="!projects.length">
-							<td colspan="7" class="text-center py-5">
+                            <td colspan="8" class="text-center py-5">
 								<div class="text-muted">
 									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
 									<span *ngIf="searchTerm">No projects matching "<strong>{{searchTerm}}</strong>"</span>

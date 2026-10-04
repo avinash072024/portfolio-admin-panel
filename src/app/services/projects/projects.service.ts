@@ -26,7 +26,7 @@ export class ProjectsService {
   }
 
   getAllProjects(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
-    let url = `${environment.apiUrl}/projects`;
+    let url = `${environment.apiUrl}/projects/all`;
     let params = `?page=${page}&limit=${limit}`;
     if (search) {
       params += `&search=${encodeURIComponent(search)}`;
@@ -63,6 +63,20 @@ export class ProjectsService {
       tap(() => this.invalidateCache())
     );
   }
+
+  updateProjectStatus(id: string, isActive: boolean): Observable<any> {
+    return this.http.patch(`${environment.apiUrl}/projects/${id}/status`, { isActive }).pipe(
+      tap(() => this.invalidateCache())
+    );
+  }
+
+  updateMultipleProjectsStatus(ids: string[], isActive: boolean): Observable<any> {
+    return this.http.patch(`${environment.apiUrl}/projects/bulk/status`, { ids, isActive }).pipe(
+      tap(() => this.invalidateCache())
+    );
+  }
+
+
 
 
 

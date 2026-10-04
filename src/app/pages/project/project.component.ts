@@ -19,7 +19,8 @@ interface Project {
   image?: string;
   tools: string[];
   link?: string;
-  showOnResume: Boolean
+  showOnResume: boolean;
+  isActive?: boolean;
 }
 
 @Component({
@@ -50,6 +51,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   // Bulk delete
   selectedIds: Set<string> = new Set();
   showBulkDeleteModal: boolean = false;
+  bulkStatusToSet = false;
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
   socketService = inject(SocketService);
@@ -202,6 +204,27 @@ export class ProjectComponent implements OnInit, OnDestroy {
     } else {
       this.selectedIds.add(id);
     }
+  }
+
+  updateProjectStatus(project: Project): void {
+    this.toastr.clear();
+    const isActive = project.isActive === false;
+    this.spinner.show();
+    this.projectService.updateProjectStatus(project._id, isActive).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.getProjects(true);
+          this.toastr.success(res?.message);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
   }
 
   openBulkDeleteModal(): void {
