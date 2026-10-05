@@ -108,7 +108,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       error: (err: any) => {
         // this.toasterService.showError(err.message)
         this.spinner.hide();
-        this.toastr.error(err.message);
+        // this.toastr.error(err.message);
+        this.toastr.error(err?.error?.message || 'Failed to load projects');
       },
     })
   }

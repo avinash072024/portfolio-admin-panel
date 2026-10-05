@@ -1,177 +1,200 @@
-<div class="settings-page container py-4 my-5">
-	<div class="page-header mt-5 mb-3 d-flex justify-content-between align-items-center">
-		<div>
-			<div class="d-flex align-items-center gap-3">
-				<h2 class="fw-bold mb-1">About</h2>
-			</div>
-			<p class="text-secondary mb-0">Manage your profile data and resume uploads</p>
-		</div>
-	</div>
+<div class="container py-5 mt-5" data-aos="fade-up">
+    <section class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden"
+        aria-labelledby="education-heading">
+        <header class="card-header bg-transparent border-1 border-primary py-3 px-3">
+            <div class="row g-2 g-md-3 align-items-center">
+                <div class="col-7 col-md-8 order-1">
+                    <h5 id="education-heading" class="fw-bold mb-0 text-truncate">Education <span
+                            class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">{{ educations.length }}</span></h5>
+                    <p class="text-muted small mb-0 d-none d-md-block">Manage your education history</p>
+                </div>
+                <div class="col-5 col-md-4 order-2 text-end">
+                    <a routerLink="/about/education/add" class="btn btn-primary rounded-3 px-3"><i
+                            class="bi bi-plus-lg me-1"></i><span>New</span></a>
+                </div>
+            </div>
+        </header>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light-subtle">
+                        <tr>
+                            <th class="ps-4 py-3 selection-column"><input type="checkbox" class="form-check-input"
+                                    aria-label="Select all education entries" [checked]="allEducationSelected"
+                                    [indeterminate]="selectedEducationIds.size > 0 && !allEducationSelected"
+                                    (change)="toggleAll('education')" title="Select all education entries"></th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Title</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Institution</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Duration</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (record of educations; track getRecordId(record) || $index) {
+                        <tr [class.table-active]="selectedEducationIds.has(getRecordId(record))">
+                            <td class="ps-4"><input type="checkbox" class="form-check-input"
+                                    [checked]="selectedEducationIds.has(getRecordId(record))"
+                                    [disabled]="!getRecordId(record)" [attr.aria-label]="'Select ' + record.title"
+                                    (change)="toggleRecord('education', getRecordId(record))"></td>
+                            <td class="fw-bold text-body description-cell w-25 text-truncate">{{ record.title }}</td>
+                            <td class="description-cell w-25 text-truncate" [title]="record.institution">{{ record.institution }}</td>
+                            <td class="text-nowrap">{{ record.duration }}</td>
+                            <td class="description-cell w-25 text-truncate text-muted small">{{ record.description || '—' }}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm rounded-pill px-3"
+                                    [ngClass]="record.isActive === false ? 'btn-secondary' : 'btn-primary'"
+                                    (click)="updateEducationStatus(record)"
+                                    [attr.aria-label]="(record.isActive === false ? 'Activate ' : 'Deactivate ') + record.title"
+                                    [title]="record.isActive === false ? 'Activate record' : 'Deactivate record'">
+                                    {{ record.isActive === false ? 'Inactive' : 'Active' }}
+                                </button>
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2"><button class="btn btn-action-edit"
+                                        type="button" title="Edit education entry"
+                                        (click)="edit('education', record)"><i class="bi bi-pencil"></i></button><button
+                                        class="btn btn-action-delete" type="button" title="Delete education entry"
+                                        (click)="openDeleteModal('education', record)"><i
+                                            class="bi bi-trash3"></i></button></div>
+                            </td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="text-muted"><i class="bi bi-mortarboard fs-1 d-block mb-2 opacity-25"></i>No
+                                    education records found. Please add education.</div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    @if (selectedEducationIds.size > 0) {
+    <div class="container mb-4 mt-3">
+        <div class="d-flex justify-content-center align-items-center"><button
+                class="btn btn-danger d-flex align-items-center gap-2" type="button"
+                (click)="openBulkDeleteModal('education')" title="Delete selected education entries"><i
+                    class="bi bi-trash3"></i>Delete Selected<span class="badge bg-white text-danger ms-1">{{
+                    selectedEducationIds.size }}</span></button></div>
+    </div>
+    }
 
-	<div class="row g-4">
-		<div class="col-lg-6">
-			<!-- Education Card -->
-			<div class="card shadow border-1 border-primary rounded-4 h-100">
-				<div class="card-header bg-transparent border-1 border-primary py-3">
-					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="mb-0"><i class="fa-solid fa-graduation-cap text-primary"></i> Education</h5>
-						<div class="text-muted small">Add or edit entries</div>
-					</div>
-					<!-- confirm modal -->
-					<app-confirm-modal></app-confirm-modal>
-				</div>
-				<div class="card-body">
-					<form [formGroup]="educationForm" (ngSubmit)="saveEducation()" class="row g-2 mb-3 align-items-end">
-						<div class="col-12 col-md-4">
-							<label class="form-label small mb-1">Title</label>
-							<input class="form-control"
-								[class.is-invalid]="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
-								formControlName="title" placeholder="e.g. B.Sc. Computer Science" appCapitalize="space" />
-							<div *ngIf="educationForm.get('title')?.invalid && (educationForm.get('title')?.touched || educationForm.get('title')?.dirty)"
-								class="invalid-feedback d-block small">
-								Title is required.
-							</div>
-						</div>
-						<div class="col-12 col-md-4">
-							<label class="form-label small mb-1">Institution</label>
-							<input class="form-control"
-								[class.is-invalid]="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
-								formControlName="institution" placeholder="University / College" appCapitalize="space" />
-							<div *ngIf="educationForm.get('institution')?.invalid && (educationForm.get('institution')?.touched || educationForm.get('institution')?.dirty)"
-								class="invalid-feedback d-block small">
-								Institution is required.
-							</div>
-						</div>
-						<div class="col-12 col-md-4">
-							<label class="form-label small mb-1">Duration</label>
-							<input class="form-control"
-								[class.is-invalid]="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
-								formControlName="duration" placeholder="2018 - 2022" appCapitalize="space" />
-							<div *ngIf="educationForm.get('duration')?.invalid && (educationForm.get('duration')?.touched || educationForm.get('duration')?.dirty)"
-								class="invalid-feedback d-block small">
-								Duration is required.
-							</div>
-						</div>
+    <section class="card border-1 border-primary shadow rounded-4 mt-4 overflow-hidden"
+        aria-labelledby="experience-heading">
+        <header class="card-header bg-transparent border-1 border-primary py-3 px-3">
+            <div class="row g-2 g-md-3 align-items-center">
+                <div class="col-7 col-md-8 order-1">
+                    <h5 id="experience-heading" class="fw-bold mb-0 text-truncate">Experience <span
+                            class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">{{ experiences.length }}</span></h5>
+                    <p class="text-muted small mb-0 d-none d-md-block">Manage your professional experience</p>
+                </div>
+                <div class="col-5 col-md-4 order-2 text-end">
+                    <a routerLink="/about/experience/add" class="btn btn-primary rounded-3 px-3"><i
+                            class="bi bi-plus-lg me-1"></i><span>New</span></a>
+                </div>
+            </div>
+        </header>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light-subtle">
+                        <tr>
+                            <th class="ps-4 py-3 selection-column"><input type="checkbox" class="form-check-input"
+                                    aria-label="Select all experience entries" [checked]="allExperienceSelected"
+                                    [indeterminate]="selectedExperienceIds.size > 0 && !allExperienceSelected"
+                                    (change)="toggleAll('experience')" title="Select all experience entries"></th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Title</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Company</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Duration</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (record of experiences; track getRecordId(record) || $index) {
+                        <tr [class.table-active]="selectedExperienceIds.has(getRecordId(record))">
+                            <td class="ps-4"><input type="checkbox" class="form-check-input"
+                                    [checked]="selectedExperienceIds.has(getRecordId(record))"
+                                    [disabled]="!getRecordId(record)" [attr.aria-label]="'Select ' + record.title"
+                                    (change)="toggleRecord('experience', getRecordId(record))"></td>
+                            <td class="fw-bold text-body description-cell w-25 text-truncate">{{ record.title }}</td>
+                            <td class="description-cell w-25 text-truncate">{{ record.company }}</td>
+                            <td class="text-nowrap">{{ record.duration }}</td>
+                            <td class="description-cell text-muted small w-25 text-truncate"
+                                [title]="record.description || '—'">{{ record.description || '—' }}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm rounded-pill px-3"
+                                    [ngClass]="record.isActive === false ? 'btn-secondary' : 'btn-primary'"
+                                    (click)="updateExperienceStatus(record)"
+                                    [attr.aria-label]="(record.isActive === false ? 'Activate ' : 'Deactivate ') + record.title"
+                                    [title]="record.isActive === false ? 'Activate record' : 'Deactivate record'">
+                                    {{ record.isActive === false ? 'Inactive' : 'Active' }}
+                                </button>
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2"><button class="btn btn-action-edit"
+                                        type="button" title="Edit experience entry"
+                                        (click)="edit('experience', record)"><i
+                                            class="bi bi-pencil"></i></button><button class="btn btn-action-delete"
+                                        type="button" title="Delete experience entry"
+                                        (click)="openDeleteModal('experience', record)"><i
+                                            class="bi bi-trash3"></i></button></div>
+                            </td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="text-muted"><i class="bi bi-briefcase fs-1 d-block mb-2 opacity-25"></i>No
+                                    experience records found. Please add experience.</div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    @if (selectedExperienceIds.size > 0) {
+    <div class="container mb-5 mt-3">
+        <div class="d-flex justify-content-center align-items-center"><button
+                class="btn btn-danger d-flex align-items-center gap-2" type="button"
+                (click)="openBulkDeleteModal('experience')" title="Delete selected experience entries"><i
+                    class="bi bi-trash3"></i>Delete Selected<span class="badge bg-white text-danger ms-1">{{
+                    selectedExperienceIds.size }}</span></button></div>
+    </div>
+    }
+</div>
 
-						<div class="col-12 col-md-12">
-							<label class="form-label small mb-1">Description</label>
-							<textarea class="form-control" rows="2" formControlName="description"
-								placeholder="Short notes" appCapitalize="dot-space"></textarea>
-						</div>
-						<div class="col-3 col-md-2 mt-3 d-grid">
-							<button class="btn btn-primary w-100" type="submit">Save</button>
-						</div>
-						@if (showHideResetButtonInEducationForm) {
-						<div class="col-3 col-md-2 mt-3 d-grid">
-							<button class="btn btn-outline-secondary w-100" type="button"
-								(click)="resetEducationForm(); showHideResetButtonInEducationForm = false;">Cancel</button>
-						</div>
-						}
-					</form>
+<div class="custom-modal-backdrop" *ngIf="showDeleteModal">
+    <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
+        (click)="$event.stopPropagation()">
+        <div class="modal-body">
+            <h5 id="delete-modal-title" class="modal-title text-danger"><i class="bi bi-trash3 me-2"></i>Confirm
+                deletion</h5>
+            <p class="text-muted mt-2">Are you sure you want to delete <strong>{{ pendingTitle }}</strong>? This action
+                cannot be undone.</p>
+            <div class="d-flex justify-content-end gap-2 mt-3"><button class="btn btn-outline-secondary" type="button"
+                    (click)="closeDeleteModal()">Cancel</button><button class="btn btn-danger" type="button"
+                    (click)="confirmDelete()"><i class="bi bi-trash3 me-1"></i>Delete</button></div>
+        </div>
+    </div>
+</div>
 
-					<div class="list-entries">
-						<div *ngIf="educations.length === 0" class="text-muted small">No education records yet.
-						</div>
-						<div class="entry d-flex justify-content-between align-items-start py-2"
-							*ngFor="let e of educations">
-							<div style="max-width: 80%;">
-								<div class="fw-semibold">{{ e.title }}</div>
-								<div class="small text-muted d-none d-md-block">{{ e.institution }} • {{
-									e.duration }}</div>
-								<div class="small text-muted d-block d-md-none">{{ e.institution }}</div>
-								<div class="small text-muted d-block d-md-none my-1">{{ e.duration }}</div>
-								<div class="small mt-1">{{ e.description }}</div>
-							</div>
-							<div
-								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
-								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
-									(click)="editEducation(e)"><i class="bi bi-pencil"></i></button>
-								<button class="btn btn-sm btn-outline-danger"
-									(click)="deleteEducation(e._id || e.id, e.title)"><i
-										class="bi bi-trash3"></i></button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6">
-			<!-- Experience Card -->
-			<div class="card shadow border-1 border-primary rounded-4 h-100">
-				<div class="card-header bg-transparent border-1 border-primary py-3">
-					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="mb-0"><i class="fa-solid fa-business-time text-primary"></i> Experience</h5>
-						<div class="text-muted small">Company roles & durations</div>
-					</div>
-				</div>
-				<div class="card-body">
-					<form [formGroup]="experienceForm" (ngSubmit)="saveExperience()"
-						class="row g-2 mb-3 align-items-end">
-						<div class="col-12 col-md-4">
-							<label class="form-label small mb-1">Title</label>
-							<input class="form-control"
-								[class.is-invalid]="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
-								formControlName="title" placeholder="e.g. Frontend Developer" appCapitalize="space" />
-							<div *ngIf="experienceForm.get('title')?.invalid && (experienceForm.get('title')?.touched || experienceForm.get('title')?.dirty)"
-								class="invalid-feedback d-block small">Title is required.</div>
-						</div>
-						<div class="col-12 col-md-4">
-							<label class="form-label small mb-1">Company</label>
-							<input class="form-control"
-								[class.is-invalid]="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
-								formControlName="company" placeholder="Company name" appCapitalize="space" />
-							<div *ngIf="experienceForm.get('company')?.invalid && (experienceForm.get('company')?.touched || experienceForm.get('company')?.dirty)"
-								class="invalid-feedback d-block small">Company is required.</div>
-						</div>
-						<div class="col-12 col-md-4">
-							<label class="form-label small mb-1">Duration</label>
-							<input class="form-control"
-								[class.is-invalid]="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
-								formControlName="duration" placeholder="2022 - Present" appCapitalize="space" />
-							<div *ngIf="experienceForm.get('duration')?.invalid && (experienceForm.get('duration')?.touched || experienceForm.get('duration')?.dirty)"
-								class="invalid-feedback d-block small">Duration is required.</div>
-						</div>
-						<div class="col-12">
-							<label class="form-label small mb-1">Description</label>
-							<textarea class="form-control" rows="2" formControlName="description"
-								placeholder="Short summary" appCapitalize="dot-space"></textarea>
-						</div>
-						<div class="col-3 col-md-2 mt-3 d-grid">
-							<button class="btn btn-primary w-100" type="submit">Save</button>
-						</div>
-						@if (showHideResetButtonInExperienceForm) {
-						<div class="col-3 col-md-2 mt-3 d-grid">
-							<button class="btn btn-outline-secondary w-100" type="button"
-								(click)="resetExperienceForm(); showHideResetButtonInExperienceForm = false;">Cancel</button>
-						</div>
-						}
-					</form>
-
-					<div class="list-entries">
-						<div *ngIf="experiences.length === 0" class="text-muted small">No experience records
-							yet.</div>
-						<div class="entry d-flex justify-content-between align-items-start py-2"
-							*ngFor="let ex of experiences">
-							<div style="max-width: 80%;">
-								<div class="fw-semibold">{{ ex.title }}</div>
-								<div class="small text-muted d-none d-md-block">{{ ex.company }} • {{ ex.duration }}
-								</div>
-								<div class="small text-muted d-block d-md-none">{{ ex.company }}</div>
-								<div class="small text-muted d-block d-md-none my-1">{{ ex.duration }}</div>
-								<div class="small mt-1">{{ ex.description }}</div>
-							</div>
-							<div
-								class="text-end d-flex flex-column flex-md-row align-items-center justify-content-between">
-								<button class="btn btn-sm btn-outline-secondary me-0 me-md-2 mb-2 mb-md-0"
-									(click)="editExperience(ex)"><i class="bi bi-pencil"></i></button>
-								<button class="btn btn-sm btn-outline-danger"
-									(click)="deleteExperience(ex._id || ex.id, ex.title)"><i
-										class="bi bi-trash3"></i></button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
+    <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="bulk-delete-modal-title"
+        (click)="$event.stopPropagation()">
+        <div class="modal-body">
+            <h5 id="bulk-delete-modal-title" class="modal-title text-danger"><i
+                    class="bi bi-trash3-fill me-2"></i>Confirm bulk deletion</h5>
+            <p class="text-muted mt-2">Delete the selected {{ pendingType }} entries? This action cannot be undone.</p>
+            <div class="d-flex justify-content-end gap-2 mt-3"><button class="btn btn-outline-secondary" type="button"
+                    (click)="closeBulkDeleteModal()">Cancel</button><button class="btn btn-danger" type="button"
+                    (click)="confirmBulkDelete()"><i class="bi bi-trash3 me-1"></i>Delete selected</button></div>
+        </div>
+    </div>
 </div>

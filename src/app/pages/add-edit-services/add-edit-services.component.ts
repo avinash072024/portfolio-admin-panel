@@ -102,14 +102,12 @@ export class AddEditServicesComponent implements OnInit {
   }
 
   onSubmit(addNewMode: boolean) {
-    debugger;
     if (this.serviceForm.valid) {
       this.spinner.show();
       if (this.isEdit && this.currentServiceId) {
         this.servicesService.updateService(this.currentServiceId, this.serviceForm.value).subscribe({
           next: (res: any) => {
             if (res?.success) {
-              debugger;
               this.toastr.success(res?.message || 'Service updated successfully');
               this.router.navigate(['/services'], { queryParams: { page: this.page } });
             } else {
@@ -129,10 +127,8 @@ export class AddEditServicesComponent implements OnInit {
               this.toastr.success(res?.message || 'Service added successfully');
               // this.router.navigate(['/services'], { queryParams: { page: this.page } });
               if (addNewMode) {
-                debugger;
                 this.resetForm();
               } else {
-                debugger;
                 this.router.navigate(['/services'], { queryParams: { page: this.page } });
               }
             } else {

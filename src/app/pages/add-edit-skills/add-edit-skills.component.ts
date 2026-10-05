@@ -130,10 +130,8 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
               // this.skillForm.reset({ level: 50, color: '#0d6efd' });
               // this.router.navigate(['/skills'], { queryParams: { page: this.page } });
               if (addNewMode) {
-                debugger;
                 this.resetForm();
               } else {
-                debugger;
                 this.router.navigate(['/skills'], { queryParams: { page: this.page } });
               }
             } else {

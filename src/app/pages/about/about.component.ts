@@ -1,19 +1,18 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EducationService } from '../../services/education/education.service';
-import { ExperienceService } from '../../services/experience/experience.service';
+import { Router, RouterLink } from '@angular/router';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
-import { ViewChild } from '@angular/core';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { EducationService } from '../../services/education/education.service';
+import { ExperienceService } from '../../services/experience/experience.service';
 import { SocketService } from '../../services/socket/socket.service';
-import { CapitalizeDirective } from '../../directives/capitalize.directive';
+
+type AboutRecordType = 'education' | 'experience';
 
 @Component({
   selector: 'app-about',
-  imports: [CommonModule, ReactiveFormsModule, ConfirmModalComponent, CapitalizeDirective],
+  imports: [CommonModule, RouterLink],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
@@ -22,249 +21,208 @@ export class AboutComponent implements OnInit, OnDestroy {
   private experienceService = inject(ExperienceService);
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
-  private fb = inject(FormBuilder);
   private socketService = inject(SocketService);
+  private router = inject(Router);
   private destroy$ = new Subject<void>();
-  @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
 
   educations: any[] = [];
   experiences: any[] = [];
-  resumes: any[] = [];
-
-  showHideResetButtonInExperienceForm = false;
-  showHideResetButtonInEducationForm = false;
-
-  // reactive forms
-  educationForm!: FormGroup;
-  editEducationId: string | null = null;
-
-  experienceForm!: FormGroup;
-  editExperienceId: string | null = null;
+  selectedEducationIds = new Set<string>();
+  selectedExperienceIds = new Set<string>();
+  showDeleteModal = false;
+  showBulkDeleteModal = false;
+  pendingType: AboutRecordType = 'education';
+  private pendingId = '';
+  pendingTitle = '';
 
   ngOnInit(): void {
-    this.educationForm = this.fb.group({
-      title: ['', Validators.required],
-      institution: ['', Validators.required],
-      duration: ['', Validators.required],
-      description: ['']
-    });
-
-    this.experienceForm = this.fb.group({
-      title: ['', Validators.required],
-      company: ['', Validators.required],
-      duration: ['', Validators.required],
-      description: ['']
-    });
-
-    this.subscribeToSocketUpdates();
     this.loadAllData();
+    this.socketService
+      .onRefreshOrDataUpdated(['educations', 'education', 'experiences', 'experience'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.loadAllData());
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private subscribeToSocketUpdates(): void {
-    this.socketService
-      .onRefreshOrDataUpdated(['educations', 'education', 'experiences', 'experience', 'resumes', 'resume'])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.loadAllData();
-      });
+    document.body.style.overflow = '';
   }
 
   loadAllData(): void {
     this.spinner.show();
     forkJoin({
       educations: this.educationService.getEducation(),
-      experiences: this.experienceService.getExperience(),
-      // resumes: this.resumesService.getResumes(),
+      experiences: this.experienceService.getExperience()
     }).subscribe({
       next: (res: any) => {
-        // ✅ Education
+        this.educations = res.educations?.educations || res.educations || [];
+        this.experiences = res.experiences?.experiences || res.experiences || [];
         this.spinner.hide();
-        if (res.educations) {
-          this.educations = res.educations?.educations || res.educations || [];
-        } else {
-          this.educations = [];
-          this.toastr.warning('No education data found');
-        }
-
-        // ✅ Experience
-        if (res.experiences) {
-          this.experiences = res.experiences?.experiences || res.experiences || [];
-        } else {
-          this.experiences = [];
-          this.toastr.warning('No experience data found');
-        }
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || 'Failed to load data');
+        this.toastr.error(err?.error?.message || 'Failed to load About entries');
       }
     });
   }
 
-  // Education
-  loadEducations(): void {
-    this.educationService.getEducation().subscribe({
-      next: (res: any) => {
-        this.educations = res?.educations || res || [];
-      },
-      error: (err) => this.toastr.error(err?.error?.message || 'Failed to load educations')
+  getRecordId(record: any): string {
+    return record?._id || record?.id || '';
+  }
+
+  get allEducationSelected(): boolean {
+    return this.educations.length > 0 && this.educations.every(record => this.selectedEducationIds.has(this.getRecordId(record)));
+  }
+
+  get allExperienceSelected(): boolean {
+    return this.experiences.length > 0 && this.experiences.every(record => this.selectedExperienceIds.has(this.getRecordId(record)));
+  }
+
+  toggleAll(type: AboutRecordType): void {
+    const records = type === 'education' ? this.educations : this.experiences;
+    const selected = type === 'education' ? this.selectedEducationIds : this.selectedExperienceIds;
+    const allSelected = type === 'education' ? this.allEducationSelected : this.allExperienceSelected;
+    records.forEach(record => {
+      const id = this.getRecordId(record);
+      if (!id) return;
+      allSelected ? selected.delete(id) : selected.add(id);
     });
   }
 
-  saveEducation(): void {
-    if (!this.educationForm) return;
-    if (this.educationForm.invalid) {
-      this.educationForm.markAllAsTouched();
-      return;
-    }
+  toggleRecord(type: AboutRecordType, id: string): void {
+    if (!id) return;
+    const selected = type === 'education' ? this.selectedEducationIds : this.selectedExperienceIds;
+    selected.has(id) ? selected.delete(id) : selected.add(id);
+  }
 
+  openDeleteModal(type: AboutRecordType, record: any): void {
+    this.pendingType = type;
+    this.pendingId = this.getRecordId(record);
+    this.pendingTitle = record.title || 'this entry';
+    this.showDeleteModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  openBulkDeleteModal(type: AboutRecordType): void {
+    const selected = type === 'education' ? this.selectedEducationIds : this.selectedExperienceIds;
+    if (!selected.size) return;
+    this.pendingType = type;
+    this.showBulkDeleteModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.restoreBodyScroll();
+  }
+
+  closeBulkDeleteModal(): void {
+    this.showBulkDeleteModal = false;
+    this.restoreBodyScroll();
+  }
+
+  confirmDelete(): void {
+    if (!this.pendingId) return;
     this.spinner.show();
-    const payload = this.educationForm.value;
-    if (this.editEducationId) {
-      this.educationService.updateEducation(this.editEducationId, payload).subscribe({
-        next: (res: any) => {
-          this.resetEducationForm();
-          this.loadEducations();
-          this.showHideResetButtonInEducationForm = false;
-          this.spinner.hide();
-          this.toastr.success(res?.message || 'Education updated');
-        },
-        error: (err) => {
-          this.spinner.hide();
-          this.toastr.error(err?.error?.message || 'Update failed');
-        }
-      });
-    } else {
-      this.educationService.addEducation(payload).subscribe({
-        next: (res: any) => {
-          this.resetEducationForm();
-          this.loadEducations();
-          this.spinner.hide();
-          this.toastr.success(res?.message || 'Education added');
-        },
-        error: (err) => {
-          this.spinner.hide();
-          this.toastr.error(err?.error?.message || 'Create failed');
-        }
-      });
-    }
-  }
-
-  editEducation(e: any): void {
-    this.editEducationId = e._id || e.id || null;
-    if (this.educationForm) {
-      this.showHideResetButtonInEducationForm = true;
-      this.educationForm.patchValue({
-        title: e.title || '',
-        institution: e.institution || '',
-        duration: e.duration || '',
-        description: e.description || ''
-      });
-    }
-  }
-
-  deleteEducation(id: string, itemName: string): void {
-    (async () => {
-      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete education ${itemName}? This action cannot be undone.`, itemName, 'education');
-      if (!confirmed) return;
-      this.educationService.deleteEducation(id).subscribe({
-        next: (res: any) => {
-          this.toastr.success(res?.message || 'Deleted');
-          this.loadEducations();
-        },
-        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
-      });
-    })();
-  }
-
-  resetEducationForm(): void {
-    this.editEducationId = null;
-    if (this.educationForm) this.educationForm.reset();
-  }
-
-  // Experience
-  loadExperiences(): void {
-    this.experienceService.getExperience().subscribe({
+    const request = this.pendingType === 'education'
+      ? this.educationService.deleteEducation(this.pendingId)
+      : this.experienceService.deleteExperience(this.pendingId);
+    request.subscribe({
       next: (res: any) => {
-        this.experiences = res?.experiences || res || [];
+        this.spinner.hide();
+        if (res?.success === false) {
+          this.toastr.error(res?.message || 'Delete failed');
+          return;
+        }
+        const selected = this.pendingType === 'education' ? this.selectedEducationIds : this.selectedExperienceIds;
+        selected.delete(this.pendingId);
+        this.closeDeleteModal();
+        this.toastr.success(res?.message || 'Entry deleted');
+        this.loadAllData();
       },
-      error: (err) => this.toastr.error(err?.error?.message || 'Failed to load experiences')
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message || 'Delete failed');
+      }
     });
   }
 
-  saveExperience(): void {
-    if (!this.experienceForm) return;
-    if (this.experienceForm.invalid) {
-      this.experienceForm.markAllAsTouched();
-      return;
-    }
-
+  confirmBulkDelete(): void {
+    const selected = this.pendingType === 'education' ? this.selectedEducationIds : this.selectedExperienceIds;
+    if (!selected.size) return;
     this.spinner.show();
-    const payload = this.experienceForm.value;
-    if (this.editExperienceId) {
-      this.experienceService.updateExperience(this.editExperienceId, payload).subscribe({
-        next: (res: any) => {
-          this.resetExperienceForm();
-          this.loadExperiences();
-          this.showHideResetButtonInExperienceForm = false;
-          this.spinner.hide();
-          this.toastr.success(res?.message || 'Experience updated');
-        },
-        error: (err) => {
-          this.spinner.hide();
-          this.toastr.error(err?.error?.message || 'Update failed');
+    const ids = Array.from(selected);
+    const request = this.pendingType === 'education'
+      ? this.educationService.deleteMultipleEducation(ids)
+      : this.experienceService.deleteMultipleExperience(ids);
+    request.subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success === false) {
+          this.toastr.error(res?.message || 'Bulk delete failed');
+          return;
         }
-      });
-    } else {
-      this.experienceService.addExperience(payload).subscribe({
-        next: (res: any) => {
-          this.resetExperienceForm();
-          this.loadExperiences();
-          this.spinner.hide();
-          this.toastr.success(res?.message || 'Experience added');
-        },
-        error: (err) => {
-          this.spinner.hide();
-          this.toastr.error(err?.error?.message || 'Create failed');
+        selected.clear();
+        this.closeBulkDeleteModal();
+        this.toastr.success(res?.message || 'Selected entries deleted');
+        this.loadAllData();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message || 'Bulk delete failed');
+      }
+    });
+  }
+
+  edit(type: AboutRecordType, record: any): void {
+    const id = this.getRecordId(record);
+    if (id) this.router.navigate(['/about', type, 'edit', id]);
+  }
+
+  private restoreBodyScroll(): void {
+    if (!this.showDeleteModal && !this.showBulkDeleteModal) document.body.style.overflow = '';
+  }
+
+  updateEducationStatus(data: any): void {
+    this.toastr.clear();
+    const isActive = data.isActive === false;
+    this.spinner.show();
+    this.educationService.updateEducation(data._id, { ...data, isActive }).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.loadAllData();
+          this.toastr.success(res?.message);
+        } else {
+          this.toastr.error(res?.message);
         }
-      });
-    }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
   }
 
-  editExperience(e: any): void {
-    this.editExperienceId = e._id || e.id || null;
-    if (this.experienceForm) {
-      this.showHideResetButtonInExperienceForm = true;
-      this.experienceForm.patchValue({
-        title: e.title || '',
-        company: e.company || '',
-        duration: e.duration || '',
-        description: e.description || ''
-      });
-    }
-  }
-
-  deleteExperience(id: string, itemName: string): void {
-    (async () => {
-      const confirmed = await this.confirmModal.open('Confirm Deletion', `Are you sure you want to delete experience ${itemName}? This action cannot be undone.`, itemName, 'experience');
-      if (!confirmed) return;
-      this.experienceService.deleteExperience(id).subscribe({
-        next: (res: any) => {
-          this.toastr.success(res?.message || 'Deleted');
-          this.loadExperiences();
-        },
-        error: (err) => this.toastr.error(err?.error?.message || 'Delete failed')
-      });
-    })();
-  }
-
-  resetExperienceForm(): void {
-    this.editExperienceId = null;
-    if (this.experienceForm) this.experienceForm.reset();
+  updateExperienceStatus(data: any): void {
+    this.toastr.clear();
+    const isActive = data.isActive === false;
+    this.spinner.show();
+    this.experienceService.updateExperience(data._id, { ...data, isActive }).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.loadAllData();
+          this.toastr.success(res?.message);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message);
+      }
+    });
   }
 }

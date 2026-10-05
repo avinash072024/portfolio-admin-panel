@@ -137,7 +137,6 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(addNewMode: boolean) {
-    debugger;
     if (this.projectForm.valid) {
       let formValue: any = this.projectForm.value;
       formValue.image = this.projectImageUrl;

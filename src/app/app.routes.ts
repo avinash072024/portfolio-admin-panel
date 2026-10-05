@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { Constants } from './models/constants';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
-import { AboutComponent } from './pages/about/about.component';
+// import { AboutComponent } from './pages/about/about.component';
+// import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
@@ -18,6 +19,8 @@ import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 // import { EmailComponent } from './pages/email/email.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { AboutComponent } from './pages/about/about.component';
+import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';
 
 export const routes: Routes = [
     {
@@ -48,7 +51,18 @@ export const routes: Routes = [
             {
                 path: 'about',
                 component: AboutComponent,
+                pathMatch: 'full',
                 title: `About | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'about/:type/add',
+                component: AddEditAboutComponent,
+                title: `Add About Entry | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'about/:type/edit/:id',
+                component: AddEditAboutComponent,
+                title: `Edit About Entry | ${Constants.APP_NAME}`
             },
             {
                 path: 'contact',

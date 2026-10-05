@@ -1,75 +1,86 @@
-.settings-page {
-    h2 {
-        font-weight: 600;
+.selection-column {
+    width: 4%;
+    min-width: 44px;
+}
+
+.description-cell {
+    min-width: 180px;
+    max-width: 360px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-action-edit,
+.btn-action-delete {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    color: var(--bs-body-color);
+    background: rgba(var(--bs-emphasis-color-rgb), 0.06);
+    transition: all 0.2s ease;
+}
+
+.btn-action-edit:hover {
+    color: var(--bs-warning);
+    background: var(--bs-warning-bg-subtle);
+    transform: translateY(-2px);
+}
+
+.btn-action-delete:hover {
+    color: var(--bs-danger);
+    background: var(--bs-danger-bg-subtle);
+    transform: translateY(-2px);
+}
+
+.custom-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(10, 10, 10, 0.5);
+}
+
+.custom-modal {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 12px;
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+    animation: modal-in 220ms ease both;
+}
+
+.custom-modal .modal-body {
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
     }
 
-    // .card {
-    // 	border: 0;
-    // 	border-radius: .6rem;
-    // }
-
-    .card-body {
-        padding: 1rem 1.15rem;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    .entry {
-        border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
-    }
-
-    .entry:last-child {
-        border-bottom: none;
-    }
-
-    .skin-btn {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        border: 2px solid transparent;
-        cursor: pointer;
-    }
-
-    .skin-btn.default-blue {
-        background: #0d6efd;
-    }
-
-    .skin-btn.emerald-green {
-        background: #198754;
-    }
-
-    .skin-btn.vibrant-purple {
-        background: #6610f2;
-    }
-
-    .skin-btn.hot-pink {
-        background: #d63384;
-    }
-
-    .skin-btn.sunset-orange {
-        background: #fd7e14;
-    }
-
-    .skin-btn.cyan-wave {
-        background: #0dcaf0;
-    }
-
-    .skin-btn.crimson-red {
-        background: #dc3545;
-    }
-
-    .skin-btn:focus,
-    .skin-btn:hover {
-        transform: translateY(-2px);
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 767px) {
-        .skin-btn {
-            width: 30px;
-            height: 30px;
-        }
-
-        .card-body {
-            padding: .85rem;
-        }
+@media (max-width: 767px) {
+    .description-cell {
+        min-width: 140px;
+        max-width: 220px;
     }
 }

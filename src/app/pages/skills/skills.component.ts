@@ -150,7 +150,8 @@ export class SkillsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err.message);
+        // this.toastr.error(err.message);
+        this.toastr.error(err?.error?.message || 'Failed to load skills');
       },
     })
   }

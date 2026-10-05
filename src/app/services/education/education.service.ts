@@ -14,7 +14,7 @@ export class EducationService {
   }
 
   getEducation(): Observable<any> {
-    return this.http.get(environment.apiUrl + `/education`);
+    return this.http.get(environment.apiUrl + `/education/all`);
   }
 
   addEducation(data: any): Observable<any> {
@@ -27,5 +27,9 @@ export class EducationService {
 
   deleteEducation(id: string): Observable<any> {
     return this.http.delete(environment.apiUrl + `/education/${id}`)
+  }
+
+  deleteMultipleEducation(ids: string[]): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/education/bulk`, { body: { ids } });
   }
 }

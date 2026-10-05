@@ -14,7 +14,7 @@ export class ExperienceService {
   }
 
   getExperience(): Observable<any> {
-    return this.http.get(environment.apiUrl + `/experience`);
+    return this.http.get(environment.apiUrl + `/experience/all`);
   }
 
   addExperience(data: any): Observable<any> {
@@ -27,5 +27,9 @@ export class ExperienceService {
 
   deleteExperience(id: string): Observable<any> {
     return this.http.delete(environment.apiUrl + `/experience/${id}`)
+  }
+
+  deleteMultipleExperience(ids: string[]): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/experience/bulk`, { body: { ids } });
   }
 }
