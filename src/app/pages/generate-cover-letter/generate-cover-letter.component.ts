@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,6 +15,7 @@ export class GenerateCoverLetterComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly resumeService = inject(ResumeService);
   private readonly toastr = inject(ToastrService);
+  location = inject(Location);
 
   readonly isGenerating = signal(false);
   readonly coverLetterForm = this.formBuilder.nonNullable.group({
