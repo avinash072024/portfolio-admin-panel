@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, effect } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, effect, signal } from '@angular/core';
 import { Chart, registerables } from 'chart.js/auto';
 Chart.register(...registerables);
 import { CommonModule } from '@angular/common';
@@ -11,11 +11,15 @@ import { ProjectsService } from '../../services/projects/projects.service';
 import { SkillsService } from '../../services/skills/skills.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
 import { EmailService } from '../../services/email/email.service';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { SocketService } from '../../services/socket/socket.service';
 import { ServicesService } from '../../services/service/services.service';
+import { ResumeService } from '../../services/resume/resume.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ContactService } from '../../services/contact/contact.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -23,15 +27,16 @@ import { ServicesService } from '../../services/service/services.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsModule {
   @ViewChild('trafficChart') trafficChartCanvas!: ElementRef<HTMLCanvasElement>;
   chart: Chart | undefined;
   visitorChartDates: string[] = [];
   visitorChartCounts: number[] = [];
   themeService = inject(ThemeService);
-  
+
   visitors: any[] = [];
   feedbacks: any[] = [];
+  myInformation: any = null;
   visitorService = inject(VisitorService);
   projectService = inject(ProjectsService);
   skillsService = inject(SkillsService);
@@ -41,14 +46,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   socketService = inject(SocketService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
+  resumesService = inject(ResumeService);
+  sanitizer = inject(DomSanitizer);
+  contactService = inject(ContactService);
   private destroy$ = new Subject<void>();
+
+  isDownloading = signal<boolean>(false);
+
+  dynamicResumeUrl: SafeUrl | null = null;
 
   constructor() {
     // Automatically re-initialize chart when theme or skin changes
     effect(() => {
       this.themeService.theme(); // track theme change
       this.themeService.skin();  // track skin change
-      
+
       if (this.visitorChartDates.length > 0) {
         // Wait a small bit for CSS transitions/variables to update in DOM
         setTimeout(() => {
@@ -91,7 +103,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       projects: this.projectService.getProjects(),
       skills: this.skillsService.getSkills(),
       feedbacks: this.feedbackService.getAllFeedbacks(),
-      services: this.serviceService.getServices()
+      services: this.serviceService.getServices(),
+      contact: this.contactService.getContact()
     }).subscribe({
       next: (res: any) => {
         // 2. Hide the spinner once everything completes successfully
@@ -141,6 +154,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.toastr.error(res.services?.message || 'Failed to load services');
         }
+
+        // Handle Contact Data
+        if (res.contact?.success && res.contact?.contact) {
+          this.myInformation = res.contact.contact || [];
+        } else {
+          this.toastr.error(res.contact?.message || 'Failed to load contact information');
+        } 
       },
       error: (err: any) => {
         if (!silent) {
@@ -264,5 +284,38 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(() => {
         this.loadDashboardData(true);
       });
+  }
+
+  downloadResume(): void {
+    this.isDownloading.set(true);
+    this.resumesService.getATSResume().subscribe({
+      next: (blob: Blob) => {
+
+        const blobUrl = window.URL.createObjectURL(blob);
+        this.dynamicResumeUrl = this.sanitizer.bypassSecurityTrustUrl(blobUrl);
+
+        const fileName = this.myInformation
+          ? `${this.myInformation.firstName || 'Avinash'}_${this.myInformation.lastName || 'Marbhal'}_Resume_Angular.pdf`
+          : 'Avinash_Marbhal_Resume_Angular.pdf';
+
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        this.toastr.success('Resume downloaded successfully');
+        this.isDownloading.set(false);
+      },
+      error: (err: any) => {
+        // console.error('Error fetching ATS resume from API:', err);
+        this.toastr.error('Failed to download resume');
+        this.isDownloading.set(false);
+      }
+    });
+  }
+
+  downloadCoverLetter(): void {
+    // this.spinner.show();
   }
 }
