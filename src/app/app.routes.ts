@@ -21,6 +21,7 @@ import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';
+import { GenerateCoverLetterComponent } from './pages/generate-cover-letter/generate-cover-letter.component';
 
 export const routes: Routes = [
     {
@@ -124,11 +125,11 @@ export const routes: Routes = [
                 component: FeedbackComponent,
                 title: `Feedback | ${Constants.APP_NAME}`
             },
-            // {
-            //     path: 'email',
-            //     component: EmailComponent,
-            //     title: `Email | ${Constants.APP_NAME}`
-            // },
+            {
+                path: 'cover-letter',
+                component: GenerateCoverLetterComponent,
+                title: `Cover Letter | ${Constants.APP_NAME}`
+            },
             {
                 path: 'reset-password',
                 component: ResetPasswordComponent,

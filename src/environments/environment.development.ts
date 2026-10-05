@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
     // apiUrl: 'http://localhost:5000/api'
-    apiUrl: 'https://portfolio-backend-snowy-two.vercel.app/api'
+    apiUrl: 'https://portfolio-backend-alpha-hazel.vercel.app/api'
 }

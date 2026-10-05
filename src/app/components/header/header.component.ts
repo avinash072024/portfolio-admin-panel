@@ -58,8 +58,8 @@ export class HeaderComponent {
     this.router.navigate(['/feedback']);
   }
 
-  onEmail() {
-    this.router.navigate(['/email']);
+  onGenerateCoverLetter() {
+    this.router.navigate(['/cover-letter']);
   }
 
   onLogout() {
