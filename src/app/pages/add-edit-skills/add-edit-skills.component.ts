@@ -45,7 +45,8 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
       icon: ['', Validators.required],
       level: [50, [Validators.required, Validators.min(0), Validators.max(100)]],
       color: ['#0d6efd'],
-      category: ['', Validators.required]
+      category: ['', Validators.required],
+      isActive: [true]
     });
 
     this.route.paramMap.subscribe(params => {
@@ -92,7 +93,8 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
       icon: skill.icon || '',
       level: skill.level ?? 50,
       color: skill.color || '#0d6efd',
-      category: skill.category || ''
+      category: skill.category || '',
+      isActive: skill.isActive ?? true
     });
   }
 

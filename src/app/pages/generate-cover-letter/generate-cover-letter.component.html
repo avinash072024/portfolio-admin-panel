@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="card-body p-4 p-md-5">
-			<form [formGroup]="coverLetterForm" (ngSubmit)="generateCoverLetter()" novalidate>
+			<form [formGroup]="coverLetterForm" (ngSubmit)="generateCoverLetter()" novalidate autocomplete="off">
 				<div class="row g-4">
 					<div class="col-md-6">
 						<label for="companyName" class="form-label fw-bold">Company Name</label>
@@ -23,7 +23,6 @@
 							class="form-control"
 							[class.is-invalid]="coverLetterForm.controls.companyName.invalid && coverLetterForm.controls.companyName.touched"
 							placeholder="e.g. Acme Technologies"
-							autocomplete="organization"
 							aria-describedby="companyNameFeedback">
 						<div id="companyNameFeedback" class="invalid-feedback">Enter the company name.</div>
 					</div>
