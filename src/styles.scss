@@ -1,14 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 // @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+// :root {
+//     // --font-family: "Nunito Sans", sans-serif;
+//     --font-family: "Outfit", sans-serif;
+// }
+
+// body {
+//     font-family: var(--font-family) !important;
+// }
+
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/outfit/Outfit[wght].ttf')
+    format('truetype');
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 :root {
-    // --font-family: "Nunito Sans", sans-serif;
-    --font-family: "Outfit", sans-serif;
+  --font-family: 'Outfit', sans-serif;
 }
 
 body {
-    font-family: var(--font-family) !important;
+  font-family: var(--font-family) !important;
 }
 
 .cursor-pointer {
