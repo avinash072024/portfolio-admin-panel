@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { SocketService } from '../../services/socket/socket.service';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 export interface Service {
   _id: string;
@@ -22,7 +23,7 @@ export interface Service {
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent],
+  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent, TooltipDirective],
   templateUrl: './services.component.html',
   styleUrl: './services.component.scss'
 })

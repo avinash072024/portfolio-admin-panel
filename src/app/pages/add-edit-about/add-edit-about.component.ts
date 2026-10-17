@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { CapitalizeDirective } from '../../directives/capitalize.directive';
 import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
+import { CapitalizeDirective } from '../../directives/capitalize/capitalize.directive';
 
 type AboutRecordType = 'education' | 'experience';
 

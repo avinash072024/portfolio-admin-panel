@@ -8,8 +8,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
-import { CapitalizeDirective } from '../../directives/capitalize.directive';
 import { Constants } from '../../models/constants';
+import { CapitalizeDirective } from '../../directives/capitalize/capitalize.directive';
 
 @Component({
   selector: 'app-add-edit-project',

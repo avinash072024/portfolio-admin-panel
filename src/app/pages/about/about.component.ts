@@ -7,12 +7,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
 import { SocketService } from '../../services/socket/socket.service';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 type AboutRecordType = 'education' | 'experience';
 
 @Component({
   selector: 'app-about',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TooltipDirective],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })

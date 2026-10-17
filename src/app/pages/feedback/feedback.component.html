@@ -40,7 +40,7 @@
                                         <input type="checkbox" class="form-check-input" id="select-all-checkbox"
                                             [checked]="allSelected"
                                             [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                            (change)="toggleSelectAll()" title="Select all on this page">
+                                            (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect All' : 'Select All'">
                                     </th>
                                     <th class="py-3 text-uppercase small fw-bold text-muted">Date</th>
                                     <th class="py-3 text-uppercase small fw-bold text-muted">Name</th>
@@ -54,7 +54,7 @@
                                 <tr *ngFor="let feedback of feedbacks"
                                     [class.table-active]="selectedIds.has(feedback._id)">
                                     <td class="ps-4">
-                                        <input type="checkbox" class="form-check-input"
+                                        <input [appTooltip]="selectedIds.has(feedback._id) ? 'Deselect' : 'Select'" type="checkbox" class="form-check-input"
                                             [checked]="selectedIds.has(feedback._id)"
                                             (change)="toggleSelect(feedback._id)" [id]="'feedback-' + feedback._id">
                                     </td>
@@ -95,12 +95,12 @@
                                     <td class="text-end pe-4">
                                         <div class="d-flex justify-content-end gap-2">
                                             <button class="btn btn-action-edit"
-                                                [title]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
+                                                [appTooltip]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
                                                 (click)="onUpdateVerified(feedback)">
                                                 <i class="bi"
                                                     [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
                                             </button>
-                                            <button class="btn btn-action-delete" title="Delete"
+                                            <button class="btn btn-action-delete" appTooltip="Delete"
                                                 (click)="openDeleteModal(feedback)">
                                                 <i class="bi bi-trash3"></i>
                                             </button>

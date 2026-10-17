@@ -40,7 +40,7 @@
                             <th class="ps-4 py-3" style="width: 4%;">
                                 <input type="checkbox" class="form-check-input" id="select-all-checkbox"
                                     [checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                    (change)="toggleSelectAll()" title="Select all on this page">
+                                    (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select All'">
                             </th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Project</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
@@ -55,7 +55,7 @@
                         @for (project of projects; track project._id; let i = $index) {
                         <tr [class.table-active]="selectedIds.has(project._id)">
                             <td class="ps-4">
-                                <input type="checkbox" class="form-check-input" [checked]="selectedIds.has(project._id)"
+                                <input [appTooltip]="selectedIds.has(project._id) ? 'Deselect' : 'Select'" type="checkbox" class="form-check-input" [checked]="selectedIds.has(project._id)"
                                     (change)="toggleSelect(project._id)" [id]="'chk-' + project._id">
                             </td>
                             <td>
@@ -67,7 +67,7 @@
                                     <div>
                                         <div class="fw-bold text-body">{{ project.title }}</div>
                                         <div class="text-muted smaller text-truncate" style="max-width: 250px;"
-                                            [title]="project.desc[0]">
+                                            [appTooltip]="project.desc[0]">
                                             {{ project.desc[0] }}
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                                     [ngClass]="project.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                     (click)="updateProjectStatus(project)"
                                     [attr.aria-label]="(project.isActive === false ? 'Activate ' : 'Deactivate ') + project.title"
-                                    [title]="project.isActive === false ? 'Activate project' : 'Deactivate project'">
+                                    [appTooltip]="project.isActive === false ? 'Activate' : 'Deactivate'">
                                     {{ project.isActive === false ? 'Inactive' : 'Active' }}
                                 </button>
                             </td>
@@ -106,14 +106,14 @@
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
                                     <a [href]="project.link" target="_blank" class="btn btn-action-view"
-                                        *ngIf="project.link">
+                                        *ngIf="project.link" appTooltip="Live Link">
                                         <i class="bi bi-box-arrow-up-right"></i>
                                     </a>
-                                    <button (click)="onEdit(project)" class="btn btn-action-edit" title="Edit">
+                                    <button (click)="onEdit(project)" class="btn btn-action-edit" appTooltip="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </button>
                                     <button (click)="openDeleteModal(project._id, project.title)"
-                                        class="btn btn-action-delete" title="Delete">
+                                        class="btn btn-action-delete" appTooltip="Delete">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>

@@ -9,12 +9,13 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { SocketService } from '../../services/socket/socket.service';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 declare const bootstrap: any;
 
 @Component({
   selector: 'app-feedback',
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, TooltipDirective],
   templateUrl: './feedback.component.html',
   styleUrl: './feedback.component.scss'
 })

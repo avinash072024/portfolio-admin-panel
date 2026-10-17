@@ -1,11 +1,11 @@
 <div class="container py-5 mt-5" data-aos="fade-up">
 	<div class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden">
-		<div
-			class="card-header bg-transparent border-1 border-primary py-3 px-3">
+		<div class="card-header bg-transparent border-1 border-primary py-3 px-3">
 			<div class="row g-2 g-md-3 align-items-center">
 				<!-- Title & Badge: 6 columns on mobile, 4 on desktop -->
 				<div class="col-6 col-md-4 order-1">
-					<h5 class="fw-bold mb-0 text-truncate">Services <span class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">
+					<h5 class="fw-bold mb-0 text-truncate">Services <span
+							class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">
 							{{ total }}
 						</span></h5>
 					<p class="text-muted small mb-0 d-none d-md-block">Manage and overview your services</p>
@@ -40,7 +40,7 @@
 							<th class="ps-4 py-3" style="width: 4%;">
 								<input type="checkbox" class="form-check-input" id="select-all-checkbox"
 									[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-									(change)="toggleSelectAll()" title="Select all on this page">
+									(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select All'">
 							</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Service</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
@@ -52,13 +52,14 @@
 					<tbody>
 						<tr *ngFor="let s of services" [class.table-active]="selectedIds.has(s._id)">
 							<td class="ps-4">
-								<input type="checkbox" class="form-check-input" [checked]="selectedIds.has(s._id)"
+								<input [appTooltip]="selectedIds.has(s._id) ? 'Deselect' : 'Select'" type="checkbox" class="form-check-input" [checked]="selectedIds.has(s._id)"
 									(change)="toggleSelect(s._id)" [id]="'chk-' + s._id">
 							</td>
 							<td>
 								<div class="d-flex align-items-center">
 									<div class="project-img-wrapper me-3">
-										<div class="skill-icon rounded-3 d-flex align-items-center justify-content-center border-2 border-primary">
+										<div
+											class="skill-icon rounded-3 d-flex align-items-center justify-content-center border-2 border-primary">
 											<i class="fs-4 text-primary" [class]="s.icon"></i>
 										</div>
 									</div>
@@ -71,16 +72,17 @@
 								</div>
 							</td>
 							<td class="text-center">
-                                <button type="button" class="btn btn-sm rounded-pill px-3"
-                                    [ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
-                                    (click)="updateServiceStatus(s)"
-                                    [attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title"
-                                    [title]="s.isActive === false ? 'Activate service' : 'Deactivate service'">
-                                    {{ s.isActive === false ? 'Inactive' : 'Active' }}
-                                </button>
-                            </td>
+								<button type="button" class="btn btn-sm rounded-pill px-3"
+									[ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
+									(click)="updateServiceStatus(s)"
+									[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title"
+									[appTooltip]="s.isActive === false ? 'Activate service' : 'Deactivate service'">
+									{{ s.isActive === false ? 'Inactive' : 'Active' }}
+								</button>
+							</td>
 							<td>
-								<div class="text-muted small text-truncate" [title]="s.description" style="max-width: 400px;">
+								<div [appTooltip]="s.description" class="text-muted small text-truncate"
+									[title]="s.description" style="max-width: 400px;">
 									{{ s.description }}
 								</div>
 							</td>
@@ -90,19 +92,20 @@
 									{{ s.features }}
 								</div> -->
 								<div class="d-flex flex-wrap gap-1 text-truncate" style="max-width: 400px;">
-                                    <span *ngFor="let feature of s.features"
-                                        class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
-                                        {{ feature }}
-                                    </span>
-                                </div>
+									<span *ngFor="let feature of s.features"
+										class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
+										{{ feature }}
+									</span>
+								</div>
 							</td>
 
 							<td class="text-end pe-4">
 								<div class="d-flex justify-content-end gap-2">
-									<a [routerLink]="['/services/edit', s._id]" [queryParams]="{ page: page }" class="btn btn-action-edit" title="Edit">
+									<a [appTooltip]="'Edit'" [routerLink]="['/services/edit', s._id]"
+										[queryParams]="{ page: page }" class="btn btn-action-edit" title="Edit">
 										<i class="bi bi-pencil"></i>
 									</a>
-									<button class="btn btn-action-delete" title="Delete"
+									<button [appTooltip]="'Delete'" class="btn btn-action-delete"
 										(click)="openDeleteModal(s._id, s.title)">
 										<i class="bi bi-trash3"></i>
 									</button>
@@ -116,7 +119,8 @@
 							<td colspan="6" class="text-center py-5">
 								<div class="text-muted">
 									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
-									<span *ngIf="searchTerm">No services matching "<strong>{{searchTerm}}</strong>"</span>
+									<span *ngIf="searchTerm">No services matching
+										"<strong>{{searchTerm}}</strong>"</span>
 									<span *ngIf="!searchTerm">No services found. Please add services.</span>
 								</div>
 							</td>
@@ -126,13 +130,8 @@
 			</div>
 
 			<!-- Pagination/Footer -->
-			<app-pagination *ngIf="services.length"
-				[page]="page"
-				[limit]="limit"
-				[total]="total"
-				[totalPages]="totalPages"
-				(pageChange)="changePage($event)"
-				(limitChange)="setLimit($event)">
+			<app-pagination *ngIf="services.length" [page]="page" [limit]="limit" [total]="total"
+				[totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
 			</app-pagination>
 		</div>
 	</div>
@@ -144,9 +143,8 @@
 		<div class="col-md-12">
 			<!-- Bulk Delete Button -->
 			<div *ngIf="services.length" class="d-flex justify-content-center align-items-center">
-				<button class="btn btn-danger d-flex align-items-center gap-2"
-					[disabled]="selectedIds.size === 0" (click)="openBulkDeleteModal()" id="bulk-delete-btn"
-					title="Delete selected services">
+				<button class="btn btn-danger d-flex align-items-center gap-2" [disabled]="selectedIds.size === 0"
+					(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected services">
 					<i class="bi bi-trash3"></i>
 					Delete Selected
 					<span *ngIf="selectedIds.size > 0" class="badge bg-white text-danger ms-1">{{ selectedIds.size
