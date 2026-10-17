@@ -24,10 +24,10 @@
                                     [indeterminate]="selectedEducationIds.size > 0 && !allEducationSelected"
                                     (change)="toggleAll('education')" title="Select all education entries"></th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Title</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Institution</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Duration</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
                         </tr>
                     </thead>
@@ -39,18 +39,18 @@
                                     [disabled]="!getRecordId(record)" [attr.aria-label]="'Select ' + record.title"
                                     (change)="toggleRecord('education', getRecordId(record))"></td>
                             <td class="fw-bold text-body description-cell w-25 text-truncate">{{ record.title }}</td>
-                            <td class="description-cell w-25 text-truncate" [title]="record.institution">{{ record.institution }}</td>
-                            <td class="text-nowrap">{{ record.duration }}</td>
-                            <td class="description-cell w-25 text-truncate text-muted small">{{ record.description || '—' }}</td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-sm rounded-pill px-3"
                                     [ngClass]="record.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                     (click)="updateEducationStatus(record)"
                                     [attr.aria-label]="(record.isActive === false ? 'Activate ' : 'Deactivate ') + record.title"
-                                    [title]="record.isActive === false ? 'Activate record' : 'Deactivate record'">
+                                    [title]="record.isActive === false ? 'Activate' : 'Deactivate'">
                                     {{ record.isActive === false ? 'Inactive' : 'Active' }}
                                 </button>
                             </td>
+                            <td class="description-cell w-25 text-truncate" [title]="record.institution">{{ record.institution }}</td>
+                            <td class="text-nowrap">{{ record.duration }}</td>
+                            <td class="description-cell w-25 text-truncate text-muted small">{{ record.description || '—' }}</td>                            
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2"><button class="btn btn-action-edit"
                                         type="button" title="Edit education entry"
@@ -108,10 +108,10 @@
                                     [indeterminate]="selectedExperienceIds.size > 0 && !allExperienceSelected"
                                     (change)="toggleAll('experience')" title="Select all experience entries"></th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Title</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Company</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Duration</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
                         </tr>
                     </thead>
@@ -123,19 +123,19 @@
                                     [disabled]="!getRecordId(record)" [attr.aria-label]="'Select ' + record.title"
                                     (change)="toggleRecord('experience', getRecordId(record))"></td>
                             <td class="fw-bold text-body description-cell w-25 text-truncate">{{ record.title }}</td>
-                            <td class="description-cell w-25 text-truncate">{{ record.company }}</td>
-                            <td class="text-nowrap">{{ record.duration }}</td>
-                            <td class="description-cell text-muted small w-25 text-truncate"
-                                [title]="record.description || '—'">{{ record.description || '—' }}</td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-sm rounded-pill px-3"
                                     [ngClass]="record.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                     (click)="updateExperienceStatus(record)"
                                     [attr.aria-label]="(record.isActive === false ? 'Activate ' : 'Deactivate ') + record.title"
-                                    [title]="record.isActive === false ? 'Activate record' : 'Deactivate record'">
+                                    [title]="record.isActive === false ? 'Activate' : 'Deactivate'">
                                     {{ record.isActive === false ? 'Inactive' : 'Active' }}
                                 </button>
                             </td>
+                            <td class="description-cell w-25 text-truncate">{{ record.company }}</td>
+                            <td class="text-nowrap">{{ record.duration }}</td>
+                            <td class="description-cell text-muted small w-25 text-truncate"
+                                [title]="record.description || '—'">{{ record.description || '—' }}</td>                            
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2"><button class="btn btn-action-edit"
                                         type="button" title="Edit experience entry"
