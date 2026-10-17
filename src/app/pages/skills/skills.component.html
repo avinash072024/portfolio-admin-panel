@@ -40,7 +40,7 @@
 							<th class="ps-4 py-3" style="width: 4%;">
 								<input type="checkbox" class="form-check-input" id="select-all-checkbox"
 									[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-									(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect All' : 'Select All'">
+									(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'">
 							</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Skill</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
@@ -75,7 +75,7 @@
                                     [ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                     (click)="updateSkillStatus(s)"
                                     [attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.name"
-                                    [appTooltip]="s.isActive === false ? 'Activate' : 'Deactivate'">
+                                    [appTooltip]="s.isActive === false ? 'Activate skill' : 'Deactivate skill'">
                                     {{ s.isActive === false ? 'Inactive' : 'Active' }}
                                 </button>
                             </td>
@@ -100,9 +100,9 @@
 
 							<td class="text-end pe-4">
 								<div class="d-flex justify-content-end gap-2">
-									<a [routerLink]="['/skills/edit', s._id]" [queryParams]="{ page: page }" class="btn btn-action-edit" appTooltip="Edit"><i
+									<a [routerLink]="['/skills/edit', s._id]" [queryParams]="{ page: page }" class="btn btn-action-edit" appTooltip="Edit skill"><i
 											class="bi bi-pencil"></i></a>
-									<button class="btn btn-action-delete" appTooltip="Delete"
+									<button class="btn btn-action-delete" appTooltip="Delete skill"
 										(click)="openDeleteModal(s._id, s.name)"><i class="bi bi-trash3"></i></button>
 								</div>
 							</td>

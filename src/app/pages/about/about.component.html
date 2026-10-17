@@ -22,7 +22,7 @@
                             <th class="ps-4 py-3 selection-column"><input type="checkbox" class="form-check-input"
                                     aria-label="Select all education entries" [checked]="allEducationSelected"
                                     [indeterminate]="selectedEducationIds.size > 0 && !allEducationSelected"
-                                    (change)="toggleAll('education')" [appTooltip]="allEducationSelected ? 'Deselect all' : 'Select All'"></th>
+                                    (change)="toggleAll('education')" [appTooltip]="allEducationSelected ? 'Deselect all' : 'Select all'"></th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Title</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Institution</th>
@@ -44,7 +44,7 @@
                                     [ngClass]="record.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                     (click)="updateEducationStatus(record)"
                                     [attr.aria-label]="(record.isActive === false ? 'Activate ' : 'Deactivate ') + record.title"
-                                    [appTooltip]="record.isActive === false ? 'Activate' : 'Deactivate'">
+                                    [appTooltip]="record.isActive === false ? 'Activate education' : 'Deactivate education'">
                                     {{ record.isActive === false ? 'Inactive' : 'Active' }}
                                 </button>
                             </td>
@@ -53,9 +53,9 @@
                             <td class="description-cell text-muted small">{{ record.description || '—' }}</td>                            
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2"><button class="btn btn-action-edit"
-                                        type="button" [appTooltip]="'Edit'"
+                                        type="button" appTooltip="Edit education"
                                         (click)="edit('education', record)"><i class="bi bi-pencil"></i></button><button
-                                        class="btn btn-action-delete" type="button" [appTooltip]="'Delete'"
+                                        class="btn btn-action-delete" type="button" appTooltip="Delete education"
                                         (click)="openDeleteModal('education', record)"><i
                                             class="bi bi-trash3"></i></button></div>
                             </td>
@@ -106,7 +106,7 @@
                             <th class="ps-4 py-3 selection-column"><input type="checkbox" class="form-check-input"
                                     aria-label="Select all experience entries" [checked]="allExperienceSelected"
                                     [indeterminate]="selectedExperienceIds.size > 0 && !allExperienceSelected"
-                                    (change)="toggleAll('experience')" [appTooltip]="allExperienceSelected ? 'Deselect all' : 'Select All'"></th>
+                                    (change)="toggleAll('experience')" [appTooltip]="allExperienceSelected ? 'Deselect all' : 'Select all'"></th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Title</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                             <th class="py-3 text-uppercase small fw-bold text-muted">Company</th>
@@ -128,7 +128,7 @@
                                     [ngClass]="record.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                     (click)="updateExperienceStatus(record)"
                                     [attr.aria-label]="(record.isActive === false ? 'Activate ' : 'Deactivate ') + record.title"
-                                    [appTooltip]="record.isActive === false ? 'Activate' : 'Deactivate'">
+                                    [appTooltip]="record.isActive === false ? 'Activate experience' : 'Deactivate experience'">
                                     {{ record.isActive === false ? 'Inactive' : 'Active' }}
                                 </button>
                             </td>
@@ -138,10 +138,10 @@
                                 [appTooltip]="record.description || '—'">{{ record.description || '—' }}</td>                            
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2"><button class="btn btn-action-edit"
-                                        type="button" [appTooltip]="'Edit'"
+                                        type="button" appTooltip="Edit experience"
                                         (click)="edit('experience', record)"><i
                                             class="bi bi-pencil"></i></button><button class="btn btn-action-delete"
-                                        type="button" [appTooltip]="'Delete'"
+                                        type="button" appTooltip="Delete experience"
                                         (click)="openDeleteModal('experience', record)"><i
                                             class="bi bi-trash3"></i></button></div>
                             </td>

@@ -40,7 +40,7 @@
 							<th class="ps-4 py-3" style="width: 4%;">
 								<input type="checkbox" class="form-check-input" id="select-all-checkbox"
 									[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-									(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select All'">
+									(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'">
 							</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted">Service</th>
 							<th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
@@ -101,11 +101,11 @@
 
 							<td class="text-end pe-4">
 								<div class="d-flex justify-content-end gap-2">
-									<a [appTooltip]="'Edit'" [routerLink]="['/services/edit', s._id]"
-										[queryParams]="{ page: page }" class="btn btn-action-edit" title="Edit">
+									<a appTooltip="Edit service" [routerLink]="['/services/edit', s._id]"
+										[queryParams]="{ page: page }" class="btn btn-action-edit">
 										<i class="bi bi-pencil"></i>
 									</a>
-									<button [appTooltip]="'Delete'" class="btn btn-action-delete"
+									<button appTooltip="Delete service" class="btn btn-action-delete"
 										(click)="openDeleteModal(s._id, s.title)">
 										<i class="bi bi-trash3"></i>
 									</button>
