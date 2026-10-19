@@ -1,332 +1,139 @@
-<div class="container py-5 mt-5">
-    <!-- <div class="row my-5" data-aos="fade-down">
-        <div class="col-lg-8">
-            <h1 class="display-5 fw-bold mb-2">Welcome back, <span class="text-primary">Avinash</span></h1>
-            <p class="text-muted lead">Here's a quick overview of your portfolio performance today.</p>
+<main class="container dashboard-page py-5 mt-5">
+    <section class="dashboard-hero rounded-4 mt-5 mb-4 mb-xl-5" data-aos="fade-down">
+        <div>
+            <p class="dashboard-eyebrow mb-2"><span class="status-dot"></span> PORTFOLIO OVERVIEW</p>
+            <h1 class="dashboard-title mb-2">Good to see you, <span>Avinash.</span></h1>
+            <p class="text-body-secondary mb-0">Your portfolio at a glance. Everything is moving.</p>
         </div>
-        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
-            <a routerLink="/projects/add" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
-                <i class="bi bi-plus-circle me-2"></i>Add New Project
-            </a>
-        </div>
-    </div> -->
-    <div class="card shadow-sm rounded-4 my-5">
-        <div class="card-body p-5">
-            <div class="row" data-aos="fade-down">
-                <div class="col-lg-8">
-                    <h1 class="display-5 fw-bold mb-2">Welcome back, <span class="text-primary">Avinash</span></h1>
-                    <p class="text-muted lead">Here's a quick overview of your portfolio performance today.</p>
-                </div>
-                <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
-                    <a routerLink="/projects/add" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
-                        <i class="bi bi-plus-circle me-2"></i>Add New Project
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+        <a routerLink="/projects/add" class="btn btn-primary rounded-4 dashboard-action">
+            <i class="bi bi-plus-lg me-2"></i>New project
+        </a>
+    </section>
 
-    <div class="row g-4 mb-5">
-        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/projects" data-aos-delay="100">
-            <div class="card stat-card border-0 h-100 shadow rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="icon-shape rounded-3 bg-primary text-white">
-                            <i class="bi bi-kanban fs-4"></i>
-                        </div>
-                        <span class="badge bg-primary-subtle text-primary small">+12% <i
-                                class="bi bi-arrow-up"></i></span>
-                    </div>
-                    <h3 class="fw-bold mb-1">{{ projectCount | number }}</h3>
-                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">Total Projects</p>
-                </div>
-            </div>
-        </div>
+    <section class="stats-grid mb-4 mb-xl-5" aria-label="Portfolio statistics">
+        <a class="stat-card" data-aos="fade-up" data-aos-delay="50" routerLink="/projects">
+            <span class="stat-icon"><i class="bi bi-kanban"></i></span>
+            <span class="stat-value">{{ projectCount | number }}</span>
+            <span class="stat-label">Projects <i class="bi bi-arrow-up-right"></i></span>
+        </a>
+        <a class="stat-card" data-aos="fade-up" data-aos-delay="100" routerLink="/skills">
+            <span class="stat-icon"><i class="bi bi-award"></i></span>
+            <span class="stat-value">{{ skillCount | number }}</span>
+            <span class="stat-label">Skills <i class="bi bi-arrow-up-right"></i></span>
+        </a>
+        <a class="stat-card" data-aos="fade-up" data-aos-delay="150" routerLink="/services">
+            <span class="stat-icon"><i class="bi bi-briefcase"></i></span>
+            <span class="stat-value">{{ serviceCount | number }}</span>
+            <span class="stat-label">Services <i class="bi bi-arrow-up-right"></i></span>
+        </a>
+        <a class="stat-card" data-aos="fade-up" data-aos-delay="200" routerLink="/website-visitor">
+            <span class="stat-icon"><i class="bi bi-people"></i></span>
+            <span class="stat-value">{{ visitorCount | number }}</span>
+            <span class="stat-label">Visitors <i class="bi bi-arrow-up-right"></i></span>
+        </a>
+        <a class="stat-card" data-aos="fade-up" data-aos-delay="250" routerLink="/feedback">
+            <span class="stat-icon"><i class="bi bi-chat-left-text"></i></span>
+            <span class="stat-value">{{ feedbackCount | number }}</span>
+            <span class="stat-label">Feedback <i class="bi bi-arrow-up-right"></i></span>
+        </a>
+    </section>
 
-        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/skills" data-aos-delay="200">
-            <div class="card stat-card border-0 h-100 shadow rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="icon-shape rounded-3 bg-success text-white">
-                            <i class="bi bi-award fs-4"></i>
-                        </div>
-                        <span class="badge bg-success-subtle text-success small">+12% <i
-                                class="bi bi-arrow-up"></i></span>
-                    </div>
-                    <h3 class="fw-bold mb-1">{{ skillCount | number }}</h3>
-                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">Skills Mastered</p>
+    <section class="dashboard-grid mb-4 mb-xl-5">
+        <article class="dashboard-panel traffic-panel" data-aos="fade-right">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker mb-1">AUDIENCE</p>
+                    <h2 class="panel-title mb-0">Website traffic</h2>
                 </div>
+                <span class="period-label"><i class="bi bi-calendar3 me-2"></i>Last 7 days</span>
             </div>
-        </div>
+            <div class="chart-container"><canvas #trafficChart></canvas></div>
+        </article>
 
-        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/services" data-aos-delay="100">
-            <div class="card stat-card border-0 h-100 shadow rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="icon-shape rounded-3 bg-danger text-white">
-                            <i class="bi bi-briefcase-fill fs-4"></i>
-                        </div>
-                        <span class="badge bg-danger-subtle text-danger small">+12% <i
-                                class="bi bi-arrow-up"></i></span>
-                    </div>
-                    <h3 class="fw-bold mb-1">{{ serviceCount | number }}</h3>
-                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">Services</p>
+        <article class="dashboard-panel shortcuts-panel" data-aos="fade-left">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker mb-1">GET THINGS DONE</p>
+                    <h2 class="panel-title mb-0">Quick actions</h2>
                 </div>
+                <i class="bi bi-lightning-charge panel-mark"></i>
             </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" data-aos-delay="300"
-            routerLink="/website-visitor">
-            <div class="card stat-card border-0 h-100 shadow rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="icon-shape rounded-3 bg-info text-white">
-                            <i class="bi bi-people fs-4"></i>
-                        </div>
-                        <span class="badge bg-info-subtle text-info small">+12% <i class="bi bi-arrow-up"></i></span>
-                    </div>
-                    <h3 class="fw-bold mb-1">{{ visitorCount | number }}</h3>
-                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">Site Visitors</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" data-aos-delay="300" routerLink="/feedback">
-            <div class="card stat-card border-0 h-100 shadow rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="icon-shape rounded-3 bg-warning text-white">
-                            <i class="bi bi-chat-left-text fs-4"></i>
-                        </div>
-                        <span class="badge bg-warning-subtle text-warning small">+12% <i
-                                class="bi bi-arrow-up"></i></span>
-                    </div>
-                    <h3 class="fw-bold mb-1">{{ feedbackCount | number }}</h3>
-                    <p class="text-muted small fw-medium mb-0 uppercase-tracking">Feedback Messages</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-lg-7" data-aos="fade-right">
-            <div class="card border-0 shadow rounded-4 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0">Website Traffic Trend</h5>
-                    <div class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 small">Last 7 Days</div>
-                </div>
-                <div class="chart-container" style="position: relative; height: 300px; width: 100%;">
-                    <canvas #trafficChart></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-5" data-aos="fade-left">
-            <div class="card border-0 shadow rounded-4 p-4 h-100">
-                <h5 class="fw-bold mb-4">Quick Shortcuts</h5>
-                <div class="list-group list-group-flush">
-                    <a routerLink="/skills"
-                        class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center py-3">
-                        <div class="bg-primary-subtle p-2 rounded-circle me-3"><i class="bi bi-pencil text-primary"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-0 fw-bold">Update Skills</h6>
-                            <small class="text-muted">Modify your technical matrix</small>
-                        </div>
-                    </a>
-                    <a (click)="downloadResume()"
-                        class="cursor-pointer list-group-item list-group-item-action border-0 px-0 d-flex align-items-center py-3">
-                        <div class="bg-warning-subtle p-2 rounded-circle me-3"><i
-                                class="bi bi-file-earmark-pdf text-warning"></i></div>
-                        <div>
-                            @if(isDownloading()){
-                            <h6 class="mb-0 fw-bold">Downloading...</h6>
-                            <small class="text-muted">Generating your latest CV...</small>
+            <div class="shortcut-list">
+                <a routerLink="/skills" class="shortcut-link">
+                    <span class="shortcut-icon"><i class="bi bi-sliders"></i></span>
+                    <span class="shortcut-copy"><strong>Update skills</strong><small>Refresh your technical profile</small></span>
+                    <i class="bi bi-arrow-up-right shortcut-arrow"></i>
+                </a>
+                <a (click)="downloadResume()" class="shortcut-link cursor-pointer">
+                    <span class="shortcut-icon"><i class="bi bi-file-earmark-arrow-down"></i></span>
+                    <span class="shortcut-copy">
+                        @if(isDownloading()) {
+                            <strong>Downloading...</strong><small>Preparing your latest resume</small>
                         } @else {
-                            <h6 class="mb-0 fw-bold">Download Resume</h6>
-                            <small class="text-muted">Download your latest CV</small>
-                            }
-                        </div>
-                    </a>
-
-                    <a routerLink="/cover-letter"
-                        class="cursor-pointer list-group-item list-group-item-action border-0 px-0 d-flex align-items-center py-3">
-                        <div class="bg-success-subtle p-2 rounded-circle me-3"><i
-                                class="bi bi-file-earmark-post text-success"></i></div>
-                        <div>
-                            <h6 class="mb-0 fw-bold">Generate Cover Letter</h6>
-                            <small class="text-muted">Create a new cover letter</small>
-                        </div>
-                    </a>
-                </div>
+                            <strong>Download resume</strong><small>Get your latest CV</small>
+                        }
+                    </span>
+                    <i class="bi bi-arrow-down shortcut-arrow"></i>
+                </a>
+                <a routerLink="/cover-letter" class="shortcut-link">
+                    <span class="shortcut-icon"><i class="bi bi-file-earmark-text"></i></span>
+                    <span class="shortcut-copy"><strong>Cover letter</strong><small>Create a tailored letter</small></span>
+                    <i class="bi bi-arrow-up-right shortcut-arrow"></i>
+                </a>
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
 
-    <div class="row g-4 my-5">
-        <div class="col-12" data-aos="fade-up">
-            <div class="card visitor-card border-0 shadow rounded-4 h-100 p-0 overflow-hidden">
-                <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-people text-primary"></i> Recent Visitors</h5>
-                    <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary rounded-pill px-3">View
-                        All</a>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0 custom-table">
-                            <thead class="bg-light-subtle">
-                                <tr>
-                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0">
-                                        Date&nbsp;&&nbsp;Time</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Visitor info
-                                    </th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Location</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Network</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Organization
-                                    </th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Timezone</th>
-                                    <!-- <th class="text-muted fw-semibold small uppercase-tracking border-0">Currency</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let visitor of visitors">
-                                    <td class="ps-3">
-                                        <div class="d-flex flex-column" style="width: 100px;">
-                                            <span class="fw-medium">{{ visitor.createdAt | date:'dd MMM, yyyy'
-                                                }}</span>
-                                            <small class="text-muted">
-                                                <i class="bi bi-clock me-1 small"></i>{{ visitor.createdAt |
-                                                date:'HH:mm:ss' }}
-                                            </small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-primary-subtle text-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center"
-                                                style="width: 40px; height: 40px;">
-                                                <i class="bi"
-                                                    [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <span class="fw-bold">{{ visitor.ip }}</span>
-                                                <small class="text-muted">{{ visitor.version }}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-column" style="width: 180px;">
-                                            <span class="fw-medium">{{ visitor.city }}, {{ visitor.region
-                                                }}</span>
-                                            <small class="text-muted">
-                                                <i class="bi bi-geo-alt-fill me-1 small"></i>{{ visitor.country_name }}
-                                            </small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-column">
-                                            <span class="fw-medium">{{ visitor.network }}</span>
-                                            <small class="text-muted">ASN: {{ visitor.asn }}</small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="d-inline-block fw-medium flex-wrap"
-                                                style="width: 230px;" [title]="visitor.org">
-                                                {{ visitor.org }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-column">
-                                            <span
-                                                class="badge bg-primary rounded-pill px-2 py-1 small align-self-start">{{
-                                                visitor.timezone }}</span>
-                                            <small class="text-muted mt-1">UTC {{ visitor.utc_offset }}</small>
-                                        </div>
-                                    </td>
-                                    <!-- <td>
-                                        <div class="d-flex flex-column">
-                                            <span class="fw-medium">{{ visitor.currency_name }}</span>
-                                            <small class="text-muted">{{ visitor.currency }}</small>
-                                        </div>
-                                    </td> -->
-                                </tr>
-                                <tr *ngIf="visitors.length === 0">
-                                    <td colspan="7" class="text-center text-muted py-4">No visitor records found.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <section class="dashboard-panel activity-panel mb-4" data-aos="fade-up">
+        <div class="panel-heading activity-heading">
+            <div>
+                <p class="panel-kicker mb-1">LIVE ACTIVITY</p>
+                <h2 class="panel-title mb-0">Recent visitors</h2>
             </div>
+            <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary panel-link">View all<i class="bi bi-arrow-up-right ms-2"></i></a>
         </div>
-    </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 custom-table">
+                <thead><tr>
+                    <th>Date &amp; time</th><th>Visitor</th><th>Location</th><th>Network</th><th>Organization</th><th>Timezone</th>
+                </tr></thead>
+                <tbody>
+                    <tr *ngFor="let visitor of visitors">
+                        <td><div class="d-flex flex-column table-date"><span>{{ visitor.createdAt | date:'dd MMM, yyyy' }}</span><small>{{ visitor.createdAt | date:'HH:mm:ss' }}</small></div></td>
+                        <td><div class="visitor-identity"><span class="visitor-icon"><i class="bi" [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i></span><span><strong>{{ visitor.ip }}</strong><small>{{ visitor.version }}</small></span></div></td>
+                        <td><div class="d-flex flex-column table-location"><span>{{ visitor.city }}, {{ visitor.region }}</span><small><i class="bi bi-geo-alt me-1"></i>{{ visitor.country_name }}</small></div></td>
+                        <td><div class="d-flex flex-column"><span>{{ visitor.network }}</span><small>ASN: {{ visitor.asn }}</small></div></td>
+                        <td><span class="organization-cell" [title]="visitor.org">{{ visitor.org }}</span></td>
+                        <td><div class="d-flex flex-column"><span class="timezone-badge rounded-3">{{ visitor.timezone }}</span><small class="mt-1">UTC {{ visitor.utc_offset }}</small></div></td>
+                    </tr>
+                    <tr *ngIf="visitors.length === 0"><td colspan="6" class="empty-state">No visitor records found.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-    <div class="row g-4 mb-5">
-        <div class="col-12" data-aos="fade-up">
-            <div class="card visitor-card border-0 shadow rounded-4 h-100 p-0 overflow-hidden">
-                <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-chat-left-text text-primary"></i> Recent Feedback</h5>
-                    <a routerLink="/feedback" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0 custom-table">
-                            <thead class="bg-light-subtle">
-                                <tr>
-                                    <th class="ps-3 text-muted fw-semibold small uppercase-tracking border-0">Date</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Name</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Designation
-                                    </th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0">Message</th>
-                                    <th class="text-muted fw-semibold small uppercase-tracking border-0 text-center">
-                                        Rating</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let feedback of feedbacks">
-                                    <td class="ps-3">
-                                        <div class="d-flex flex-column" style="width: 100px;">
-                                            <span class="fw-medium">{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
-                                            <small class="text-muted">
-                                                <i class="bi bi-clock me-1 small"></i>{{ feedback.createdAt |
-                                                date:'HH:mm:ss' }}
-                                            </small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="fw-medium d-flex align-items-center"
-                                            [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
-                                            <img [src]="avatarService.getAvatar(feedback.name)" class="me-2" />
-                                            <span class="mb-0">{{ feedback.name || 'Anonymous' }}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-column" style="width: 160px;">
-                                            <span class="fw-medium">{{ feedback.designation || '-' }}</span>
-                                            <small class="text-muted">
-                                                &#64; {{ feedback.organization || '-' }}
-                                            </small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="text-wrap d-inline-block fw-medium" style="width: 500px;">
-                                            {{ feedback.message || '-' }}
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="fw-medium">{{ feedback.rating }}</span>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="feedbacks.length === 0">
-                                    <td colspan="5" class="text-center text-muted py-4">No feedback records found.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <section class="dashboard-panel activity-panel mb-4 mb-xl-5" data-aos="fade-up">
+        <div class="panel-heading activity-heading">
+            <div>
+                <p class="panel-kicker mb-1">FROM YOUR COMMUNITY</p>
+                <h2 class="panel-title mb-0">Recent feedback</h2>
             </div>
+            <a routerLink="/feedback" class="btn btn-sm btn-outline-primary panel-link">View all<i class="bi bi-arrow-up-right ms-2"></i></a>
         </div>
-    </div>
-</div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 custom-table">
+                <thead><tr><th>Date</th><th>Name</th><th>Designation</th><th>Message</th><th class="text-center">Rating</th></tr></thead>
+                <tbody>
+                    <tr *ngFor="let feedback of feedbacks">
+                        <td><div class="d-flex flex-column table-date"><span>{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span><small>{{ feedback.createdAt | date:'HH:mm:ss' }}</small></div></td>
+                        <td><div class="feedback-identity" [title]="feedback.name || 'Anonymous'"><img [src]="avatarService.getAvatar(feedback.name)" alt="" /><span>{{ feedback.name || 'Anonymous' }}</span></div></td>
+                        <td><div class="d-flex flex-column table-designation"><span>{{ feedback.designation || '-' }}</span><small>&#64; {{ feedback.organization || '-' }}</small></div></td>
+                        <td><span class="feedback-message" [appTooltip]="feedback.message">{{ feedback.message || '-' }}</span></td>
+                        <td class="text-center"><span class="rating-value timezone-badge rounded-3"><i class="bi bi-star-fill me-1"></i>{{ feedback.rating }}</span></td>
+                    </tr>
+                    <tr *ngIf="feedbacks.length === 0"><td colspan="5" class="empty-state">No feedback records found.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

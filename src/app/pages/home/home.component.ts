@@ -20,10 +20,11 @@ import { ResumeService } from '../../services/resume/resume.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ContactService } from '../../services/contact/contact.service';
 import { FormsModule } from '@angular/forms';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TooltipDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
