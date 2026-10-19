@@ -50,26 +50,27 @@ export class AppComponent {
   ngOnInit() {
     AOS.init({
       duration: 1000,
-      mirror: false
+      mirror: true,
+      easing: 'ease-in-out'
     });
   }
 
-  // @HostListener('document:contextmenu', ['$event'])
-  // onRightClick(event: MouseEvent) {
-  //   event.preventDefault();
-  // }
+  @HostListener('document:contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    event.preventDefault();
+  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    // // Disable Ctrl+C (Copy)
-    // if (event.ctrlKey && event.key === 'c') {
-    //   event.preventDefault();
-    // }
+    // Disable Ctrl+C (Copy)
+    if (event.ctrlKey && event.key === 'c') {
+      event.preventDefault();
+    }
 
-    // // Disable Ctrl+P (Print)
-    // if (event.ctrlKey && event.key === 'p') {
-    //   event.preventDefault();
-    // }
+    // Disable Ctrl+P (Print)
+    if (event.ctrlKey && event.key === 'p') {
+      event.preventDefault();
+    }
 
     // Disable F12 (Inspect Element)
     if (event.key === 'F12') {

@@ -87,15 +87,15 @@ $primary-skin: var(--bs-primary);
     }
 }
 
-.text-dark {
-    color: var(--bs-emphasis-color) !important;
-}
+// .text-dark {
+//     color: var(--bs-emphasis-color) !important;
+// }
 
-[data-bs-theme="dark"] {
-    .text-dark {
-        color: #f8f9fa !important;
-    }
-}
+// [data-bs-theme="dark"] {
+//     .text-dark {
+//         color: #f8f9fa !important;
+//     }
+// }
 
 .smaller {
     font-size: 0.8rem;
@@ -108,4 +108,4 @@ $primary-skin: var(--bs-primary);
     &:hover {
         color: var(--bs-primary) !important;
     }
-}
+}

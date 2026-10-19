@@ -1,5 +1,5 @@
 <div class="container py-5 mt-5">
-    <div class="row my-5" data-aos="fade-down">
+    <!-- <div class="row my-5" data-aos="fade-down">
         <div class="col-lg-8">
             <h1 class="display-5 fw-bold mb-2">Welcome back, <span class="text-primary">Avinash</span></h1>
             <p class="text-muted lead">Here's a quick overview of your portfolio performance today.</p>
@@ -9,11 +9,27 @@
                 <i class="bi bi-plus-circle me-2"></i>Add New Project
             </a>
         </div>
+    </div> -->
+    <div class="card shadow-sm rounded-4 my-5">
+        <div class="card-body p-5">
+            <div class="row" data-aos="fade-down">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold mb-2">Welcome back, <span class="text-primary">Avinash</span></h1>
+                    <p class="text-muted lead">Here's a quick overview of your portfolio performance today.</p>
+                </div>
+                <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+                    <a routerLink="/projects/add" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+                        <i class="bi bi-plus-circle me-2"></i>Add New Project
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
+    
 
     <div class="row g-4 mb-5">
-        <div class="col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/projects" data-aos-delay="100">
-            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/projects" data-aos-delay="100">
+            <div class="card stat-card border-0 h-100 shadow rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div class="icon-shape rounded-3 bg-primary text-white">
@@ -28,8 +44,8 @@
             </div>
         </div>
 
-        <div class="col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/skills" data-aos-delay="200">
-            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/skills" data-aos-delay="200">
+            <div class="card stat-card border-0 h-100 shadow rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div class="icon-shape rounded-3 bg-success text-white">
@@ -44,8 +60,8 @@
             </div>
         </div>
 
-        <div class="col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/services" data-aos-delay="100">
-            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" routerLink="/services" data-aos-delay="100">
+            <div class="card stat-card border-0 h-100 shadow rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div class="icon-shape rounded-3 bg-danger text-white">
@@ -60,9 +76,9 @@
             </div>
         </div>
 
-        <div class="col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" data-aos-delay="300"
+        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" data-aos-delay="300"
             routerLink="/website-visitor">
-            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+            <div class="card stat-card border-0 h-100 shadow rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div class="icon-shape rounded-3 bg-info text-white">
@@ -76,8 +92,8 @@
             </div>
         </div>
 
-        <div class="col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" data-aos-delay="300" routerLink="/feedback">
-            <div class="card stat-card border-0 h-100 shadow-sm rounded-4">
+        <div class="col-6 col-sm-4 col-xl-3 cursor-pointer" data-aos="fade-up" data-aos-delay="300" routerLink="/feedback">
+            <div class="card stat-card border-0 h-100 shadow rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div class="icon-shape rounded-3 bg-warning text-white">
@@ -95,7 +111,7 @@
 
     <div class="row g-4">
         <div class="col-lg-7" data-aos="fade-right">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="card border-0 shadow rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold mb-0">Website Traffic Trend</h5>
                     <div class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 small">Last 7 Days</div>
@@ -107,7 +123,7 @@
         </div>
 
         <div class="col-lg-5" data-aos="fade-left">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="card border-0 shadow rounded-4 p-4 h-100">
                 <h5 class="fw-bold mb-4">Quick Shortcuts</h5>
                 <div class="list-group list-group-flush">
                     <a routerLink="/skills"
@@ -150,7 +166,7 @@
 
     <div class="row g-4 my-5">
         <div class="col-12" data-aos="fade-up">
-            <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+            <div class="card visitor-card border-0 shadow rounded-4 h-100 p-0 overflow-hidden">
                 <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold mb-0"><i class="bi bi-people text-primary"></i> Recent Visitors</h5>
                     <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary rounded-pill px-3">View
@@ -177,7 +193,7 @@
                                 <tr *ngFor="let visitor of visitors">
                                     <td class="ps-3">
                                         <div class="d-flex flex-column" style="width: 100px;">
-                                            <span class="fw-medium text-dark">{{ visitor.createdAt | date:'dd MMM, yyyy'
+                                            <span class="fw-medium">{{ visitor.createdAt | date:'dd MMM, yyyy'
                                                 }}</span>
                                             <small class="text-muted">
                                                 <i class="bi bi-clock me-1 small"></i>{{ visitor.createdAt |
@@ -193,14 +209,14 @@
                                                     [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i>
                                             </div>
                                             <div class="d-flex flex-column">
-                                                <span class="fw-bold text-dark">{{ visitor.ip }}</span>
+                                                <span class="fw-bold">{{ visitor.ip }}</span>
                                                 <small class="text-muted">{{ visitor.version }}</small>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex flex-column" style="width: 180px;">
-                                            <span class="fw-medium text-dark">{{ visitor.city }}, {{ visitor.region
+                                            <span class="fw-medium">{{ visitor.city }}, {{ visitor.region
                                                 }}</span>
                                             <small class="text-muted">
                                                 <i class="bi bi-geo-alt-fill me-1 small"></i>{{ visitor.country_name }}
@@ -209,13 +225,13 @@
                                     </td>
                                     <td>
                                         <div class="d-flex flex-column">
-                                            <span class="fw-medium text-dark">{{ visitor.network }}</span>
+                                            <span class="fw-medium">{{ visitor.network }}</span>
                                             <small class="text-muted">ASN: {{ visitor.asn }}</small>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <span class="d-inline-block fw-medium text-dark flex-wrap"
+                                            <span class="d-inline-block fw-medium flex-wrap"
                                                 style="width: 230px;" [title]="visitor.org">
                                                 {{ visitor.org }}
                                             </span>
@@ -231,7 +247,7 @@
                                     </td>
                                     <!-- <td>
                                         <div class="d-flex flex-column">
-                                            <span class="fw-medium text-dark">{{ visitor.currency_name }}</span>
+                                            <span class="fw-medium">{{ visitor.currency_name }}</span>
                                             <small class="text-muted">{{ visitor.currency }}</small>
                                         </div>
                                     </td> -->
@@ -249,7 +265,7 @@
 
     <div class="row g-4 mb-5">
         <div class="col-12" data-aos="fade-up">
-            <div class="card visitor-card border-0 shadow-sm rounded-4 h-100 p-0 overflow-hidden">
+            <div class="card visitor-card border-0 shadow rounded-4 h-100 p-0 overflow-hidden">
                 <div class="card-header bg-transparent border-0 p-3 d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold mb-0"><i class="bi bi-chat-left-text text-primary"></i> Recent Feedback</h5>
                     <a routerLink="/feedback" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
@@ -272,8 +288,7 @@
                                 <tr *ngFor="let feedback of feedbacks">
                                     <td class="ps-3">
                                         <div class="d-flex flex-column" style="width: 100px;">
-                                            <span class="fw-medium text-dark">{{ feedback.createdAt | date:'dd MMM,
-                                                yyyy' }}</span>
+                                            <span class="fw-medium">{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
                                             <small class="text-muted">
                                                 <i class="bi bi-clock me-1 small"></i>{{ feedback.createdAt |
                                                 date:'HH:mm:ss' }}
@@ -281,7 +296,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="fw-medium text-dark d-flex align-items-center"
+                                        <div class="fw-medium d-flex align-items-center"
                                             [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
                                             <img [src]="avatarService.getAvatar(feedback.name)" class="me-2" />
                                             <span class="mb-0">{{ feedback.name || 'Anonymous' }}</span>
@@ -289,20 +304,19 @@
                                     </td>
                                     <td>
                                         <div class="d-flex flex-column" style="width: 160px;">
-                                            <span class="fw-medium text-dark">{{ feedback.designation || '-' }}</span>
+                                            <span class="fw-medium">{{ feedback.designation || '-' }}</span>
                                             <small class="text-muted">
                                                 &#64; {{ feedback.organization || '-' }}
                                             </small>
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 500px;"
-                                            [title]="feedback.message">
+                                        <span class="text-wrap d-inline-block fw-medium" style="width: 500px;">
                                             {{ feedback.message || '-' }}
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="fw-medium text-dark">{{ feedback.rating }}</span>
+                                        <span class="fw-medium">{{ feedback.rating }}</span>
                                     </td>
                                 </tr>
                                 <tr *ngIf="feedbacks.length === 0">
