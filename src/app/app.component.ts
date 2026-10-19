@@ -50,7 +50,7 @@ export class AppComponent {
   ngOnInit() {
     AOS.init({
       duration: 1000,
-      mirror: true,
+      mirror: false,
       easing: 'ease-in-out'
     });
   }
