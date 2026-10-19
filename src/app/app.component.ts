@@ -51,7 +51,7 @@ export class AppComponent {
     AOS.init({
       duration: 1000,
       mirror: false,
-      easing: 'ease-in-out'
+      // easing: 'ease-in-out'
     });
   }
 
