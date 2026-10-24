@@ -100,7 +100,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
     // patch simple fields including showOnResume
     this.projectForm.patchValue({
       title: project.title || '',
-      category: project.category || '',
+      category: project.category._id || '',
       clientName: project.clientName || '',
       teamSize: project.teamSize || '',
       completedYear: project.completedYear || '',

@@ -11,10 +11,15 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
+interface Category {
+  _id: string;
+  name: string;
+}
+
 interface Project {
   _id: string;
   title: string;
-  category: string;
+  category: Category;
   completedYear: string;
   desc: string[];
   image?: string;
