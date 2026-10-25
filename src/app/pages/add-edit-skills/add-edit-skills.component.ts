@@ -93,7 +93,7 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
       icon: skill.icon || '',
       level: skill.level ?? 50,
       color: skill.color || '#0d6efd',
-      category: skill.category || '',
+      category: skill.category._id || '',
       isActive: skill.isActive ?? true
     });
   }

@@ -63,9 +63,9 @@
 											<i class="fs-4 text-primary" [class]="s.icon"></i>
 										</div>
 									</div>
-									<div>
-										<div class="fw-bold text-body">{{ s.title }}</div>
-										<div class="text-muted smaller text-truncate" style="max-width: 200px;">
+									<div style="max-width: 400px;">
+										<div class="fw-bold text-body w-100 text-truncate">{{ s.title }}</div>
+										<div class="text-muted smaller w-100 text-truncate">
 											<i [class]="s.icon" class="text-primary me-1"></i> {{ s.icon }}
 										</div>
 									</div>
@@ -82,7 +82,7 @@
 							</td>
 							<td>
 								<div [appTooltip]="s.description" class="text-muted small text-truncate"
-									[title]="s.description" style="max-width: 400px;">
+									[title]="s.description" style="max-width: 300px;">
 									{{ s.description }}
 								</div>
 							</td>

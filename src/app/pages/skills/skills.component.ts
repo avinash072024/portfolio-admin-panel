@@ -11,14 +11,19 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
-export interface Skill {
+interface Category {
+  __id: string;
+  name: string;
+}
+
+interface Skill {
   _id: string;
   name: string;
   icon: string;
   level: number;
   color: string;
   isActive: boolean;
-  category: string;
+  category: Category;
 }
 
 @Component({
