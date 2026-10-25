@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
@@ -18,6 +18,9 @@ import { CapitalizeDirective } from '../../directives/capitalize/capitalize.dire
   styleUrl: './add-edit-project.component.scss'
 })
 export class AddEditProjectComponent implements OnInit, OnDestroy {
+  @ViewChildren('descriptionInput') descriptionInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('toolInput') toolInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
   projectForm!: FormGroup;
   fb = inject(FormBuilder);
   projectService = inject(ProjectsService);
@@ -127,7 +130,13 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   get toolsArray() { return this.projectForm.get('tools') as FormArray; }
 
   // Dynamic Array Methods
-  addItem(array: FormArray) { array.push(this.fb.control('', Validators.required)); }
+  addItem(array: FormArray, inputType: 'description' | 'tool') {
+    array.push(this.fb.control('', Validators.required));
+    setTimeout(() => {
+      const inputs = inputType === 'description' ? this.descriptionInputs : this.toolInputs;
+      inputs.last?.nativeElement.focus();
+    });
+  }
   removeItem(array: FormArray, index: number) { if (array.length > 1) array.removeAt(index); }
 
   // Validation Helper

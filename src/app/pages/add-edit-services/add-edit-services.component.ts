@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,6 +15,8 @@ import { CapitalizeDirective } from '../../directives/capitalize/capitalize.dire
   styleUrl: './add-edit-services.component.scss'
 })
 export class AddEditServicesComponent implements OnInit {
+  @ViewChildren('featureInput') featureInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
   serviceForm!: FormGroup;
   fb = inject(FormBuilder);
   servicesService = inject(ServicesService);
@@ -88,6 +90,7 @@ export class AddEditServicesComponent implements OnInit {
 
   addFeature() {
     this.featuresArray.push(this.fb.control('', Validators.required));
+    setTimeout(() => this.featureInputs.last?.nativeElement.focus());
   }
 
   removeFeature(index: number) {

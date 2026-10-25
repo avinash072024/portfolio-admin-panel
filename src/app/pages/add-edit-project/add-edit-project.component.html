@@ -67,7 +67,7 @@
                             </button> -->
                         </div>
                         <div *ngFor="let d of descArray.controls; let i=index" class="input-group mb-2">
-                            <input [formControlName]="i" class="form-control" placeholder="Describe a feature..."
+                            <input #descriptionInput [formControlName]="i" class="form-control" [placeholder]="`Describe feature ${i + 1}`"
                                 [class.is-invalid]="isInvalid(['desc', i])" appCapitalize="dot-space">
                             <button *ngIf="descArray.length > 1" type="button" (click)="removeItem(descArray, i)"
                                 class="btn btn-outline-danger">
@@ -75,7 +75,7 @@
                             </button>
                         </div>
                         <div class="invalid-feedback">Please enter description</div>
-                        <button type="button" (click)="addItem(descArray)"
+                        <button type="button" (click)="addItem(descArray, 'description')"
                             class="btn btn-sm btn-outline-primary border-0">
                             <i class="bi bi-plus-circle"></i> Add Point
                         </button>
@@ -92,7 +92,7 @@
                         <div class="d-flex flex-wrap gap-2 mb-2">
                             <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap custom-input-group"
                                 >
-                                <input [formControlName]="i" class="form-control form-control-sm"
+                                <input #toolInput [formControlName]="i" class="form-control form-control-sm"
                                     [placeholder]="`Technology ${i + 1}`" [class.is-invalid]="isInvalid(['tools', i])">
                                 <button *ngIf="toolsArray.length > 1" type="button" (click)="removeItem(toolsArray, i)"
                                     class="btn btn-outline-danger">
@@ -100,7 +100,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button type="button" (click)="addItem(toolsArray)"
+                        <button type="button" (click)="addItem(toolsArray, 'tool')"
                             class="btn btn-sm btn-outline-primary border-0">
                             <i class="bi bi-plus-circle"></i> Add Tool
                         </button>
