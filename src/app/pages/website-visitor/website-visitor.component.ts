@@ -51,7 +51,6 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
 
     const date = this.dateFilter || undefined;
 
-    this.visitorService.clearCache();
     this.visitorService.getAllVisitors(this.page, this.limit, date).subscribe({
       next: (res: any) => {
         this.spinner.hide();
