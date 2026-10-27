@@ -38,11 +38,11 @@ export class ResetPasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentUser = this.sessionService.getUserSession();
-    if (!this.currentUser) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    // this.currentUser = this.sessionService.getUserSession();
+    // if (!this.currentUser) {
+    //   this.router.navigate(['/login']);
+    //   return;
+    // }
 
     this.initForm();
   }

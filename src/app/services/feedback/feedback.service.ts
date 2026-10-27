@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { SessionService } from '../session/session.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedbackService {
+  sessionService = inject(SessionService);
   constructor(private http: HttpClient) { }
 
   getFeedbacks(): Observable<any> {
@@ -22,18 +24,18 @@ export class FeedbackService {
   }
 
   updateFeedbackVerified(id: string, verified: boolean): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/feedback/${id}/verified`, { verified });
+    return this.http.patch(`${environment.apiUrl}/feedback/${id}/verified`, { verified }, this.sessionService.getAuthHeaders());
   }
 
   deleteFeedback(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/feedback/${id}`);
+    return this.http.delete(`${environment.apiUrl}/feedback/${id}`, this.sessionService.getAuthHeaders());
   }
 
   deleteMultipleFeedbacks(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/feedback/bulk`, { body: { ids } });
+    return this.http.delete(`${environment.apiUrl}/feedback/bulk`, { ...this.sessionService.getAuthHeaders(), body: { ids } });
   }
 
   updateMultipleFeedbackVerified(ids: string[], verified: boolean): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/feedback/bulk/verified`, { ids, verified });
+    return this.http.patch(`${environment.apiUrl}/feedback/bulk/verified`, { ids, verified }, this.sessionService.getAuthHeaders());
   }
 }
