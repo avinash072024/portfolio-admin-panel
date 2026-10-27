@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ThemeTogglerComponent } from '../../components/theme-toggler/theme-toggler.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs';
+import { Constants } from '../../models/constants';
+import { SessionService } from '../../services/session/session.service';
 
 @Component({
   selector: 'app-forgot-password-form',
@@ -15,7 +17,7 @@ import { finalize } from 'rxjs';
   templateUrl: './forgot-password-form.component.html',
   styleUrl: './forgot-password-form.component.scss'
 })
-export class ForgotPasswordFormComponent {
+export class ForgotPasswordFormComponent implements OnInit {
   identifyForm: FormGroup;
   otpForm: FormGroup;
   resetForm: FormGroup;
@@ -30,6 +32,8 @@ export class ForgotPasswordFormComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private sessionService: SessionService,
+    private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
   ) {
@@ -43,6 +47,13 @@ export class ForgotPasswordFormComponent {
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
     }, { validators: this.passwordMatchValidator });
+  }
+
+  ngOnInit(): void {
+    let token = this.sessionService.getCookie(Constants.token);
+    if (token) {
+      this.router.navigateByUrl('/home');
+    }
   }
 
   passwordMatchValidator(form: AbstractControl): ValidationErrors | null {

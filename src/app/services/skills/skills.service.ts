@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SessionService } from '../session/session.service';
 
@@ -9,23 +8,9 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class SkillsService {
-  // private cachedSkills$?: Observable<any>;
   sessionService = inject(SessionService);
 
   constructor(private http: HttpClient) { }
-
-  // getSkills(): Observable<any> {
-  //   if (!this.cachedSkills$) {
-  //     this.cachedSkills$ = this.http.get(environment.apiUrl + '/skills').pipe(
-  //       shareReplay({ bufferSize: 1, refCount: true, windowTime: 300000 }),
-  //       catchError(err => {
-  //         this.cachedSkills$ = undefined;
-  //         return throwError(() => err);
-  //       })
-  //     );
-  //   }
-  //   return this.cachedSkills$;
-  // }
 
   getSkills(): Observable<any> {
     return this.http.get(environment.apiUrl + '/skills')

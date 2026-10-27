@@ -10,7 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ProjectsService } from '../../services/projects/projects.service';
 import { SkillsService } from '../../services/skills/skills.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
-import { EmailService } from '../../services/email/email.service';
 import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { ThemeService } from '../../services/theme/theme.service';

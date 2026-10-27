@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SessionService } from '../session/session.service';
 
@@ -9,22 +8,8 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class ProjectsService {
-  // private cachedProjects$?: Observable<any>;
   sessionService = inject(SessionService);
   constructor(private http: HttpClient) { }
-
-  // getProjects(): Observable<any> {
-  //   if (!this.cachedProjects$) {
-  //     this.cachedProjects$ = this.http.get(environment.apiUrl + '/projects').pipe(
-  //       shareReplay({ bufferSize: 1, refCount: true, windowTime: 300000 }),
-  //       catchError(err => {
-  //         this.cachedProjects$ = undefined;
-  //         return throwError(() => err);
-  //       })
-  //     );
-  //   }
-  //   return this.cachedProjects$;
-  // }
 
   getProjects(): Observable<any> {
     return this.http.get(environment.apiUrl + '/projects')
@@ -86,9 +71,5 @@ export class ProjectsService {
   updateProjectCategory(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/project-categories/${id}`, data, this.sessionService.getAuthHeaders());
   }
-
-  // private invalidateCache() {
-  //   this.cachedProjects$ = undefined;
-  // }
 
 }

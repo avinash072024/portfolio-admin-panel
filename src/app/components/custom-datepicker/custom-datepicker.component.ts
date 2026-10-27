@@ -1,20 +1,12 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// interface CalendarDay {
-//   date: Date;
-//   isCurrentMonth: boolean;
-//   isToday: boolean;
-//   isSelected: boolean;
-// }
-
-// Add 'isFuture' to your interface
 interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   isToday: boolean;
   isSelected: boolean;
-  isFuture: boolean; // <-- Add this
+  isFuture: boolean;
 }
 
 @Component({
@@ -84,15 +76,6 @@ export class CustomDatepickerComponent implements OnInit {
     this.generateCalendar();
   }
 
-  // selectDate(day: CalendarDay, event: Event) {
-  //   event.stopPropagation();
-  //   this.selectedDate = day.date;
-  //   this.selectedDateString = this.formatDate(this.selectedDate);
-  //   this.dateChange.emit(this.selectedDateString);
-  //   this.isOpen = false;
-  //   this.generateCalendar();
-  // }
-
   selectDate(day: CalendarDay, event: Event) {
     event.stopPropagation();
 
@@ -151,25 +134,6 @@ export class CustomDatepickerComponent implements OnInit {
     }
   }
 
-  // private createCalendarDay(date: Date, isCurrentMonth: boolean): CalendarDay {
-  //   const today = new Date();
-  //   const isToday = date.getDate() === today.getDate() &&
-  //     date.getMonth() === today.getMonth() &&
-  //     date.getFullYear() === today.getFullYear();
-
-  //   const isSelected = this.selectedDate !== null &&
-  //     date.getDate() === this.selectedDate.getDate() &&
-  //     date.getMonth() === this.selectedDate.getMonth() &&
-  //     date.getFullYear() === this.selectedDate.getFullYear();
-
-  //   return {
-  //     date,
-  //     isCurrentMonth,
-  //     isToday,
-  //     isSelected
-  //   };
-  // }
-
   private createCalendarDay(date: Date, isCurrentMonth: boolean): CalendarDay {
     const today = new Date();
     // Clear hours for an accurate day-by-day comparison
@@ -191,7 +155,7 @@ export class CustomDatepickerComponent implements OnInit {
       isCurrentMonth,
       isToday,
       isSelected,
-      isFuture // <-- Pass it here
+      isFuture
     };
   }
 

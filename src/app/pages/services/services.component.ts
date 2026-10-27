@@ -190,11 +190,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
       });
   }
 
-  // onSearch() {
-  //   this.page = 1;
-  //   this.getServices();
-  // }
-
   clearSearch() {
     this.searchTerm = '';
     this.onSearch();
