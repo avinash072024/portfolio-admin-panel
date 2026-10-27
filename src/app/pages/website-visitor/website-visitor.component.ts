@@ -8,10 +8,11 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { CustomDatepickerComponent } from '../../components/custom-datepicker/custom-datepicker.component';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-website-visitor',
-  imports: [CommonModule, PaginationComponent, CustomDatepickerComponent],
+  imports: [CommonModule, PaginationComponent, CustomDatepickerComponent, TooltipDirective],
   templateUrl: './website-visitor.component.html',
   styleUrl: './website-visitor.component.scss'
 })

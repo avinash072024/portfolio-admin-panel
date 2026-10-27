@@ -115,7 +115,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         // this.toasterService.showError(err.message)
         this.spinner.hide();
         // this.toastr.error(err.message);
-        this.toastr.error(err?.error?.message || 'Failed to load projects');
+        this.toastr.error(err?.error?.message || 'Failed to load projects. Please try again.');
       },
     })
   }
@@ -189,7 +189,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       error: (err: any) => {
         this.spinner.hide();
         // this.toastr.error(err?.message);
-        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete project');
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete project. Please try again.');
       }
     })
   }
@@ -230,7 +230,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || err?.message);
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to update status. Please try again.');
       }
     });
   }
@@ -266,7 +266,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || err?.message);
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete projects. Please try again.');
       }
     });
   }

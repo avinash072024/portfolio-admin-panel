@@ -110,7 +110,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete services');
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete skills. Please try again.');
       }
     });
   }
@@ -157,7 +157,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
       error: (err: any) => {
         this.spinner.hide();
         // this.toastr.error(err.message);
-        this.toastr.error(err?.error?.message || 'Failed to load skills');
+        this.toastr.error(err?.error?.message || 'Failed to load skills. Please try again.');
       },
     })
   }
@@ -261,7 +261,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete service');
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete service. Please try again.');
       }
     })
   }
@@ -282,7 +282,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err?.error?.message || err?.message);
+          this.toastr.error(err?.error?.message || err?.message || 'Failed to update status. Please try again.');
         }
       });
     }

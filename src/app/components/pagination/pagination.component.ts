@@ -60,5 +60,6 @@ export class PaginationComponent {
   setLimit(newLimit: number) {
     if (newLimit === this.limit) return;
     this.limitChange.emit(newLimit);
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 }

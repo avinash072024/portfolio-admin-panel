@@ -76,7 +76,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.spinner.hide();
-        this.toastr.error(err.error.message || 'Failed to load contact details');
+        this.toastr.error(err.error.message || 'Failed to load contact details. Please try again.');
       }
     });
   }
@@ -96,7 +96,7 @@ export class ContactComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err.error.message || 'Failed to update contact details')
+          this.toastr.error(err.error.message || 'Failed to update contact details. Please try again.')
         }
       });
     } else {

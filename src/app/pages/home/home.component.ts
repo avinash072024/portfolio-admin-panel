@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsMod
           this.visitorChartCounts = res.visitorDailyCounts.map((daily: any) => daily.total ?? daily.Visitors?.length ?? 0);
           this.initChart(this.visitorChartDates, this.visitorChartCounts);
         } else {
-          this.toastr.error('Failed to load visitor chart data');
+          this.toastr.error('Failed to load visitor chart data. Please try again.');
         }
 
         // --- Handle Projects Data ---
@@ -145,21 +145,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsMod
           this.feedbacks = res.feedbacks.feedback || [];
           this.feedbackCount = res.feedbacks?.total || 0;
         } else {
-          this.toastr.error(res.feedbacks?.message || 'Failed to load feedback');
+          this.toastr.error(res.feedbacks?.message || 'Failed to load feedback. Please try again.');
         }
 
         // --- Handle Services Data ---
         if (res.services?.success && res.services?.services) {
           this.serviceCount = res.services?.total || 0;
         } else {
-          this.toastr.error(res.services?.message || 'Failed to load services');
+          this.toastr.error(res.services?.message || 'Failed to load services. Please try again.');
         }
 
         // Handle Contact Data
         if (res.contact?.success && res.contact?.contact) {
           this.myInformation = res.contact.contact || [];
         } else {
-          this.toastr.error(res.contact?.message || 'Failed to load contact information');
+          this.toastr.error(res.contact?.message || 'Failed to load contact information. Please try again.');
         } 
       },
       error: (err: any) => {
@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsMod
           this.spinner.hide();
         }
 
-        const errorMessage = err?.error?.message || 'Failed to load dashboard data';
+        const errorMessage = err?.error?.message || 'Failed to load dashboard data. Please try again.';
         this.toastr.error(errorMessage);
         console.error('API Error:', err);
       }

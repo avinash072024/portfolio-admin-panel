@@ -2,10 +2,10 @@
     [attr.data-skin]="themeService.skin()">
     <div class="d-flex align-items-center gap-2">
         <span class="text-muted small">Rows:</span>
-        <div class="btn-group" role="group" aria-label="rows per page">
+        <div class="btn-group gap-1" role="group" aria-label="rows per page">
             <button type="button" class="btn btn-sm" [class.active]="limit===5"
                 (click)="setLimit(5)">5</button>
-            <button type="button" class="btn btn-sm mx-1" [class.active]="limit===10"
+            <button type="button" class="btn btn-sm" [class.active]="limit===10"
                 (click)="setLimit(10)">10</button>
             <button type="button" class="btn btn-sm" [class.active]="limit===20"
                 (click)="setLimit(20)">20</button>
