@@ -110,7 +110,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || err?.message);
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete services');
       }
     });
   }
@@ -261,7 +261,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.message);
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to delete service');
       }
     })
   }

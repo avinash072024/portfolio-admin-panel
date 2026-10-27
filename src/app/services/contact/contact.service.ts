@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, shareReplay, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { SessionService } from '../session/session.service';
 
 export interface ContactInfo {
   _id?: string;
@@ -26,32 +27,13 @@ export interface ContactInfo {
 })
 export class ContactService {
   private http = inject(HttpClient);
-  private cachedContact$?: Observable<{ success: boolean; contact: ContactInfo }>;
-
-  // getContact(): Observable<{ success: boolean; contact: ContactInfo }> {
-  //   if (!this.cachedContact$) {
-  //     this.cachedContact$ = this.http.get<{ success: boolean; contact: ContactInfo }>(`${environment.apiUrl}/contact`).pipe(
-  //       shareReplay({ bufferSize: 1, refCount: true, windowTime: 300000 }),
-  //       catchError(err => {
-  //         this.cachedContact$ = undefined;
-  //         return throwError(() => err);
-  //       })
-  //     );
-  //   }
-  //   return this.cachedContact$;
-  // }
+  sessionService = inject(SessionService);
 
   getContact(): Observable<{ success: boolean; contact: ContactInfo }> {
     return this.http.get<{ success: boolean; contact: ContactInfo }>(environment.apiUrl + `/contact`);
   }
 
   updateContact(contactData: Partial<ContactInfo>): Observable<{ success: boolean; message: string; contact: ContactInfo }> {
-    return this.http.post<{ success: boolean; message: string; contact: ContactInfo }>(`${environment.apiUrl}/contact`, contactData).pipe(
-      tap(() => this.invalidateCache())
-    );
-  }
-
-  private invalidateCache() {
-    this.cachedContact$ = undefined;
+    return this.http.post<{ success: boolean; message: string; contact: ContactInfo }>(`${environment.apiUrl}/contact`, contactData, this.sessionService.getAuthHeaders());
   }
 }

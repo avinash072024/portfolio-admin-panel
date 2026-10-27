@@ -120,7 +120,7 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
           },
           error: (err: any) => {
             this.spinner.hide();
-            this.toastr.error(err?.message);
+            this.toastr.error(err?.error?.message || err?.message || 'Failed to update services');
           }
         })
       } else {
@@ -142,7 +142,7 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
           },
           error: (err: any) => {
             this.spinner.hide();
-            this.toastr.error(err?.message);
+            this.toastr.error(err?.error?.message || err?.message || 'Failed to add services');
           }
         })
       }
@@ -165,7 +165,7 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.message || 'Failed to load categories');
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to load categories');
       }
     });
   }
@@ -191,7 +191,8 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err?.message || 'Error updating category');
+          // this.toastr.error(err?.message || 'Error updating category');
+          this.toastr.error(err?.error?.message || err?.message || 'Failed to update skill category');
         }
       });
     } else {
@@ -208,7 +209,8 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err?.message || 'Error adding category');
+          // this.toastr.error(err?.message || 'Error adding category');
+          this.toastr.error(err?.error?.message || err?.message || 'Failed to add category');
         }
       });
     }
@@ -246,7 +248,8 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err?.message || 'Error deleting category');
+          // this.toastr.error(err?.message || 'Error deleting category');
+          this.toastr.error(err?.error?.message || err?.message || 'Failed to delete category');
         }
       });
     }

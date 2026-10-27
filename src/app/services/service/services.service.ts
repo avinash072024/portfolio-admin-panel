@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { SessionService } from '../session/session.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicesService {
-  private cachedServices$?: Observable<any>;
+  // private cachedServices$?: Observable<any>;
+  sessionService = inject(SessionService);
 
   constructor(private http: HttpClient) { }
 
@@ -29,34 +31,25 @@ export class ServicesService {
 
   // POST /api/services
   addService(data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/services`, data).pipe(
-      tap(() => this.invalidateCache())
-    );
+    return this.http.post(`${environment.apiUrl}/services`, data, this.sessionService.getAuthHeaders());
   }
 
   // PUT /api/services/:id
   updateService(id: string, data: any): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/services/${id}`, data).pipe(
-      tap(() => this.invalidateCache())
-    );
+    return this.http.put(`${environment.apiUrl}/services/${id}`, data, this.sessionService.getAuthHeaders());
   }
 
   // DELETE /api/services/:id
   deleteService(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/services/${id}`).pipe(
-      tap(() => this.invalidateCache())
-    );
+    return this.http.delete(`${environment.apiUrl}/services/${id}`, this.sessionService.getAuthHeaders());
   }
 
   // DELETE /api/services/bulk
   deleteMultipleServices(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/services/bulk`, { body: { ids } }).pipe(
-      tap(() => this.invalidateCache())
-    );
-  }
-
-  private invalidateCache() {
-    this.cachedServices$ = undefined;
+    return this.http.delete(`${environment.apiUrl}/services/bulk`, {
+      ...this.sessionService.getAuthHeaders(),
+      body: { ids }
+    });
   }
 }
 

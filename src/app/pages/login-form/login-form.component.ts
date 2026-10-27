@@ -7,6 +7,7 @@ import { SessionService } from '../../services/session/session.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../../services/auth/auth.service';
+import { Constants } from '../../models/constants';
 
 @Component({
   selector: 'app-login-form',
@@ -34,8 +35,9 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.sessionService.getUserSession()) {
-      this.router.navigate(['/home']);
+    let token = this.sessionService.getCookie(Constants.token);
+    if (token) {
+      this.router.navigateByUrl('/home');
     }
   }
 
@@ -50,7 +52,7 @@ export class LoginFormComponent implements OnInit {
       this.authService.login(this.loginForm.value).subscribe({
         next: (res: any) => {
           if (res.success) {
-            this.sessionService.setUserSession(res.data);
+            this.sessionService.setCookie(Constants.token, res?.data?.token);
             this.spinner.hide();
             // this.toastr.success(res.message || 'Login successful');
             this.router.navigate(['/home']);

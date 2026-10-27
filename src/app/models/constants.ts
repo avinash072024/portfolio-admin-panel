@@ -9,4 +9,7 @@ export class Constants {
     // user details
     public static USER_DETAILS: string = 'userDetails';
     public static PROJECT_IMAGE_URL: string = 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800';
+
+    // token
+    public static token: string = `${this.APP_NAME_COMBINE.toLowerCase()}-token`;
 }

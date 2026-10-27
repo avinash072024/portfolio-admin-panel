@@ -164,7 +164,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
           },
           error: (err: any) => {
             this.spinner.hide();
-            this.toastr.error(err?.message);
+            // this.toastr.error(err?.message);
+            this.toastr.error(err?.error?.message || err?.message || 'Failed to update project');
           }
         });
       } else {
@@ -187,7 +188,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
           },
           error: (err: any) => {
             this.spinner.hide();
-            this.toastr.error(err?.message);
+            // this.toastr.error(err?.message);
+            this.toastr.error(err?.error?.message || err?.message || 'Failed to add project');
           }
         });
       }
@@ -236,7 +238,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err?.message || 'Error updating category');
+          // this.toastr.error(err?.message || 'Error updating category');
+          this.toastr.error(err?.error?.message || err?.message || 'Failed to update project category');
         }
       });
     } else {
@@ -253,7 +256,8 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           this.spinner.hide();
-          this.toastr.error(err?.message || 'Error adding category');
+          // this.toastr.error(err?.message || 'Error adding category');
+          this.toastr.error(err?.error?.message || err?.message || 'Failed to add project category');
         }
       });
     }
