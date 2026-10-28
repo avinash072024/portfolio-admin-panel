@@ -171,6 +171,170 @@ thead th {
     border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08) !important;
 }
 
+.dashboard-table {
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(var(--bs-primary-rgb), 0.045);
+    min-width: 780px;
+}
+
+.dashboard-table th {
+    padding: 0.8rem 1rem;
+    border-color: var(--panel-border, rgba(var(--bs-emphasis-color-rgb), 0.1));
+    color: var(--bs-secondary-color);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.dashboard-table td {
+    padding: 0.9rem 1rem;
+    border-color: var(--panel-border, rgba(var(--bs-emphasis-color-rgb), 0.1));
+    font-size: 0.8rem;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.dashboard-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.dashboard-table small {
+    color: var(--bs-secondary-color);
+    font-size: 0.72rem;
+}
+
+.dashboard-table .table-date span,
+.dashboard-table .table-location span,
+.dashboard-table .table-designation span {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dashboard-table .table-date,
+.dashboard-table .table-location,
+.dashboard-table .table-designation {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-table .table-designation {
+    min-width: 145px;
+}
+
+.dashboard-table .visitor-identity,
+.dashboard-table .feedback-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 140px;
+}
+
+.dashboard-table .visitor-identity > span:last-child {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.dashboard-table .visitor-identity strong,
+.dashboard-table .feedback-identity span {
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-table .visitor-icon {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--bs-primary);
+    background: var(--bs-primary-bg-subtle);
+}
+
+.dashboard-table .feedback-identity img {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dashboard-table .organization-cell {
+    display: block;
+    width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-table .timezone-badge,
+.dashboard-table .rating-value {
+    display: inline-block;
+    padding: 0.25rem 0.45rem;
+    border-radius: 4px;
+    color: var(--bs-primary-text-emphasis);
+    background: var(--bs-primary-bg-subtle);
+    font-size: 0.72rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.dashboard-table .timezone-badge {
+    align-self: flex-start;
+}
+
+.dashboard-table .rating-value i {
+    color: var(--bs-primary);
+    font-size: 0.7rem;
+}
+
+.dashboard-table .feedback-message {
+    display: block;
+    width: min(38vw, 440px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-table .table-checkbox-column {
+    width: 48px;
+    padding-right: 0.25rem !important;
+    padding-left: 1.35rem !important;
+}
+
+.dashboard-table .table-checkbox {
+    display: block;
+    flex: 0 0 1rem;
+    float: none;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    border-radius: 0.3rem !important;
+}
+
+.dashboard-table .table-actions-column {
+    width: 120px;
+    padding-right: 1.35rem !important;
+}
+
+.dashboard-table .empty-state {
+    padding: 2rem !important;
+    color: var(--bs-secondary-color);
+    text-align: center;
+    white-space: normal;
+}
+
+@media (max-width: 767.98px) {
+    .dashboard-table {
+        min-width: 760px;
+    }
+}
+
 /* ==========================================================================
    Modern ngx-toastr Customization
    ========================================================================== */

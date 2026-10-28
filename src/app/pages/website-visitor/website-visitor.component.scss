@@ -68,101 +68,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
     width: min(250px, 100%);
 }
 
-.custom-table {
-    --bs-table-color: var(--bs-body-color);
-    --bs-table-bg: transparent;
-    --bs-table-hover-bg: rgba(var(--bs-primary-rgb), 0.045);
-    min-width: 780px;
-}
-
-.table-responsive {
-    border-radius: 0 0 8px 8px;
-}
-
-.custom-table th {
-    padding: 0.8rem 1rem;
-    border-color: var(--panel-border);
-    color: var(--bs-secondary-color);
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.custom-table td {
-    padding: 0.9rem 1rem;
-    border-color: var(--panel-border);
-    font-size: 0.8rem;
-}
-
-.custom-table tbody tr:last-child td {
-    border-bottom: 0;
-}
-
-.custom-table small {
-    color: var(--bs-secondary-color);
-    font-size: 0.72rem;
-}
-
-.table-date span,
-.table-location span {
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.visitor-identity {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    min-width: 140px;
-}
-
-.visitor-identity > span:last-child {
-    display: grid;
-    gap: 0.15rem;
-}
-
-.visitor-identity strong {
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.visitor-icon {
-    display: grid;
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-    place-items: center;
-    border-radius: 50%;
-    color: var(--bs-primary);
-    background: var(--bs-primary-bg-subtle);
-}
-
-.organization-cell {
-    display: block;
-    width: 175px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.timezone-badge {
-    align-self: flex-start;
-    padding: 0.25rem 0.45rem;
-    border-radius: 4px;
-    color: var(--bs-primary-text-emphasis);
-    background: var(--bs-primary-bg-subtle);
-    font-size: 0.72rem;
-    white-space: nowrap;
-}
-
-.empty-state {
-    padding: 2rem !important;
-    color: var(--bs-secondary-color);
-    text-align: center;
-}
-
 .visitor-actions {
     display: flex;
     justify-content: center;
@@ -235,10 +140,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
     .visitor-filter {
         justify-content: space-between;
         width: 100%;
-    }
-
-    .custom-table {
-        min-width: 760px;
     }
 }
 

@@ -1,133 +1,109 @@
-<div class="container py-5 mt-5" data-aos="fade-up">
-    <!-- <div class="row g-4 my-5"> -->
-        <!-- <div class="col-12" data-aos="fade-up"> -->
-            <div class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden">
-                <div class="card-header bg-transparent border-1 border-primary py-3 px-3">
-                    <div class="row g-2 g-md-3 align-items-center">
-                        <div class="col-12 col-md-4 order-1">
-                            <h5 class="fw-bold mb-0 text-truncate"><i class="bi bi-chat-left-text text-primary"></i>
-                                Feedback <span class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">{{ total
-                                    }}</span></h5>
-                            <p class="text-muted small mb-0 d-none d-md-block">Review and manage all feedback messages
-                            </p>
-                        </div>
-                        <div class="col-12 col-md-5 order-2">
-                            <div class="search-wrapper">
-                                <i class="bi bi-search search-icon"></i>
-                                <input type="text" class="form-control search-input" placeholder="Search feedback..."
-                                    [(ngModel)]="searchTerm" (input)="onSearch()">
-                                <button *ngIf="searchTerm" (click)="clearSearch()" class="btn-clear"
-                                    title="Clear search">
-                                    <i class="bi bi-x-lg"></i>
+<main class="container dashboard-page py-5 mt-5" data-aos="fade-up">
+    <section class="dashboard-panel feedback-panel card border-1 border-primary rounded-4 shadow mb-4 mb-xl-5">
+        <div class="panel-heading feedback-heading">
+            <div class="feedback-heading-copy">
+                <p class="panel-kicker mb-1">FROM YOUR COMMUNITY</p>
+                <h1 class="panel-title mb-0">Feedback <span class="feedback-count">{{ total | number }}</span></h1>
+            </div>
+            <div class="search-wrapper">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" class="form-control search-input" placeholder="Search feedback..."
+                    [(ngModel)]="searchTerm" (input)="onSearch()" aria-label="Search feedback">
+                <button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear"
+                    title="Clear search" aria-label="Clear search">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive border-1 border-top border-primary">
+            <table class="table table-hover align-middle mb-0 dashboard-table">
+                <thead>
+                    <tr>
+                        <th class="table-checkbox-column">
+                            <input type="checkbox" class="form-check-input table-checkbox"
+                                id="select-all-checkbox" [checked]="allSelected"
+                                [indeterminate]="selectedIds.size > 0 && !allSelected"
+                                (change)="toggleSelectAll()"
+                                [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
+                                aria-label="Select all feedback">
+                        </th>
+                        <th>Date &amp; Time</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Message</th>
+                        <th class="text-center">Rating</th>
+                        <th class="text-end table-actions-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let feedback of feedbacks"
+                        [class.table-active]="selectedIds.has(feedback._id)">
+                        <td class="table-checkbox-column">
+                            <input [appTooltip]="selectedIds.has(feedback._id) ? 'Deselect' : 'Select'"
+                                type="checkbox" class="form-check-input table-checkbox"
+                                [checked]="selectedIds.has(feedback._id)"
+                                (change)="toggleSelect(feedback._id)" [id]="'feedback-' + feedback._id"
+                                [attr.aria-label]="(selectedIds.has(feedback._id) ? 'Deselect ' : 'Select ') + (feedback.name || 'anonymous feedback')">
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column table-date">
+                                <span>{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
+                                <small>{{ feedback.createdAt | date:'HH:mm:ss' }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="feedback-identity" [title]="feedback.name || 'Anonymous'">
+                                <img [src]="avatarService.getAvatar(feedback.name)" alt="">
+                                <span>{{ feedback.name || 'Anonymous' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column table-designation">
+                                <span>{{ feedback.designation || '-' }}</span>
+                                <small>&#64; {{ feedback.organization || '-' }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="feedback-message" [appTooltip]="feedback.message" tooltipPlacement="top">
+                                {{ feedback.message || '-' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span class="rating-value rounded-3"><i class="bi bi-star-fill me-1"></i>{{ feedback.rating }}</span>
+                        </td>
+                        <td class="text-end table-actions-column">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-action-edit"
+                                    [appTooltip]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
+                                    (click)="onUpdateVerified(feedback)">
+                                    <i class="bi"
+                                        [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
+                                </button>
+                                <button class="btn btn-action-delete" appTooltip="Delete"
+                                    (click)="openDeleteModal(feedback)">
+                                    <i class="bi bi-trash3"></i>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="bg-light-subtle">
-                                <tr>
-                                    <!-- <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 3%;">
-                                        <input type="checkbox" class="form-check-input" id="select-all-feedback"
-                                            [checked]="allSelected"
-                                            [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                            (change)="toggleSelectAll()"
-                                            title="Select all on this page">
-                                    </th> -->
-                                    <th class="ps-4 py-3" style="width: 4%;">
-                                        <input type="checkbox" class="form-check-input" id="select-all-checkbox"
-                                            [checked]="allSelected"
-                                            [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                            (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'">
-                                    </th>
-                                    <th class="py-3 text-uppercase small fw-bold text-muted">Date</th>
-                                    <th class="py-3 text-uppercase small fw-bold text-muted">Name</th>
-                                    <th class="py-3 text-uppercase small fw-bold text-muted">Designation</th>
-                                    <th class="py-3 text-uppercase small fw-bold text-muted">Message</th>
-                                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Rating</th>
-                                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let feedback of feedbacks"
-                                    [class.table-active]="selectedIds.has(feedback._id)">
-                                    <td class="ps-4">
-                                        <input [appTooltip]="selectedIds.has(feedback._id) ? 'Deselect' : 'Select'" type="checkbox" class="form-check-input"
-                                            [checked]="selectedIds.has(feedback._id)"
-                                            (change)="toggleSelect(feedback._id)" [id]="'feedback-' + feedback._id">
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-column" style="width: 100px;">
-                                            <span class="fw-medium text-dark">{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span>
-                                            <small class="text-muted">
-                                                <i class="bi bi-clock me-1 small"></i>{{ feedback.createdAt |
-                                                date:'HH:mm:ss' }}
-                                            </small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="fw-medium text-dark d-flex align-items-center"
-                                            [title]="feedback.name || 'Anonymous'" style="min-width: 170px;">
-                                            <img [src]="avatarService.getAvatar(feedback.name)" class="me-2" />
-                                            <span class="mb-0" style="margin-top: 0.18rem;">{{ feedback.name ||
-                                                'Anonymous' }}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-column" style="width: 160px;">
-                                            <span class="fw-medium text-dark">{{ feedback.designation || '-' }}</span>
-                                            <small class="text-muted">
-                                                &#64; {{ feedback.organization || '-' }}
-                                            </small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="text-wrap d-inline-block fw-medium text-dark" style="width: 500px;"
-                                            [title]="feedback.message">
-                                            {{ feedback.message || '-' }}
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="fw-medium text-dark">{{ feedback.rating }}</span>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <button class="btn btn-action-edit"
-                                                [appTooltip]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
-                                                (click)="onUpdateVerified(feedback)">
-                                                <i class="bi"
-                                                    [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
-                                            </button>
-                                            <button class="btn btn-action-delete" appTooltip="Delete"
-                                                (click)="openDeleteModal(feedback)">
-                                                <i class="bi bi-trash3"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="!feedbacks.length">
-                                    <td colspan="7" class="text-center py-5">
-                                        <div class="text-muted">
-                                            <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
-                                            <span *ngIf="searchTerm">No feedback matching
-                                                "<strong>{{searchTerm}}</strong>"</span>
-                                            <span *ngIf="!searchTerm">No feedback found.</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <app-pagination *ngIf="feedbacks.length > 0" [page]="page" [limit]="limit" [total]="total"
-                        [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
-                    </app-pagination>
-                </div>
-            </div>
-        <!-- </div> -->
-    <!-- </div> -->
-</div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!feedbacks.length">
+                        <td colspan="7" class="empty-state">
+                            <div>
+                                <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+                                <span *ngIf="searchTerm">No feedback matching
+                                    "<strong>{{searchTerm}}</strong>"</span>
+                                <span *ngIf="!searchTerm">No feedback found.</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-pagination *ngIf="feedbacks.length > 0" [page]="page" [limit]="limit" [total]="total"
+            [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+        </app-pagination>
+    </section>
+</main>
 
 <div class="container mb-5" *ngIf="selectedIds.size !== 0">
     <div class="row">
