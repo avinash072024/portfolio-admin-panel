@@ -1,7 +1,7 @@
 <main class="container dashboard-page py-5 mt-5" data-aos="fade-up">
-	<section class="dashboard-panel activity-panel skills-panel card border-1 border-primary rounded-4 shadow mb-4 mb-xl-5">
+	<section class="dashboard-panel skills-panel card border-1 border-primary rounded-4 shadow mb-4 mb-xl-5">
 		<div class="panel-heading skills-heading">
-			<div>
+			<div class="skills-heading-copy">
 				<p class="panel-kicker mb-1">SKILLS MANAGEMENT</p>
 				<h1 class="panel-title mb-0">Skills <span class="skills-count">{{ total | number }}</span></h1>
 			</div>
@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="table-responsive border-1 border-top border-primary">
-			<table class="table table-hover align-middle mb-0 dashboard-table">
+			<table class="table table-hover align-middle mb-0 dashboard-table skills-table">
 				<thead>
 					<tr>
 						<th class="table-checkbox-column">
@@ -31,10 +31,10 @@
 								(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
 								aria-label="Select all skills">
 						</th>
-						<th>Skill</th>
-						<th class="text-center">Status</th>
-						<th>Category</th>
-						<th>Level</th>
+						<th class="skill-name-column">Skill</th>
+						<th class="text-center skill-status-column">Status</th>
+						<th class="skill-category-column">Category</th>
+						<th class="skill-level-column">Level</th>
 						<th class="text-end table-actions-column">Actions</th>
 					</tr>
 				</thead>
@@ -110,27 +110,18 @@
 			[totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
 		</app-pagination>
 	</section>
-</main>
 
-@if(selectedIds.size !== 0){
-<div class="container mb-5">
-    <div class="row">
-        <div class="col-md-12">
-            <!-- Bulk Delete Button -->
-            <div *ngIf="skills.length" class="d-flex justify-content-center align-items-center">
-                <button class="btn btn-danger d-flex align-items-center gap-2"
-                    [disabled]="selectedIds.size === 0" (click)="openBulkDeleteModal()" id="bulk-delete-btn"
-                    title="Delete selected skills">
-                    <i class="bi bi-trash3"></i>
-                    Delete Selected
-                    <span *ngIf="selectedIds.size > 0" class="badge bg-white text-danger ms-1">{{ selectedIds.size
-                        }}</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-}
+	@if (selectedIds.size !== 0 && skills.length) {
+	<div class="bulk-actions-bar">
+		<span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
+		<button type="button" class="btn btn-danger d-flex align-items-center gap-2"
+			(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected skills">
+			<i class="bi bi-trash3"></i>
+			Delete selected
+		</button>
+	</div>
+	}
+</main>
 
 <!-- Delete Confirmation Modal (static backdrop) -->
 <div class="custom-modal-backdrop" *ngIf="showDeleteModal">

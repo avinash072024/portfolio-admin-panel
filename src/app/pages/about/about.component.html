@@ -91,7 +91,6 @@
 		<button class="btn btn-danger d-flex align-items-center gap-2" type="button"
 			(click)="openBulkDeleteModal('education')" title="Delete selected education entries">
 			<i class="bi bi-trash3"></i> Delete selected
-			<span class="badge bg-white text-danger ms-1">{{ selectedEducationIds.size }}</span>
 		</button>
 	</div>
 	}
@@ -182,12 +181,11 @@
 	</section>
 
 	@if (selectedExperienceIds.size > 0) {
-	<div class="bulk-actions-bar mb-5">
+	<div class="bulk-actions-bar">
 		<span class="fw-semibold text-primary">{{ selectedExperienceIds.size }} selected</span>
 		<button class="btn btn-danger d-flex align-items-center gap-2" type="button"
 			(click)="openBulkDeleteModal('experience')" title="Delete selected experience entries">
 			<i class="bi bi-trash3"></i> Delete selected
-			<span class="badge bg-white text-danger ms-1">{{ selectedExperienceIds.size }}</span>
 		</button>
 	</div>
 	}

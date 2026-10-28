@@ -181,21 +181,9 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 
 /* ── Responsive ── */
 @media (max-width: 767.98px) {
-	.dashboard-page {
-		padding-top: 1.25rem !important;
-	}
-
 	.education-heading,
 	.experience-heading {
-		align-items: flex-start;
-		flex-direction: column;
 		padding: 0 1rem;
-	}
-
-	.edu-add-button,
-	.exp-add-button {
-		padding: 0.4rem 0.75rem;
-		font-size: 0.85rem;
 	}
 
 	.bulk-actions-bar {

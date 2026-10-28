@@ -8,16 +8,13 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	color: var(--bs-body-color);
 }
 
-.dashboard-panel {
+.skills-panel {
 	min-width: 0;
 	overflow: hidden;
 	border: 1px solid var(--panel-border);
 	border-radius: 8px;
-	background: var(--panel-surface);
-}
-
-.activity-panel {
 	padding-top: 1.15rem;
+	background: var(--bs-body-bg);
 }
 
 .skills-heading {
@@ -27,6 +24,10 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	gap: 1rem;
 	padding: 0 1.35rem;
 	margin-bottom: 0.8rem;
+}
+
+.skills-heading-copy {
+	min-width: 0;
 }
 
 .panel-kicker {
@@ -68,6 +69,27 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 .skills-add-button {
 	flex: 0 0 auto;
 	white-space: nowrap;
+}
+
+/* Table column sizing */
+.dashboard-table.skills-table {
+	min-width: 820px;
+}
+
+.skills-table .skill-name-column {
+	min-width: 220px;
+}
+
+.skills-table .skill-status-column {
+	min-width: 105px;
+}
+
+.skills-table .skill-category-column {
+	min-width: 140px;
+}
+
+.skills-table .skill-level-column {
+	min-width: 180px;
 }
 
 .skill-copy {
@@ -125,9 +147,10 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 
 /* Reuse project-like table styles so skills list matches projects UI */
 .project-img-wrapper {
-	width: 48px;
-	height: 48px;
-	flex-shrink: 0;
+	width: 42px;
+	height: 42px;
+	flex: 0 0 42px;
+	overflow: hidden;
 
 	img,
 	.skill-icon {
@@ -135,6 +158,18 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 		height: 100%;
 		object-fit: cover;
 	}
+}
+
+.bulk-actions-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
+	border-radius: 1rem;
+	background: rgba(var(--bs-primary-rgb), 0.06);
 }
 
 .btn-action-edit,
@@ -367,10 +402,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 
 // Mobile responsiveness for search and buttons
 @media (max-width: 767.98px) {
-	.dashboard-page {
-		padding-top: 1.25rem !important;
-	}
-
 	.skills-heading {
 		align-items: flex-start;
 		flex-direction: column;
@@ -381,29 +412,24 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 		width: 100%;
 	}
 
-	.skills-add-button {
-		padding: 0.4rem 0.75rem;
-		font-size: 0.85rem;
-	}
-
-	.search-wrapper {
-		min-width: 0;
-		margin-top: 0.25rem;
-	}
-
-	.search-wrapper .search-input {
+	.skills-toolbar .search-input {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
 		font-size: 0.9rem;
 	}
 
-	.btn-primary {
-		font-size: 0.85rem;
+	.bulk-actions-bar {
+		justify-content: flex-start;
 	}
 }
 
 [data-bs-theme='dark'] .dashboard-page {
 	--panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
+}
+
+[data-bs-theme='dark'] .skills-panel {
+	--panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
+	background: var(--bs-body-bg);
 }
 
 [data-bs-theme="dark"] {

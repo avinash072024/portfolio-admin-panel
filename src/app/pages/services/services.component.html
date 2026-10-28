@@ -113,10 +113,10 @@
 		</app-pagination>
 	</section>
 
-	@if(selectedIds.size !== 0 && services.length){
+	@if (selectedIds.size !== 0 && services.length) {
 	<div class="bulk-actions-bar">
 		<span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
-		<button class="btn btn-danger d-flex align-items-center gap-2" [disabled]="selectedIds.size === 0"
+		<button type="button" class="btn btn-danger d-flex align-items-center gap-2"
 			(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected services">
 			<i class="bi bi-trash3"></i>
 			Delete selected
