@@ -90,8 +90,7 @@
 									<i class="bi bi-pencil"></i>
 								</a>
 								<button appTooltip="Delete service" class="btn btn-action-delete"
-									(click)="openDeleteModal(s._id, s.title)"
-									[attr.aria-label]="'Delete ' + s.title">
+									(click)="openDeleteModal(s._id, s.title)" [attr.aria-label]="'Delete ' + s.title">
 									<i class="bi bi-trash3"></i>
 								</button>
 							</div>
@@ -108,18 +107,18 @@
 			</table>
 		</div>
 
-		<app-pagination *ngIf="services.length" [page]="page" [limit]="limit" [total]="total"
-			[totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+		<app-pagination *ngIf="services.length" [page]="page" [limit]="limit" [total]="total" [totalPages]="totalPages"
+			(pageChange)="changePage($event)" (limitChange)="setLimit($event)">
 		</app-pagination>
 	</section>
 
 	@if (selectedIds.size !== 0 && services.length) {
 	<div class="bulk-actions-bar">
-		<span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
-		<button type="button" class="btn btn-danger d-flex align-items-center gap-2"
-			(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected services">
+		<!-- <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span> -->
+		<button type="button" class="btn btn-danger d-flex align-items-center gap-2" (click)="openBulkDeleteModal()"
+			id="bulk-delete-btn" title="Delete selected services">
 			<i class="bi bi-trash3"></i>
-			Delete selected
+			Delete selected <span class="badge rounded-4 bg-white text-danger">{{ selectedIds.size }}</span>
 		</button>
 	</div>
 	}

@@ -9,8 +9,8 @@
                 <i class="bi bi-search search-icon"></i>
                 <input type="text" class="form-control search-input" placeholder="Search feedback..."
                     [(ngModel)]="searchTerm" (input)="onSearch()" aria-label="Search feedback">
-                <button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear"
-                    title="Clear search" aria-label="Clear search">
+                <button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear" title="Clear search"
+                    aria-label="Clear search">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
@@ -20,11 +20,9 @@
                 <thead>
                     <tr>
                         <th class="table-checkbox-column">
-                            <input type="checkbox" class="form-check-input table-checkbox"
-                                id="select-all-checkbox" [checked]="allSelected"
-                                [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                (change)="toggleSelectAll()"
-                                [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
+                            <input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
+                                [checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
+                                (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
                                 aria-label="Select all feedback">
                         </th>
                         <th>Date &amp; Time</th>
@@ -36,12 +34,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let feedback of feedbacks"
-                        [class.table-active]="selectedIds.has(feedback._id)">
+                    <tr *ngFor="let feedback of feedbacks" [class.table-active]="selectedIds.has(feedback._id)">
                         <td class="table-checkbox-column">
-                            <input [appTooltip]="selectedIds.has(feedback._id) ? 'Deselect' : 'Select'"
-                                type="checkbox" class="form-check-input table-checkbox"
-                                [checked]="selectedIds.has(feedback._id)"
+                            <input [appTooltip]="selectedIds.has(feedback._id) ? 'Deselect' : 'Select'" type="checkbox"
+                                class="form-check-input table-checkbox" [checked]="selectedIds.has(feedback._id)"
                                 (change)="toggleSelect(feedback._id)" [id]="'feedback-' + feedback._id"
                                 [attr.aria-label]="(selectedIds.has(feedback._id) ? 'Deselect ' : 'Select ') + (feedback.name || 'anonymous feedback')">
                         </td>
@@ -69,7 +65,8 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <span class="rating-value rounded-3"><i class="bi bi-star-fill me-1"></i>{{ feedback.rating }}</span>
+                            <span class="rating-value rounded-3"><i class="bi bi-star-fill me-1"></i>{{ feedback.rating
+                                }}</span>
                         </td>
                         <td class="text-end table-actions-column">
                             <div class="d-flex justify-content-end gap-2">
@@ -103,9 +100,20 @@
             [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
         </app-pagination>
     </section>
+
+    @if (selectedIds.size !== 0 && feedbacks.length) {
+    <div class="bulk-actions-bar">
+        <!-- <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span> -->
+        <button type="button" class="btn btn-danger d-flex align-items-center gap-2" (click)="openBulkDeleteModal()"
+            id="bulk-delete-btn" title="Delete selected feedback">
+            <i class="bi bi-trash3"></i>
+            Delete selected <span class="badge rounded-4 bg-white text-danger">{{ selectedIds.size }}</span>
+        </button>
+    </div>
+    }
 </main>
 
-<div class="container mb-5" *ngIf="selectedIds.size !== 0">
+<!-- <div class="container mb-5" *ngIf="selectedIds.size !== 0">
     <div class="row">
         <div class="col-12">
             <div class="bulk-actions-bar">
@@ -122,7 +130,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <div class="modal fade" id="bulkDeleteFeedbackModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
     data-bs-keyboard="false">

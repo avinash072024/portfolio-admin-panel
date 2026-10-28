@@ -75,8 +75,8 @@
 								<div class="w-100 position-relative">
 									<div class="progress skill-progress">
 										<div class="progress-bar" role="progressbar" [style.width]="s.level + '%'"
-											[style.backgroundColor]="s.color || 'var(--bs-primary)'"
-											aria-valuemin="0" aria-valuemax="100"></div>
+											[style.backgroundColor]="s.color || 'var(--bs-primary)'" aria-valuemin="0"
+											aria-valuemax="100"></div>
 									</div>
 								</div>
 								<div class="text-muted small skill-level-value">{{ s.level }}%</div>
@@ -106,18 +106,18 @@
 			</table>
 		</div>
 
-		<app-pagination *ngIf="skills.length" [page]="page" [limit]="limit" [total]="total"
-			[totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+		<app-pagination *ngIf="skills.length" [page]="page" [limit]="limit" [total]="total" [totalPages]="totalPages"
+			(pageChange)="changePage($event)" (limitChange)="setLimit($event)">
 		</app-pagination>
 	</section>
 
 	@if (selectedIds.size !== 0 && skills.length) {
 	<div class="bulk-actions-bar">
-		<span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
-		<button type="button" class="btn btn-danger d-flex align-items-center gap-2"
-			(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected skills">
+		<!-- <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span> -->
+		<button type="button" class="btn btn-danger d-flex align-items-center gap-2" (click)="openBulkDeleteModal()"
+			id="bulk-delete-btn" title="Delete selected skills">
 			<i class="bi bi-trash3"></i>
-			Delete selected
+			Delete selected <span class="badge rounded-4 bg-white text-danger">{{ selectedIds.size }}</span>
 		</button>
 	</div>
 	}
@@ -142,20 +142,20 @@
 
 <!-- Bulk Delete Confirmation Modal -->
 <div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
-    <div class="custom-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-        <div class="modal-body">
-            <h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
-            <p class="text-muted">
+	<div class="custom-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+		<div class="modal-body">
+			<h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
+			<p class="text-muted">
 				Are you sure you want to delete
 				<strong class="text-danger">{{ selectedIds.size }} skill{{ selectedIds.size === 1 ? '' : 's'
 					}}</strong>.
 				This action <strong>cannot be undone</strong>.
 			</p>
-            <div class="d-flex justify-content-end gap-2 mt-3">
-                <button class="btn btn-primary" (click)="closeBulkDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-                <button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()"><i
-                        class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
-            </div>
-        </div>
-    </div>
+			<div class="d-flex justify-content-end gap-2 mt-3">
+				<button class="btn btn-primary" (click)="closeBulkDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
+				<button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()"><i
+						class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
+			</div>
+		</div>
+	</div>
 </div>

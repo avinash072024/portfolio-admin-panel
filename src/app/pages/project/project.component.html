@@ -41,103 +41,101 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @for (project of projects; track project._id) {
-                        <tr [class.table-active]="selectedIds.has(project._id)">
-                            <td class="table-checkbox-column">
-                                <input [appTooltip]="selectedIds.has(project._id) ? 'Deselect' : 'Select'"
-                                    type="checkbox" class="form-check-input table-checkbox"
-                                    [checked]="selectedIds.has(project._id)" (change)="toggleSelect(project._id)"
-                                    [id]="'chk-' + project._id"
-                                    [attr.aria-label]="(selectedIds.has(project._id) ? 'Deselect ' : 'Select ') + project.title">
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="project-img-wrapper me-3">
-                                        <img [src]="project.image || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800'"
-                                            class="rounded-3" alt="">
-                                    </div>
-                                    <div class="project-copy">
-                                        <div class="fw-bold text-body">{{ project.title }}</div>
-                                        <div class="text-muted smaller text-truncate project-description"
-                                            [appTooltip]="project.desc[0]">
-                                            {{ project.desc[0] }}
-                                        </div>
+                    @for (project of projects; track project._id) {
+                    <tr [class.table-active]="selectedIds.has(project._id)">
+                        <td class="table-checkbox-column">
+                            <input [appTooltip]="selectedIds.has(project._id) ? 'Deselect' : 'Select'" type="checkbox"
+                                class="form-check-input table-checkbox" [checked]="selectedIds.has(project._id)"
+                                (change)="toggleSelect(project._id)" [id]="'chk-' + project._id"
+                                [attr.aria-label]="(selectedIds.has(project._id) ? 'Deselect ' : 'Select ') + project.title">
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="project-img-wrapper me-3">
+                                    <img [src]="project.image || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800'"
+                                        class="rounded-3" alt="">
+                                </div>
+                                <div class="project-copy">
+                                    <div class="fw-bold text-body">{{ project.title }}</div>
+                                    <div class="text-muted smaller text-truncate project-description"
+                                        [appTooltip]="project.desc[0]">
+                                        {{ project.desc[0] }}
                                     </div>
                                 </div>
-                            </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-sm rounded-pill px-3"
-                                    [ngClass]="project.isActive === false ? 'btn-secondary' : 'btn-primary'"
-                                    (click)="updateProjectStatus(project)"
-                                    [attr.aria-label]="(project.isActive === false ? 'Activate ' : 'Deactivate ') + project.title"
-                                    [appTooltip]="project.isActive === false ? 'Activate project' : 'Deactivate project'">
-                                    {{ project.isActive === false ? 'Inactive' : 'Active' }}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm rounded-pill px-3"
+                                [ngClass]="project.isActive === false ? 'btn-secondary' : 'btn-primary'"
+                                (click)="updateProjectStatus(project)"
+                                [attr.aria-label]="(project.isActive === false ? 'Activate ' : 'Deactivate ') + project.title"
+                                [appTooltip]="project.isActive === false ? 'Activate project' : 'Deactivate project'">
+                                {{ project.isActive === false ? 'Inactive' : 'Active' }}
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <span class="project-resume-badge rounded-3" [class.is-visible]="project.showOnResume">
+                                {{ project.showOnResume ? 'Yes' : 'No' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="project-category rounded-3">
+                                {{ project.category.name }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="project-tools">
+                                <span *ngFor="let tool of project.tools"
+                                    class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
+                                    {{ tool }}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            {{ project.completedYear }}
+                        </td>
+                        <td class="text-end table-actions-column">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a [href]="project.link" target="_blank" rel="noopener noreferrer"
+                                    class="btn btn-action-view" *ngIf="project.link" appTooltip="Live link"
+                                    [attr.aria-label]="'View ' + project.title + ' live'">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                                <button type="button" (click)="onEdit(project)" class="btn btn-action-edit"
+                                    appTooltip="Edit project" [attr.aria-label]="'Edit ' + project.title">
+                                    <i class="bi bi-pencil"></i>
                                 </button>
-                            </td>
-                            <td class="text-center">
-                                <span class="project-resume-badge rounded-3"
-                                    [class.is-visible]="project.showOnResume">
-                                    {{ project.showOnResume ? 'Yes' : 'No' }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="project-category rounded-3">
-                                    {{ project.category.name }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="project-tools">
-                                    <span *ngFor="let tool of project.tools"
-                                        class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
-                                        {{ tool }}
-                                    </span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                {{ project.completedYear }}
-                            </td>
-                            <td class="text-end table-actions-column">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <a [href]="project.link" target="_blank" rel="noopener noreferrer"
-                                        class="btn btn-action-view" *ngIf="project.link" appTooltip="Live link"
-                                        [attr.aria-label]="'View ' + project.title + ' live'">
-                                        <i class="bi bi-box-arrow-up-right"></i>
-                                    </a>
-                                    <button type="button" (click)="onEdit(project)" class="btn btn-action-edit"
-                                        appTooltip="Edit project" [attr.aria-label]="'Edit ' + project.title">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button type="button" (click)="openDeleteModal(project._id, project.title)"
-                                        class="btn btn-action-delete" appTooltip="Delete project"
-                                        [attr.aria-label]="'Delete ' + project.title">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        }
-                        <tr *ngIf="!projects.length">
-                            <td colspan="8" class="empty-state">
-                                <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
-                                <span *ngIf="searchTerm">No projects matching "<strong>{{searchTerm}}</strong>"</span>
-                                <span *ngIf="!searchTerm">No projects found. Please add projects.</span>
-                            </td>
-                        </tr>
-                    </tbody>
+                                <button type="button" (click)="openDeleteModal(project._id, project.title)"
+                                    class="btn btn-action-delete" appTooltip="Delete project"
+                                    [attr.aria-label]="'Delete ' + project.title">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    <tr *ngIf="!projects.length">
+                        <td colspan="8" class="empty-state">
+                            <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+                            <span *ngIf="searchTerm">No projects matching "<strong>{{searchTerm}}</strong>"</span>
+                            <span *ngIf="!searchTerm">No projects found. Please add projects.</span>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-        <app-pagination *ngIf="projects.length" [page]="page" [limit]="limit" [total]="total"
-            [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+        <app-pagination *ngIf="projects.length" [page]="page" [limit]="limit" [total]="total" [totalPages]="totalPages"
+            (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
         </app-pagination>
     </section>
 
     @if (selectedIds.size !== 0 && projects.length) {
     <div class="bulk-actions-bar">
-        <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
-        <button type="button" class="btn btn-danger d-flex align-items-center gap-2"
-            (click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected projects">
+        <!-- <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span> -->
+        <button type="button" class="btn btn-danger d-flex align-items-center gap-2" (click)="openBulkDeleteModal()"
+            id="bulk-delete-btn" title="Delete selected projects">
             <i class="bi bi-trash3"></i>
-            Delete selected
+            Delete selected <span class="badge rounded-4 bg-white text-danger">{{ selectedIds.size }}</span>
         </button>
     </div>
     }
@@ -162,20 +160,20 @@
 
 <!-- Bulk Delete Confirmation Modal -->
 <div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
-	<div class="custom-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-		<div class="modal-body">
-			<h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
-			<p class="text-muted">
-				Are you sure you want to delete
-				<strong class="text-danger">{{ selectedIds.size }} project{{ selectedIds.size === 1 ? '' : 's'
-					}}</strong>.
-				This action <strong>cannot be undone</strong>.
-			</p>
-			<div class="d-flex justify-content-end gap-2 mt-3">
-				<button class="btn btn-primary" (click)="closeBulkDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-				<button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()"><i
-						class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
-			</div>
-		</div>
-	</div>
+    <div class="custom-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="modal-body">
+            <h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
+            <p class="text-muted">
+                Are you sure you want to delete
+                <strong class="text-danger">{{ selectedIds.size }} project{{ selectedIds.size === 1 ? '' : 's'
+                    }}</strong>.
+                This action <strong>cannot be undone</strong>.
+            </p>
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button class="btn btn-primary" (click)="closeBulkDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
+                <button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()"><i
+                        class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
+            </div>
+        </div>
+    </div>
 </div>
