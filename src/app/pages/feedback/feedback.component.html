@@ -5,13 +5,19 @@
                 <p class="panel-kicker mb-1">FROM YOUR COMMUNITY</p>
                 <h1 class="panel-title mb-0">Feedback <span class="feedback-count">{{ total | number }}</span></h1>
             </div>
-            <div class="search-wrapper">
-                <i class="bi bi-search search-icon"></i>
-                <input type="text" class="form-control search-input" placeholder="Search feedback..."
-                    [(ngModel)]="searchTerm" (input)="onSearch()" aria-label="Search feedback">
-                <button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear" title="Clear search"
-                    aria-label="Clear search">
-                    <i class="bi bi-x-lg"></i>
+            <div class="feedback-toolbar">
+                <div class="search-wrapper">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" class="form-control search-input" placeholder="Search feedback..."
+                        [(ngModel)]="searchTerm" (input)="onSearch()" aria-label="Search feedback">
+                    <button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear" title="Clear search"
+                        aria-label="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <button type="button" (click)="downloadBackup()" class="btn btn-outline-primary rounded-3 feedback-backup-button"
+                    appTooltip="Download JSON backup" aria-label="Download JSON backup">
+                    <i class="bi bi-download me-1"></i> Backup
                 </button>
             </div>
         </div>

@@ -9,6 +9,7 @@ import { CustomDatepickerComponent } from '../../components/custom-datepicker/cu
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { BackupService } from '../../services/backup/backup.service';
 
 @Component({
   selector: 'app-website-visitor',
@@ -29,6 +30,7 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
   totalPages: number = 1;
 
   private visitorService = inject(VisitorService);
+  private backupService = inject(BackupService);
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
   themeService = inject(ThemeService);
@@ -75,6 +77,42 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
     this.dateFilter = dateStr;
     this.page = 1;
     this.loadVisitors(true);
+  }
+
+  downloadBackup(): void {
+    if (!this.visitors.length && this.total === 0) {
+      this.toastr.info('No visitor records available to backup');
+      return;
+    }
+    this.spinner.show();
+    this.visitorService.getVisitor().subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        const list = res?.Visitors ?? res?.visitors ?? res ?? this.visitors;
+        this.backupService.downloadJson(list, 'website-visitors');
+        this.toastr.success('Website visitors backup downloaded successfully');
+      },
+      error: () => {
+        const fetchLimit = this.total > 0 ? this.total : 1000;
+        this.visitorService.getAllVisitors(1, fetchLimit, this.dateFilter || undefined).subscribe({
+          next: (res: any) => {
+            this.spinner.hide();
+            const list = res?.Visitors ?? this.visitors;
+            this.backupService.downloadJson(list, 'website-visitors');
+            this.toastr.success('Website visitors backup downloaded successfully');
+          },
+          error: () => {
+            this.spinner.hide();
+            if (this.visitors.length) {
+              this.backupService.downloadJson(this.visitors, 'website-visitors');
+              this.toastr.success('Current visitors backup downloaded');
+            } else {
+              this.toastr.error('Failed to download visitor records backup');
+            }
+          }
+        });
+      }
+    });
   }
 
   changePage(newPage: number): void {

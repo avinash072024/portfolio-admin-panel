@@ -10,6 +10,7 @@ import { SocketService } from '../../services/socket/socket.service';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { BackupService } from '../../services/backup/backup.service';
 
 declare const bootstrap: any;
 
@@ -36,6 +37,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   showBulkDeleteModal: boolean = false;
 
   feedbackService = inject(FeedbackService);
+  backupService = inject(BackupService);
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   avatarService = inject(AvatarService);
@@ -134,6 +136,32 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.page = 1;
     this.getFeedbacks();
+  }
+
+  downloadBackup(): void {
+    if (!this.feedbacks.length && this.total === 0) {
+      this.toastr.info('No feedback available to backup');
+      return;
+    }
+    this.spinner.show();
+    const fetchLimit = this.total > 0 ? this.total : 1000;
+    this.feedbackService.getAllFeedbacks(1, fetchLimit).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        const list = res?.feedback || this.feedbacks;
+        this.backupService.downloadJson(list, 'feedback');
+        this.toastr.success('Feedback backup downloaded successfully');
+      },
+      error: () => {
+        this.spinner.hide();
+        if (this.feedbacks.length) {
+          this.backupService.downloadJson(this.feedbacks, 'feedback');
+          this.toastr.success('Current feedback backup downloaded');
+        } else {
+          this.toastr.error('Failed to download feedback backup');
+        }
+      }
+    });
   }
 
   changePage(newPage: number): void {

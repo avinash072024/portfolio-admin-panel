@@ -8,6 +8,7 @@ import { SocketService } from '../../services/socket/socket.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ThemeService } from '../../services/theme/theme.service';
+import { BackupService } from '../../services/backup/backup.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
@@ -44,6 +45,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   total: number = 0;
   totalPages: number = 1;
   projectService = inject(ProjectsService);
+  backupService = inject(BackupService);
   themeService = inject(ThemeService);
   toastr = inject(ToastrService);
   spinner = inject(NgxSpinnerService);
@@ -70,6 +72,42 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.page = 1;
     this.getProjects();
+  }
+
+  downloadBackup(): void {
+    if (!this.projects.length && this.total === 0) {
+      this.toastr.info('No projects available to backup');
+      return;
+    }
+    this.spinner.show();
+    const fetchLimit = this.total > 0 ? this.total : 1000;
+    this.projectService.getAllProjects(1, fetchLimit).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        const list = res?.projects || res?.data || this.projects;
+        this.backupService.downloadJson(list, 'projects');
+        this.toastr.success('Projects backup downloaded successfully');
+      },
+      error: () => {
+        this.projectService.getProjects().subscribe({
+          next: (res: any) => {
+            this.spinner.hide();
+            const list = res?.projects || res || this.projects;
+            this.backupService.downloadJson(list, 'projects');
+            this.toastr.success('Projects backup downloaded successfully');
+          },
+          error: () => {
+            this.spinner.hide();
+            if (this.projects.length) {
+              this.backupService.downloadJson(this.projects, 'projects');
+              this.toastr.success('Current projects backup downloaded');
+            } else {
+              this.toastr.error('Failed to download projects backup');
+            }
+          }
+        });
+      }
+    });
   }
   
   ngOnInit(): void {

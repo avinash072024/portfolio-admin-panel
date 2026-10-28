@@ -57,7 +57,7 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
-	width: min(100%, 520px);
+	width: min(100%, 580px);
 }
 
 .services-toolbar .search-wrapper {
@@ -66,6 +66,7 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	width: auto;
 }
 
+.services-backup-button,
 .services-add-button {
 	flex: 0 0 auto;
 	white-space: nowrap;
@@ -323,6 +324,7 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 
 	.services-toolbar {
 		width: 100%;
+		flex-wrap: wrap;
 	}
 
 	.services-toolbar .search-input {

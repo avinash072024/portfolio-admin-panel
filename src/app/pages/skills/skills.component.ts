@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { BackupService } from '../../services/backup/backup.service';
 
 interface Category {
   __id: string;
@@ -47,6 +48,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   skillsService = inject(SkillsService);
+  backupService = inject(BackupService);
   themeService = inject(ThemeService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -171,6 +173,42 @@ export class SkillsComponent implements OnInit, OnDestroy {
   clearSearch(): void {
     this.searchTerm = '';
     this.onSearch();
+  }
+
+  downloadBackup(): void {
+    if (!this.skills.length && this.total === 0) {
+      this.toastr.info('No skills available to backup');
+      return;
+    }
+    this.spinner.show();
+    const fetchLimit = this.total > 0 ? this.total : 1000;
+    this.skillsService.getAllSkills(1, fetchLimit).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        const list = res?.skills || this.skills;
+        this.backupService.downloadJson(list, 'skills');
+        this.toastr.success('Skills backup downloaded successfully');
+      },
+      error: () => {
+        this.skillsService.getSkills().subscribe({
+          next: (res: any) => {
+            this.spinner.hide();
+            const list = res?.skills || res || this.skills;
+            this.backupService.downloadJson(list, 'skills');
+            this.toastr.success('Skills backup downloaded successfully');
+          },
+          error: () => {
+            this.spinner.hide();
+            if (this.skills.length) {
+              this.backupService.downloadJson(this.skills, 'skills');
+              this.toastr.success('Current skills backup downloaded');
+            } else {
+              this.toastr.error('Failed to download skills backup');
+            }
+          }
+        });
+      }
+    });
   }
 
   buildPages() {

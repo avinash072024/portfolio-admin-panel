@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { BackupService } from '../../services/backup/backup.service';
 
 export interface Service {
   _id: string;
@@ -39,6 +40,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
   spinner = inject(NgxSpinnerService);
   toastr = inject(ToastrService);
   servicesService = inject(ServicesService);
+  backupService = inject(BackupService);
   themeService = inject(ThemeService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -207,6 +209,42 @@ export class ServicesComponent implements OnInit, OnDestroy {
     this.deletingServiceId = '';
     this.deletingServiceTitle = '';
     document.body.style.overflow = '';
+  }
+
+  downloadBackup(): void {
+    if (!this.services.length && this.total === 0) {
+      this.toastr.info('No services available to backup');
+      return;
+    }
+    this.spinner.show();
+    const fetchLimit = this.total > 0 ? this.total : 1000;
+    this.servicesService.getServices(1, fetchLimit).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        const list = res?.services || res?.data || this.services;
+        this.backupService.downloadJson(list, 'services');
+        this.toastr.success('Services backup downloaded successfully');
+      },
+      error: () => {
+        this.servicesService.getServices().subscribe({
+          next: (res: any) => {
+            this.spinner.hide();
+            const list = res?.services || res?.data || this.services;
+            this.backupService.downloadJson(list, 'services');
+            this.toastr.success('Services backup downloaded successfully');
+          },
+          error: () => {
+            this.spinner.hide();
+            if (this.services.length) {
+              this.backupService.downloadJson(this.services, 'services');
+              this.toastr.success('Current services backup downloaded');
+            } else {
+              this.toastr.error('Failed to download services backup');
+            }
+          }
+        });
+      }
+    });
   }
 
   confirmDelete() {
