@@ -1,87 +1,222 @@
-.selection-column {
-    width: 4%;
-    min-width: 44px;
+$primary-skin: var(--primary-color, var(--bs-primary));
+
+.dashboard-page {
+	--bs-primary-bg-subtle: color-mix(in srgb, #{$primary-skin} 12%, var(--bs-body-bg));
+	--bs-primary-text-emphasis: color-mix(in srgb, #{$primary-skin} 82%, var(--bs-body-color));
+	--panel-border: rgba(var(--bs-emphasis-color-rgb), 0.1);
+	--panel-surface: var(--bs-body-bg);
+	color: var(--bs-body-color);
 }
 
-.description-cell {
-    min-width: 180px;
-    max-width: 360px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+/* ── Panel shell ── */
+.education-panel,
+.experience-panel {
+	min-width: 0;
+	overflow: hidden;
+	border: 1px solid var(--panel-border);
+	border-radius: 8px;
+	padding-top: 1.15rem;
+	background: var(--bs-body-bg);
 }
 
+/* ── Panel heading ── */
+.education-heading,
+.experience-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0 1.35rem;
+	margin-bottom: 0.8rem;
+}
+
+.education-heading-copy,
+.experience-heading-copy {
+	min-width: 0;
+}
+
+.panel-kicker {
+	color: var(--bs-primary);
+	font-size: 0.64rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+}
+
+.panel-title {
+	font-size: 1.1rem;
+	font-weight: 650;
+}
+
+/* ── Count badges ── */
+.edu-count,
+.exp-count {
+	display: inline-block;
+	margin-left: 0.4rem;
+	padding: 0.2rem 0.45rem;
+	border-radius: 4px;
+	color: var(--bs-primary-text-emphasis);
+	background: var(--bs-primary-bg-subtle);
+	font-size: 0.72rem;
+	vertical-align: middle;
+}
+
+/* ── Add buttons ── */
+.edu-add-button,
+.exp-add-button {
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+/* ── Table column sizing ── */
+.dashboard-table.education-table,
+.dashboard-table.experience-table {
+	min-width: 900px;
+}
+
+/* ── Description / institution / company cells ── */
+.edu-description-cell,
+.exp-description-cell {
+	max-width: 280px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.edu-title,
+.exp-title {
+	white-space: nowrap;
+}
+
+/* ── Action buttons ── */
 .btn-action-edit,
 .btn-action-delete {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-radius: 8px;
-    color: var(--bs-body-color);
-    background: rgba(var(--bs-emphasis-color-rgb), 0.06);
-    transition: all 0.2s ease;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	border: none;
+	transition: all 0.2s ease;
+	background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+	color: var(--bs-body-color);
+
+	&:hover {
+		transform: translateY(-2px);
+	}
 }
 
 .btn-action-edit:hover {
-    color: var(--bs-warning);
-    background: var(--bs-warning-bg-subtle);
-    transform: translateY(-2px);
+	background: var(--bs-warning-bg-subtle);
+	color: var(--bs-warning);
 }
 
 .btn-action-delete:hover {
-    color: var(--bs-danger);
-    background: var(--bs-danger-bg-subtle);
-    transform: translateY(-2px);
+	background: var(--bs-danger-bg-subtle);
+	color: var(--bs-danger);
 }
 
+/* ── Bulk actions bar ── */
+.bulk-actions-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
+	border-radius: 1rem;
+	background: rgba(var(--bs-primary-rgb), 0.06);
+}
+
+/* ── Custom modal styles ── */
 .custom-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1050;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background: rgba(10, 10, 10, 0.5);
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(rgba(10, 10, 10, 0.45), rgba(10, 10, 10, 0.45));
+	z-index: 1050;
+	padding: 1rem;
 }
 
 .custom-modal {
-    width: 100%;
-    max-width: 520px;
-    border-radius: 12px;
-    background: var(--bs-body-bg);
-    color: var(--bs-body-color);
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
-    animation: modal-in 220ms ease both;
+	width: 100%;
+	max-width: 520px;
+	background: var(--bs-body-bg);
+	color: var(--bs-body-color);
+	border-radius: 12px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+	overflow: hidden;
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	transform: translateY(-8px);
+	animation: modalIn 220ms ease both;
 }
 
-.custom-modal .modal-body {
-    padding: 1.5rem;
+.modal-body {
+	padding: 1.25rem 1.5rem;
+	flex: 1 1 auto;
 }
 
 .modal-title {
-    font-weight: 700;
+	margin: 0 0 0.25rem 0;
+	font-weight: 700;
 }
 
-@keyframes modal-in {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
+@keyframes modalIn {
+	from {
+		opacity: 0;
+		transform: translateY(-12px) scale(0.995);
+	}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 }
 
-@media (max-width: 767px) {
-    .description-cell {
-        min-width: 140px;
-        max-width: 220px;
-    }
+/* ── Responsive ── */
+@media (max-width: 767.98px) {
+	.dashboard-page {
+		padding-top: 1.25rem !important;
+	}
+
+	.education-heading,
+	.experience-heading {
+		align-items: flex-start;
+		flex-direction: column;
+		padding: 0 1rem;
+	}
+
+	.edu-add-button,
+	.exp-add-button {
+		padding: 0.4rem 0.75rem;
+		font-size: 0.85rem;
+	}
+
+	.bulk-actions-bar {
+		justify-content: flex-start;
+	}
+}
+
+[data-bs-theme='dark'] .dashboard-page {
+	--panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
+}
+
+[data-bs-theme='dark'] .education-panel,
+[data-bs-theme='dark'] .experience-panel {
+	--panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
+	background: var(--bs-body-bg);
+}
+
+/* ── Small screens: stack modal content ── */
+@media (max-width: 540px) {
+	.custom-modal {
+		flex-direction: column;
+		align-items: stretch;
+	}
 }

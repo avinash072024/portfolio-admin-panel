@@ -1,72 +1,64 @@
-<div class="container py-5 mt-5" data-aos="fade-up">
-    <div class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden">
-        <div
-            class="card-header bg-transparent border-1 border-primary py-3 px-3">
-            <div class="row g-2 g-md-3 align-items-center">
-                <!-- Title & Badge: 6 columns on mobile, 4 on desktop -->
-                <div class="col-6 col-md-4 order-1">
-                    <h5 class="fw-bold mb-0 text-truncate">Projects <span class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">
-                            {{ total }}
-                        </span></h5>
-                    <p class="text-muted small mb-0 d-none d-md-block">Manage and overview your portfolio</p>
+<main class="container dashboard-page py-5 mt-5" data-aos="fade-up">
+    <section class="dashboard-panel projects-panel card border-1 border-primary rounded-4 shadow mb-4 mb-xl-5">
+        <div class="panel-heading projects-heading">
+            <div class="projects-heading-copy">
+                <p class="panel-kicker mb-1">PROJECT MANAGEMENT</p>
+                <h1 class="panel-title mb-0">Projects <span class="projects-count">{{ total | number }}</span></h1>
+            </div>
+            <div class="projects-toolbar">
+                <div class="search-wrapper">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" class="form-control search-input" placeholder="Search projects..."
+                        [(ngModel)]="searchTerm" (input)="onSearch()" aria-label="Search projects">
+                    <button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear"
+                        title="Clear search" aria-label="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
                 </div>
-
-                <!-- New Button: 6 columns on mobile (aligned right), 3 on desktop (aligned right, last) -->
-                <div class="col-6 col-md-3 order-2 order-md-3 text-end">
-                    <a routerLink="/projects/add" class="btn btn-primary rounded-3 px-3">
-                        <i class="bi bi-plus-lg me-1"></i> <span>New</span>
-                    </a>
-                </div>
-
-                <!-- Search Bar: Full width on mobile, 5 columns center on desktop -->
-                <div class="col-12 col-md-5 order-3 order-md-2">
-                    <div class="search-wrapper">
-                        <i class="bi bi-search search-icon"></i>
-                        <input type="text" class="form-control search-input" placeholder="Search projects..."
-                            [(ngModel)]="searchTerm" (input)="onSearch()">
-                        <button *ngIf="searchTerm" (click)="clearSearch()" class="btn-clear" title="Clear search">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                </div>
+                <a routerLink="/projects/add" class="btn btn-primary rounded-3 projects-add-button">
+                    <i class="bi bi-plus-lg me-1"></i> New
+                </a>
             </div>
         </div>
 
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light-subtle">
-                        <tr>
-                            <th class="ps-4 py-3" style="width: 4%;">
-                                <input type="checkbox" class="form-check-input" id="select-all-checkbox"
-                                    [checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                    (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'">
-                            </th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted">Project</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">On&nbsp;Resume</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Category</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted">Technology&nbsp;Stack</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center">Year</th>
-                            <th class="py-3 text-uppercase small fw-bold text-muted text-center pe-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (project of projects; track project._id; let i = $index) {
+        <div class="table-responsive border-1 border-top border-primary">
+            <table class="table table-hover align-middle mb-0 dashboard-table projects-table">
+                <thead>
+                    <tr>
+                        <th class="table-checkbox-column">
+                            <input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
+                                [checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
+                                (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
+                                aria-label="Select all projects">
+                        </th>
+                        <th class="project-name-column">Project&nbsp;Title</th>
+                        <th class="text-center project-status-column">Status</th>
+                        <th class="text-center project-resume-column">On&nbsp;resume</th>
+                        <th class="project-category-column">Category</th>
+                        <th class="project-tools-column">Technology&nbsp;stack</th>
+                        <th class="text-center project-year-column">Year</th>
+                        <th class="text-end table-actions-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @for (project of projects; track project._id) {
                         <tr [class.table-active]="selectedIds.has(project._id)">
-                            <td class="ps-4">
-                                <input [appTooltip]="selectedIds.has(project._id) ? 'Deselect' : 'Select'" type="checkbox" class="form-check-input" [checked]="selectedIds.has(project._id)"
-                                    (change)="toggleSelect(project._id)" [id]="'chk-' + project._id">
+                            <td class="table-checkbox-column">
+                                <input [appTooltip]="selectedIds.has(project._id) ? 'Deselect' : 'Select'"
+                                    type="checkbox" class="form-check-input table-checkbox"
+                                    [checked]="selectedIds.has(project._id)" (change)="toggleSelect(project._id)"
+                                    [id]="'chk-' + project._id"
+                                    [attr.aria-label]="(selectedIds.has(project._id) ? 'Deselect ' : 'Select ') + project.title">
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="d-none d-sm-none d-md-none d-lg-block project-img-wrapper me-3">
+                                    <div class="project-img-wrapper me-3">
                                         <img [src]="project.image || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800'"
-                                            class="rounded-3 shadow-sm" alt="title">
+                                            class="rounded-3" alt="">
                                     </div>
-                                    <div>
+                                    <div class="project-copy">
                                         <div class="fw-bold text-body">{{ project.title }}</div>
-                                        <div class="text-muted smaller text-truncate" style="max-width: 250px;"
+                                        <div class="text-muted smaller text-truncate project-description"
                                             [appTooltip]="project.desc[0]">
                                             {{ project.desc[0] }}
                                         </div>
@@ -83,92 +75,73 @@
                                 </button>
                             </td>
                             <td class="text-center">
-                                <span class="badge rounded-pill px-3" [ngClass]="project.showOnResume ? 'bg-primary': 'bg-secondary'">
+                                <span class="project-resume-badge rounded-3"
+                                    [class.is-visible]="project.showOnResume">
                                     {{ project.showOnResume ? 'Yes' : 'No' }}
                                 </span>
                             </td>
-                            <td class="text-center">
-                                <span class="badge rounded-pill bg-primary px-3">
+                            <td>
+                                <span class="project-category rounded-3">
                                     {{ project.category.name }}
                                 </span>
                             </td>
                             <td>
-                                <div class="d-flex flex-wrap gap-1 text-truncate w-85">
+                                <div class="project-tools">
                                     <span *ngFor="let tool of project.tools"
                                         class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
                                         {{ tool }}
                                     </span>
                                 </div>
                             </td>
-                            <td class="text-muted text-center small">
+                            <td class="text-center">
                                 {{ project.completedYear }}
                             </td>
-                            <td class="text-end pe-4">
+                            <td class="text-end table-actions-column">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a [href]="project.link" target="_blank" class="btn btn-action-view"
-                                        *ngIf="project.link" appTooltip="Live Link">
+                                    <a [href]="project.link" target="_blank" rel="noopener noreferrer"
+                                        class="btn btn-action-view" *ngIf="project.link" appTooltip="Live link"
+                                        [attr.aria-label]="'View ' + project.title + ' live'">
                                         <i class="bi bi-box-arrow-up-right"></i>
                                     </a>
-                                    <button (click)="onEdit(project)" class="btn btn-action-edit" appTooltip="Edit project">
+                                    <button type="button" (click)="onEdit(project)" class="btn btn-action-edit"
+                                        appTooltip="Edit project" [attr.aria-label]="'Edit ' + project.title">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <button (click)="openDeleteModal(project._id, project.title)"
-                                        class="btn btn-action-delete" appTooltip="Delete project">
+                                    <button type="button" (click)="openDeleteModal(project._id, project.title)"
+                                        class="btn btn-action-delete" appTooltip="Delete project"
+                                        [attr.aria-label]="'Delete ' + project.title">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                         }
-                        <!-- @if (!projects.length) {
-                        <tr>
-                            <td colspan="6" class="text-center">No projects found.</td>
-                        </tr>
-                        } -->
                         <tr *ngIf="!projects.length">
-                            <td colspan="8" class="text-center py-5">
-								<div class="text-muted">
-									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
-									<span *ngIf="searchTerm">No projects matching "<strong>{{searchTerm}}</strong>"</span>
-									<span *ngIf="!searchTerm">No projects found. Please add projects.</span>
-								</div>
-							</td>
-						</tr>
+                            <td colspan="8" class="empty-state">
+                                <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+                                <span *ngIf="searchTerm">No projects matching "<strong>{{searchTerm}}</strong>"</span>
+                                <span *ngIf="!searchTerm">No projects found. Please add projects.</span>
+                            </td>
+                        </tr>
                     </tbody>
-                </table>
-            </div>
-            <!-- Pagination -->
-            <app-pagination *ngIf="projects.length"
-                [page]="page"
-                [limit]="limit"
-                [total]="total"
-                [totalPages]="totalPages"
-                (pageChange)="changePage($event)"
-                (limitChange)="setLimit($event)">
-            </app-pagination>
+            </table>
         </div>
-    </div>
-</div>
+        <app-pagination *ngIf="projects.length" [page]="page" [limit]="limit" [total]="total"
+            [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+        </app-pagination>
+    </section>
 
-@if(selectedIds.size !== 0){
-<div class="container mb-5">
-	<div class="row">
-		<div class="col-md-12">
-			<!-- Bulk Delete Button -->
-			<div *ngIf="projects.length" class="d-flex justify-content-center align-items-center">
-				<button class="btn btn-danger d-flex align-items-center gap-2"
-					[disabled]="selectedIds.size === 0" (click)="openBulkDeleteModal()" id="bulk-delete-btn"
-					title="Delete selected projects">
-					<i class="bi bi-trash3"></i>
-					Delete Selected
-					<span *ngIf="selectedIds.size > 0" class="badge bg-white text-danger ms-1">{{ selectedIds.size
-						}}</span>
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
-}
+    @if (selectedIds.size !== 0 && projects.length) {
+    <div class="bulk-actions-bar">
+        <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
+        <button type="button" class="btn btn-danger d-flex align-items-center gap-2"
+            (click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected projects">
+            <i class="bi bi-trash3"></i>
+            Delete selected
+        </button>
+    </div>
+    }
+</main>
 
 <!-- Delete Confirmation Modal (static backdrop) -->
 <div class="custom-modal-backdrop" *ngIf="showDeleteModal">

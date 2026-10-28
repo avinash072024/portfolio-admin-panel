@@ -1,160 +1,129 @@
-<div class="container py-5 mt-5" data-aos="fade-up">
-	<div class="card border-1 border-primary shadow rounded-4 mt-5 overflow-hidden">
-		<div class="card-header bg-transparent border-1 border-primary py-3 px-3">
-			<div class="row g-2 g-md-3 align-items-center">
-				<!-- Title & Badge: 6 columns on mobile, 4 on desktop -->
-				<div class="col-6 col-md-4 order-1">
-					<h5 class="fw-bold mb-0 text-truncate">Services <span
-							class="badge rounded-pill bg-primary px-2 px-md-3 ms-1">
-							{{ total }}
-						</span></h5>
-					<p class="text-muted small mb-0 d-none d-md-block">Manage and overview your services</p>
+<main class="container dashboard-page py-5 mt-5" data-aos="fade-up">
+	<section class="dashboard-panel services-panel card border-1 border-primary rounded-4 shadow mb-4 mb-xl-5">
+		<div class="panel-heading services-heading">
+			<div class="services-heading-copy">
+				<p class="panel-kicker mb-1">SERVICES MANAGEMENT</p>
+				<h1 class="panel-title mb-0">Services <span class="services-count">{{ total | number }}</span></h1>
+			</div>
+			<div class="services-toolbar">
+				<div class="search-wrapper">
+					<i class="bi bi-search search-icon"></i>
+					<input type="text" class="form-control search-input" placeholder="Search services..."
+						[(ngModel)]="searchTerm" (input)="onSearch()" aria-label="Search services">
+					<button *ngIf="searchTerm" type="button" (click)="clearSearch()" class="btn-clear"
+						title="Clear search" aria-label="Clear search">
+						<i class="bi bi-x-lg"></i>
+					</button>
 				</div>
-
-				<!-- New Button: 6 columns on mobile (aligned right), 3 on desktop (aligned right, last) -->
-				<div class="col-6 col-md-3 order-2 order-md-3 text-end">
-					<a routerLink="/services/add" class="btn btn-primary rounded-3 px-3">
-						<i class="bi bi-plus-lg me-1"></i> <span>New</span>
-					</a>
-				</div>
-
-				<!-- Search Bar: Full width on mobile, 5 columns center on desktop -->
-				<div class="col-12 col-md-5 order-3 order-md-2">
-					<div class="search-wrapper">
-						<i class="bi bi-search search-icon"></i>
-						<input type="text" class="form-control search-input" placeholder="Search services..."
-							[(ngModel)]="searchTerm" (input)="onSearch()">
-						<button *ngIf="searchTerm" (click)="clearSearch()" class="btn-clear" title="Clear search">
-							<i class="bi bi-x-lg"></i>
-						</button>
-					</div>
-				</div>
+				<a routerLink="/services/add" class="btn btn-primary rounded-3 services-add-button">
+					<i class="bi bi-plus-lg me-1"></i> New
+				</a>
 			</div>
 		</div>
 
-		<div class="card-body p-0">
-			<div class="table-responsive">
-				<table class="table table-hover align-middle mb-0">
-					<thead class="bg-light-subtle">
-						<tr>
-							<th class="ps-4 py-3" style="width: 4%;">
-								<input type="checkbox" class="form-check-input" id="select-all-checkbox"
-									[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-									(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'">
-							</th>
-							<th class="py-3 text-uppercase small fw-bold text-muted">Service</th>
-							<th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
-							<th class="py-3 text-uppercase small fw-bold text-muted">Description</th>
-							<th class="py-3 text-uppercase small fw-bold text-muted">Key Features</th>
-							<th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let s of services" [class.table-active]="selectedIds.has(s._id)">
-							<td class="ps-4">
-								<input [appTooltip]="selectedIds.has(s._id) ? 'Deselect' : 'Select'" type="checkbox" class="form-check-input" [checked]="selectedIds.has(s._id)"
-									(change)="toggleSelect(s._id)" [id]="'chk-' + s._id">
-							</td>
-							<td>
-								<div class="d-flex align-items-center">
-									<div class="project-img-wrapper me-3">
-										<div
-											class="skill-icon rounded-3 d-flex align-items-center justify-content-center border-2 border-primary">
-											<i class="fs-4 text-primary" [class]="s.icon"></i>
-										</div>
-									</div>
-									<div style="max-width: 400px;">
-										<div class="fw-bold text-body w-100 text-truncate">{{ s.title }}</div>
-										<div class="text-muted smaller w-100 text-truncate">
-											<i [class]="s.icon" class="text-primary me-1"></i> {{ s.icon }}
-										</div>
+		<div class="table-responsive border-1 border-top border-primary">
+			<table class="table table-hover align-middle mb-0 dashboard-table services-table">
+				<thead>
+					<tr>
+						<th class="table-checkbox-column">
+							<input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
+								[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
+								(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
+								aria-label="Select all services">
+						</th>
+						<th class="service-name-column">Service</th>
+						<th class="text-center service-status-column">Status</th>
+						<th class="service-desc-column">Description</th>
+						<th class="service-features-column">Key Features</th>
+						<th class="text-end table-actions-column">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let s of services" [class.table-active]="selectedIds.has(s._id)">
+						<td class="table-checkbox-column">
+							<input [appTooltip]="selectedIds.has(s._id) ? 'Deselect' : 'Select'" type="checkbox"
+								class="form-check-input table-checkbox" [checked]="selectedIds.has(s._id)"
+								(change)="toggleSelect(s._id)" [id]="'chk-' + s._id"
+								[attr.aria-label]="(selectedIds.has(s._id) ? 'Deselect ' : 'Select ') + s.title">
+						</td>
+						<td>
+							<div class="d-flex align-items-center">
+								<div class="project-img-wrapper me-3">
+									<div class="skill-icon rounded-3 d-flex align-items-center justify-content-center">
+										<i class="fs-6 text-primary" [class]="s.icon"></i>
 									</div>
 								</div>
-							</td>
-							<td class="text-center">
-								<button type="button" class="btn btn-sm rounded-pill px-3"
-									[ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
-									(click)="updateServiceStatus(s)"
-									[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title"
-									[appTooltip]="s.isActive === false ? 'Activate service' : 'Deactivate service'">
-									{{ s.isActive === false ? 'Inactive' : 'Active' }}
+								<div class="service-copy">
+									<div class="fw-bold text-body">{{ s.title }}</div>
+									<div class="text-muted smaller text-truncate service-subtitle">{{ s.icon }}</div>
+								</div>
+							</div>
+						</td>
+						<td class="text-center">
+							<button type="button" class="btn btn-sm rounded-pill px-3"
+								[ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
+								(click)="updateServiceStatus(s)"
+								[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title"
+								[appTooltip]="s.isActive === false ? 'Activate service' : 'Deactivate service'">
+								{{ s.isActive === false ? 'Inactive' : 'Active' }}
+							</button>
+						</td>
+						<td>
+							<div [appTooltip]="s.description" class="text-muted small text-truncate service-description"
+								[title]="s.description">
+								{{ s.description }}
+							</div>
+						</td>
+						<td>
+							<div class="service-features">
+								<span *ngFor="let feature of s.features"
+									class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
+									{{ feature }}
+								</span>
+							</div>
+						</td>
+						<td class="text-end table-actions-column">
+							<div class="d-flex justify-content-end gap-2">
+								<a appTooltip="Edit service" [routerLink]="['/services/edit', s._id]"
+									[queryParams]="{ page: page }" class="btn btn-action-edit"
+									[attr.aria-label]="'Edit ' + s.title">
+									<i class="bi bi-pencil"></i>
+								</a>
+								<button appTooltip="Delete service" class="btn btn-action-delete"
+									(click)="openDeleteModal(s._id, s.title)"
+									[attr.aria-label]="'Delete ' + s.title">
+									<i class="bi bi-trash3"></i>
 								</button>
-							</td>
-							<td>
-								<div [appTooltip]="s.description" class="text-muted small text-truncate"
-									[title]="s.description" style="max-width: 300px;">
-									{{ s.description }}
-								</div>
-							</td>
-
-							<td>
-								<!-- <div class="text-muted small text-truncate" style="max-width: 400px;">
-									{{ s.features }}
-								</div> -->
-								<div class="d-flex flex-wrap gap-1 text-truncate" style="max-width: 400px;">
-									<span *ngFor="let feature of s.features"
-										class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-normal">
-										{{ feature }}
-									</span>
-								</div>
-							</td>
-
-							<td class="text-end pe-4">
-								<div class="d-flex justify-content-end gap-2">
-									<a appTooltip="Edit service" [routerLink]="['/services/edit', s._id]"
-										[queryParams]="{ page: page }" class="btn btn-action-edit">
-										<i class="bi bi-pencil"></i>
-									</a>
-									<button appTooltip="Delete service" class="btn btn-action-delete"
-										(click)="openDeleteModal(s._id, s.title)">
-										<i class="bi bi-trash3"></i>
-									</button>
-								</div>
-							</td>
-						</tr>
-						<!-- <tr *ngIf="!services.length">
-							<td colspan="4" class="text-center py-4">No services found.</td>
-						</tr> -->
-						<tr *ngIf="!services.length">
-							<td colspan="6" class="text-center py-5">
-								<div class="text-muted">
-									<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
-									<span *ngIf="searchTerm">No services matching
-										"<strong>{{searchTerm}}</strong>"</span>
-									<span *ngIf="!searchTerm">No services found. Please add services.</span>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<!-- Pagination/Footer -->
-			<app-pagination *ngIf="services.length" [page]="page" [limit]="limit" [total]="total"
-				[totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
-			</app-pagination>
+							</div>
+						</td>
+					</tr>
+					<tr *ngIf="!services.length">
+						<td colspan="6" class="empty-state">
+							<i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+							<span *ngIf="searchTerm">No services matching "<strong>{{searchTerm}}</strong>"</span>
+							<span *ngIf="!searchTerm">No services found. Please add services.</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-	</div>
-</div>
 
-@if(selectedIds.size !== 0){
-<div class="container mb-5">
-	<div class="row">
-		<div class="col-md-12">
-			<!-- Bulk Delete Button -->
-			<div *ngIf="services.length" class="d-flex justify-content-center align-items-center">
-				<button class="btn btn-danger d-flex align-items-center gap-2" [disabled]="selectedIds.size === 0"
-					(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected services">
-					<i class="bi bi-trash3"></i>
-					Delete Selected
-					<span *ngIf="selectedIds.size > 0" class="badge bg-white text-danger ms-1">{{ selectedIds.size
-						}}</span>
-				</button>
-			</div>
-		</div>
+		<app-pagination *ngIf="services.length" [page]="page" [limit]="limit" [total]="total"
+			[totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+		</app-pagination>
+	</section>
+
+	@if(selectedIds.size !== 0 && services.length){
+	<div class="bulk-actions-bar">
+		<span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span>
+		<button class="btn btn-danger d-flex align-items-center gap-2" [disabled]="selectedIds.size === 0"
+			(click)="openBulkDeleteModal()" id="bulk-delete-btn" title="Delete selected services">
+			<i class="bi bi-trash3"></i>
+			Delete selected
+		</button>
 	</div>
-</div>
-}
+	}
+</main>
 
 <!-- Delete Confirmation Modal (static backdrop) -->
 <div class="custom-modal-backdrop" *ngIf="showDeleteModal">

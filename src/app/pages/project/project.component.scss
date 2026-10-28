@@ -1,16 +1,158 @@
-/* table.component.scss */
+$primary-skin: var(--primary-color, var(--bs-primary));
 
-// Wrapper for the project thumbnail
+.dashboard-page {
+    --bs-primary-bg-subtle: color-mix(in srgb, #{$primary-skin} 12%, var(--bs-body-bg));
+    --bs-primary-text-emphasis: color-mix(in srgb, #{$primary-skin} 82%, var(--bs-body-color));
+    --panel-border: rgba(var(--bs-emphasis-color-rgb), 0.1);
+    color: var(--bs-body-color);
+}
+
+.projects-panel {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding-top: 1.15rem;
+    background: var(--bs-body-bg);
+}
+
+.projects-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.35rem;
+    margin-bottom: 0.8rem;
+}
+
+.projects-heading-copy {
+    min-width: 0;
+}
+
+.panel-kicker {
+    color: var(--bs-primary);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 650;
+}
+
+.projects-count {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: 4px;
+    color: var(--bs-primary-text-emphasis);
+    background: var(--bs-primary-bg-subtle);
+    font-size: 0.72rem;
+    vertical-align: middle;
+}
+
+.projects-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: min(100%, 520px);
+}
+
+.projects-toolbar .search-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+}
+
+.projects-add-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.dashboard-table.projects-table {
+    min-width: 1080px;
+}
+
+.projects-table .project-name-column {
+    min-width: 260px;
+}
+
+.projects-table .project-status-column {
+    min-width: 105px;
+}
+
+.projects-table .project-resume-column {
+    min-width: 110px;
+}
+
+.projects-table .project-category-column {
+    min-width: 130px;
+}
+
+.projects-table .project-tools-column {
+    min-width: 210px;
+}
+
+.projects-table .project-year-column {
+    min-width: 75px;
+}
+
 .project-img-wrapper {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    overflow: hidden;
 
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
+}
+
+.project-copy {
+    min-width: 0;
+}
+
+.project-description {
+    max-width: 250px;
+}
+
+.project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    max-width: 230px;
+    white-space: normal;
+}
+
+.project-resume-badge,
+.project-category {
+    display: inline-block;
+    padding: 0.25rem 0.45rem;
+    color: var(--bs-primary-text-emphasis);
+    background: var(--bs-primary-bg-subtle);
+    font-size: 0.72rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.project-resume-badge:not(.is-visible) {
+    color: var(--bs-secondary-color);
+    background: var(--bs-secondary-bg);
+}
+
+.bulk-actions-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
+    border-radius: 1rem;
+    background: rgba(var(--bs-primary-rgb), 0.06);
 }
 
 // Action Button Styles
@@ -54,11 +196,9 @@
     font-size: 0.8rem;
 }
 
-[data-bs-theme="dark"] {
-    .card {
-        background-color: #1a1d20;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-    }
+[data-bs-theme="dark"] .projects-panel {
+    --panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
+    background: var(--bs-body-bg);
 }
 
 /* Custom modal styles */
@@ -280,24 +420,24 @@
 
 // Mobile responsiveness for search and buttons
 @media (max-width: 767.98px) {
-    .card-header {
-        padding: 1rem 0.75rem !important;
-    }
-    
-    .search-wrapper {
-        margin-top: 0.25rem;
-
-        .search-input {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
+    .projects-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 0 1rem;
     }
 
-    .btn-primary {
-        padding-top: 0.4rem;
-        padding-bottom: 0.4rem;
-        font-size: 0.85rem;
+    .projects-toolbar {
+        width: 100%;
+    }
+
+    .projects-toolbar .search-input {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .bulk-actions-bar {
+        justify-content: flex-start;
     }
 }
 
@@ -311,4 +451,4 @@
             border-color: var(--bs-primary);
         }
     }
-}
+}
