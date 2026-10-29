@@ -16,6 +16,10 @@ export class SkillsService {
     return this.http.get(environment.apiUrl + '/skills')
   }
 
+  getSkillsAll(): Observable<any> {
+    return this.http.get(environment.apiUrl + '/skills/all')
+  }
+
   getAllSkills(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
     let url = `${environment.apiUrl}/skills/all`;
     let params = `?page=${page}&limit=${limit}`;

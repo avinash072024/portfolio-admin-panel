@@ -15,6 +15,10 @@ export class ProjectsService {
     return this.http.get(environment.apiUrl + '/projects')
   }
 
+  getProjectsAll(): Observable<any> {
+    return this.http.get(environment.apiUrl + '/projects/all')
+  }
+
   getAllProjects(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
     let url = `${environment.apiUrl}/projects/all`;
     let params = `?page=${page}&limit=${limit}`;

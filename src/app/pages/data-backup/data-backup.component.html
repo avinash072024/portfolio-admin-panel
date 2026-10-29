@@ -1,0 +1,51 @@
+<main class="container dashboard-page py-5 mt-5" data-aos="fade-up">
+    <section class="dashboard-panel education-panel card border-1 border-primary rounded-4 shadow mb-4 mb-xl-5"
+        aria-labelledby="education-heading">
+        <div class="panel-heading education-heading">
+            <div class="education-heading-copy">
+                <p class="panel-kicker mb-1">DATA BACKUP MANAGEMENT</p>
+                <h1 id="education-heading" class="panel-title mb-0">Data Backup <span class="edu-count">{{dataBackupTable.length}}</span></h1>
+            </div>
+        </div>
+
+        <div class="table-responsive border-1 border-top border-primary">
+            <table class="table table-hover align-middle mb-0 dashboard-table education-table">
+                <thead>
+                    <tr>
+                        <th class="table-checkbox-column">#</th>
+                        <th>Section&nbsp;Title</th>
+                        <!-- <th>Total&nbsp;Records</th>
+                        <th>Active&nbsp;Records</th>
+                        <th>Inactive&nbsp;Records</th> -->
+                        <th class="text-center table-actions-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of dataBackupTable; track $index) {
+                    <tr>
+                        <td class="table-checkbox-column">
+                            <div class="edu-description-cell">{{item.id}}</div>
+                        </td>
+                        <td>
+                            <div class="fw-semibold text-body edu-title">{{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}</div>
+                        </td>
+                        <!-- <td>
+                            <div class="edu-description-cell">Institution
+                            </div>
+                        </td>
+                        <td class="text-nowrap">Duration</td>
+                        <td>
+                            <div class="edu-description-cell text-muted">Description</div>
+                        </td> -->
+                        <td class="text-center table-actions-column">
+                            <button class="btn btn-action-edit" type="button" appTooltip="Download Backup" (click)="commonDownloadClick(item.sectionTitle)"><i
+                                    class="bi bi-download"></i></button>
+
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

@@ -66,7 +66,8 @@ export class HeaderComponent {
     { id: 1, path: '/reset-password', label: 'Reset Password', icon: 'bi bi-key me-2' },
     { id: 2, path: '/website-visitor', label: 'Website Visitor', icon: 'bi bi-globe me-2' },
     { id: 3, path: '/feedback', label: 'Feedback', icon: 'bi bi-chat-dots me-2' },
-    { id: 4, path: '/cover-letter', label: 'Cover Letter', icon: 'bi bi-file-earmark-text me-2' }
+    { id: 4, path: '/cover-letter', label: 'Cover Letter', icon: 'bi bi-file-earmark-text me-2' },
+    { id: 5, path: '/data-backup', label: 'Backup', icon: 'bi bi-file-earmark-arrow-down me-2' }
   ]
 
   @HostListener('window:scroll', [])

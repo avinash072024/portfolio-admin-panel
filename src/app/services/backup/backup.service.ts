@@ -14,7 +14,7 @@ export class BackupService {
     const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
     const url = window.URL.createObjectURL(blob);
     const dateStr = new Date().toISOString().split('T')[0];
-    const fileName = `${fileNamePrefix}-backup-${dateStr}.json`;
+    const fileName = `${fileNamePrefix.toLowerCase()}-backup-${dateStr}.json`;
 
     const link = document.createElement('a');
     link.href = url;

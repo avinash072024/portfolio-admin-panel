@@ -22,6 +22,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { AboutComponent } from './pages/about/about.component';
 import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';
 import { GenerateCoverLetterComponent } from './pages/generate-cover-letter/generate-cover-letter.component';
+import { DataBackupComponent } from './pages/data-backup/data-backup.component';
 
 export const routes: Routes = [
     {
@@ -134,6 +135,11 @@ export const routes: Routes = [
                 path: 'reset-password',
                 component: ResetPasswordComponent,
                 title: `Reset Password | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'data-backup',
+                component: DataBackupComponent,
+                title: `Data Backup | ${Constants.APP_NAME}`
             }
         ]
     },
