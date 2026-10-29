@@ -8,7 +8,7 @@
             </div>
         </div>
 
-        <div class="table-responsive border-1 border-top border-primary">
+        <div class="table-responsive border-1 border-top border-primary d-none">
             <table class="table table-hover align-middle mb-0 dashboard-table education-table">
                 <thead>
                     <tr>
@@ -17,7 +17,7 @@
                         <!-- <th>Total&nbsp;Records</th>
                         <th>Active&nbsp;Records</th>
                         <th>Inactive&nbsp;Records</th> -->
-                        <th class="text-center table-actions-column">Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +27,8 @@
                             <div class="edu-description-cell">{{item.id}}</div>
                         </td>
                         <td>
-                            <div class="fw-semibold text-body edu-title">{{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}</div>
+                            <!-- <div class="fw-semibold text-body edu-title">{{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}</div> -->
+                             {{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}
                         </td>
                         <!-- <td>
                             <div class="edu-description-cell">Institution
@@ -37,6 +38,36 @@
                         <td>
                             <div class="edu-description-cell text-muted">Description</div>
                         </td> -->
+                        <td class="text-center">
+                            <button class="btn btn-action-edit" type="button" appTooltip="Download Backup" (click)="commonDownloadClick(item.sectionTitle)"><i
+                                    class="bi bi-download"></i></button>
+
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive border-1 border-top border-primary">
+            <table class="table table-hover table-stripped table-sm align-middle mb-0 my-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Section&nbsp;Title</th>
+                        <th class="text-center table-actions-column">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of dataBackupTable; track $index) {
+                    <tr>
+                        <td class="text-center">
+                            {{item.id}}
+                        </td>
+                        <td>
+                            <div class="fw-semibold text-body edu-title">
+                            {{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}
+                            </div>
+                        </td>
                         <td class="text-center table-actions-column">
                             <button class="btn btn-action-edit" type="button" appTooltip="Download Backup" (click)="commonDownloadClick(item.sectionTitle)"><i
                                     class="bi bi-download"></i></button>

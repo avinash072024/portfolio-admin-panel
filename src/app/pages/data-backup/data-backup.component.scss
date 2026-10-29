@@ -209,3 +209,38 @@ $primary-skin: var(--primary-color, var(--bs-primary));
         align-items: stretch;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.my-table th {
+    padding: .8rem 1rem;
+    border-color: var(--panel-border, rgba(var(--bs-emphasis-color-rgb), .1));
+    color: var(--bs-secondary-color);
+    font-size: .66rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.my-table td {
+    padding: .9rem 1rem;
+    border-color: var(--panel-border, rgba(var(--bs-emphasis-color-rgb), .1));
+    font-size: .8rem;
+    line-height: 1.25;
+    white-space: nowrap;
+}
