@@ -13,21 +13,20 @@
 
 
 @font-face {
-  font-family: 'Outfit';
-  src: url('./assets/fonts/outfit/Outfit[wght].ttf')
-    format('truetype');
-  font-style: normal;
-  font-optical-sizing: auto;
-  font-weight: 100 900;
-  font-display: swap;
+    font-family: 'Outfit';
+    src: url('./assets/fonts/outfit/Outfit[wght].ttf') format('truetype');
+    font-style: normal;
+    font-optical-sizing: auto;
+    font-weight: 100 900;
+    font-display: swap;
 }
 
 :root {
-  --font-family: 'Outfit', sans-serif;
+    --font-family: 'Outfit', sans-serif;
 }
 
 body {
-  font-family: var(--font-family) !important;
+    font-family: var(--font-family) !important;
 }
 
 .cursor-pointer {
@@ -232,7 +231,7 @@ thead th {
     min-width: 140px;
 }
 
-.dashboard-table .visitor-identity > span:last-child {
+.dashboard-table .visitor-identity>span:last-child {
     display: grid;
     gap: 0.15rem;
 }
@@ -332,6 +331,37 @@ thead th {
 @media (max-width: 767.98px) {
     .dashboard-table {
         min-width: 760px;
+    }
+}
+
+/* --- Theme/Skin Dropdown --- */
+.btn-palette {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+    padding: 0.5rem;
+    border-radius: 50%;
+    border: 2px solid rgba(var(--primary-rgb), 0.1);
+    width: 42px;
+    height: 42px;
+
+    &:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    i {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .btn-palette {
+        width: 32px;
+        height: 32px;
+
+        i {
+            font-size: 0.8rem !important;
+        }
     }
 }
 
