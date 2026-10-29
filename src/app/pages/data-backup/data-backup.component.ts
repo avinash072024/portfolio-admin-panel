@@ -129,4 +129,22 @@ export class DataBackupComponent implements OnInit {
     this.backupService.downloadJson(data, fileNamePrefix);
     this.toastr.success(`${fileNamePrefix} backup downloaded successfully`)
   }
+
+  async downloadAllSectionsBackup(): Promise<void> {
+    if (!this.dataBackupTable || this.dataBackupTable.length === 0) {
+      return;
+    }
+
+    for (let i = 0; i < this.dataBackupTable.length; i++) {
+      const item = this.dataBackupTable[i];
+
+      // Trigger individual section download
+      this.commonDownloadClick(item.sectionTitle);
+
+      // Wait 400ms between each download to prevent browser multiple-download blocking
+      if (i < this.dataBackupTable.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 400));
+      }
+    }
+  }
 }
