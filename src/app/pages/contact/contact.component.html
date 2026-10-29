@@ -1,111 +1,183 @@
-<div class="contact-container container pt-4 mt-5">
-  <div class="page-header mt-5 mb-3 d-flex justify-content-between align-items-center">
-    <div>
-      <div class="d-flex justify-content-between align-items-center gap-3">
-        <h2 class="fw-bold mb-1">Contact Management</h2>
-        <button type="button" class="btn btn-primary btn-sm d-flex" (click)="enableEditableFields()"
-          [title]="editableFields ? 'Cancel' : 'Edit'"><i class="bi"
-            [ngClass]="editableFields ? 'bi-x' : 'bi-pencil me-2'"></i> {{ editableFields ? 'Cancel' : 'Edit'}}</button>
+<div class="contact-container container py-5 mt-5">
+  <!-- Header Section -->
+  <header class="page-header mb-4 p-4 rounded-4 shadow-sm border border-translucent">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <span class="header-icon-wrapper">
+            <i class="bi bi-person-lines-fill"></i>
+          </span>
+          <h2 class="fw-bold mb-0 text-gradient">Contact Management</h2>
+        </div>
+        <p class="text-secondary mb-0 small">Update your personal contact details and social media links displayed on
+          your portfolio.</p>
       </div>
-      <p class="text-secondary mb-0">Update your contact details and social links shown on your portfolio.</p>
-    </div>
-  </div>
 
-  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="row g-4">
-    <!-- Basic Info Card -->
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100 shadow-sm border-1 border-primary rounded-4">
-        <div class="card-header bg-transparent py-3">
-          <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Basic Information</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
-              <input type="text" id="firstName" formControlName="firstName" class="form-control"
-                 placeholder="Enter your first name" appCapitalize="space">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-              <input type="text" id="lastName" formControlName="lastName" class="form-control"
-                [readOnly]="!editableFields" placeholder="Enter your last name" appCapitalize="space">
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
-            <input type="email" id="email" formControlName="email" class="form-control" [readOnly]="!editableFields"
-              placeholder="yourname@example.com">
-          </div>
-          <div class="mb-3">
-            <label for="phone" class="form-label">Phone Number</label>
-            <input type="text" id="phone" formControlName="phone" class="form-control" placeholder="+91 1234567890"
-              [readOnly]="!editableFields">
-          </div>
-          <div class="mb-0">
-            <label for="address" class="form-label">Address / Location</label>
-            <textarea id="address" formControlName="address" class="form-control" rows="3" [readOnly]="!editableFields"
-              placeholder="City, Country" appCapitalize="space"></textarea>
-          </div>
-        </div>
+      <div class="action-btn-wrapper">
+        <button type="button"
+          class="btn btn-primary-custom d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3 shadow-sm"
+          (click)="enableEditableFields()" [title]="editableFields ? 'Cancel Editing' : 'Edit Contact Details'">
+          <i class="bi" [ngClass]="editableFields ? 'bi-x-lg' : 'bi-pencil-square'"></i>
+          <span class="fw-semibold">{{ editableFields ? 'Cancel' : 'Edit Info' }}</span>
+        </button>
       </div>
     </div>
+  </header>
 
-    <!-- Social Links Card -->
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100 shadow-sm border-1 border-primary rounded-4">
-        <div class="card-header bg-transparent py-3">
-          <h5 class="mb-0"><i class="bi bi-share-fill me-2 text-primary"></i>Social Media Links</h5>
-        </div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label for="linkedin" class="form-label"><i class="bi bi-linkedin me-1"></i> LinkedIn</label>
-              <input type="url" id="linkedin" formControlName="linkedin" class="form-control"
-                [readOnly]="!editableFields" placeholder="LinkedIn URL">
+  <!-- Form Section -->
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+    <div class="row g-4">
+
+      <!-- Basic Info Card -->
+      <div class="col-lg-6">
+        <div class="card h-100 custom-card shadow-sm border-0 rounded-4 overflow-hidden">
+          <div class="card-header bg-transparent border-bottom py-3 px-4 d-flex align-items-center gap-2">
+            <div class="card-icon-badge">
+              <i class="bi bi-person-vcard text-primary"></i>
             </div>
-            <div class="col-md-6">
-              <label for="github" class="form-label"><i class="bi bi-github me-1"></i> GitHub</label>
-              <input type="url" id="github" formControlName="github" class="form-control" placeholder="GitHub URL"
-                [readOnly]="!editableFields">
-            </div>
-            <!-- <div class="col-md-6">
-              <label for="twitter" class="form-label"><i class="bi bi-twitter-x me-1"></i> Twitter / X</label>
-              <input type="url" id="twitter" formControlName="twitter" class="form-control" placeholder="Twitter URL"
-                [readOnly]="!editableFields">
-            </div> -->
-            <div class="col-md-6">
-              <label for="instagram" class="form-label"><i class="bi bi-instagram me-1"></i> Instagram</label>
-              <input type="url" id="instagram" formControlName="instagram" class="form-control"
-                [readOnly]="!editableFields" placeholder="Instagram URL">
-            </div>
-            <div class="col-md-6">
-              <label for="facebook" class="form-label"><i class="bi bi-facebook me-1"></i> Facebook</label>
-              <input type="url" id="facebook" formControlName="facebook" class="form-control"
-                [readOnly]="!editableFields" placeholder="Facebook URL">
-            </div>
-            <div class="col-md-6">
-              <label for="whatsapp" class="form-label"><i class="bi bi-whatsapp me-1"></i> WhatsApp</label>
-              <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control"
-                [readOnly]="!editableFields" placeholder="WhatsApp Number">
-            </div>
-            <div class="col-md-6">
-              <label for="portfolioURL" class="form-label"><i class="bi bi-globe me-1"></i> Portfolio URL</label>
-              <input type="text" id="portfolioURL" formControlName="portfolioURL" class="form-control"
-                [readOnly]="!editableFields" placeholder="Portfolio URL">
+            <h5 class="mb-0 fw-bold">Basic Information</h5>
+          </div>
+
+          <div class="card-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                    placeholder="Enter first name" appCapitalize="space" [readOnly]="!editableFields">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                    [readOnly]="!editableFields" placeholder="Enter last name" appCapitalize="space">
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" id="email" formControlName="email" class="form-control"
+                    [readOnly]="!editableFields" placeholder="yourname@example.com">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                  <input type="text" id="phone" formControlName="phone" class="form-control"
+                    placeholder="+91 1234567890" [readOnly]="!editableFields">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="address" class="form-label">Address / Location <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text align-items-start pt-2"><i class="bi bi-geo-alt"></i></span>
+                  <!-- <textarea id="address" formControlName="address" class="form-control" rows="3"
+                    [readOnly]="!editableFields" placeholder="City, State, Country" appCapitalize="space"></textarea> -->
+                  <input type="text" id="address" formControlName="address" class="form-control"
+                    placeholder="City, State, Country" appCapitalize="space" [readOnly]="!editableFields">
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Social Links Card -->
+      <div class="col-lg-6">
+        <div class="card h-100 custom-card shadow-sm border-0 rounded-4 overflow-hidden">
+          <div class="card-header bg-transparent border-bottom py-3 px-4 d-flex align-items-center gap-2">
+            <div class="card-icon-badge">
+              <i class="bi bi-share text-primary"></i>
+            </div>
+            <h5 class="mb-0 fw-bold">Social Media Links</h5>
+          </div>
+
+          <div class="card-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="linkedin" class="form-label">LinkedIn</label>
+                <div class="input-group">
+                  <span class="input-group-text brand-icon linkedin"><i class="bi bi-linkedin"></i></span>
+                  <input type="url" id="linkedin" formControlName="linkedin" class="form-control"
+                    [readOnly]="!editableFields" placeholder="LinkedIn Profile URL">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="github" class="form-label">GitHub</label>
+                <div class="input-group">
+                  <span class="input-group-text brand-icon github"><i class="bi bi-github"></i></span>
+                  <input type="url" id="github" formControlName="github" class="form-control"
+                    placeholder="GitHub Profile URL" [readOnly]="!editableFields">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="instagram" class="form-label">Instagram</label>
+                <div class="input-group">
+                  <span class="input-group-text brand-icon instagram"><i class="bi bi-instagram"></i></span>
+                  <input type="url" id="instagram" formControlName="instagram" class="form-control"
+                    [readOnly]="!editableFields" placeholder="Instagram Profile URL">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="facebook" class="form-label">Facebook</label>
+                <div class="input-group">
+                  <span class="input-group-text brand-icon facebook"><i class="bi bi-facebook"></i></span>
+                  <input type="url" id="facebook" formControlName="facebook" class="form-control"
+                    [readOnly]="!editableFields" placeholder="Facebook Profile URL">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="whatsapp" class="form-label">WhatsApp</label>
+                <div class="input-group">
+                  <span class="input-group-text brand-icon whatsapp"><i class="bi bi-whatsapp"></i></span>
+                  <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control"
+                    [readOnly]="!editableFields" placeholder="WhatsApp Number / Link">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="portfolioURL" class="form-label">Portfolio Website</label>
+                <div class="input-group">
+                  <span class="input-group-text brand-icon portfolio"><i class="bi bi-globe2"></i></span>
+                  <input type="text" id="portfolioURL" formControlName="portfolioURL" class="form-control"
+                    [readOnly]="!editableFields" placeholder="Website URL">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
+    <!-- Floating / Sticky Action Footer (Visible when editing) -->
     @if (editableFields) {
-    <div class="col-12 mb-5">
-      <div class="d-flex justify-content-center align-items-center gap-2">
-        <button type="button" (click)="loadContact()" class="btn btn-outline-secondary px-4">Reset</button>
-        <button type="submit" [disabled]="contactForm.invalid" class="btn btn-primary px-4">
+    <div class="floating-actions-bar mt-4 p-3 rounded-4 shadow-lg border animate-fade-up">
+      <div class="d-flex justify-content-center align-items-center gap-3">
+        <button type="button" (click)="loadContact()"
+          class="btn btn-outline-secondary btn-custom rounded-3 d-flex align-items-center gap-2">
+          Reset
+        </button>
+        <button type="submit" [disabled]="contactForm.invalid"
+          class="btn btn-primary btn-custom rounded-3 d-flex align-items-center gap-2 shadow-sm">
           Save
         </button>
-        <button type="button" (click)="enableEditableFields()" class="btn btn-secondary px-4">Cancel</button>
+        <button type="button" (click)="enableEditableFields()" class="btn btn-light-custom btn-custom rounded-3">
+          Cancel
+        </button>
       </div>
     </div>
     }
