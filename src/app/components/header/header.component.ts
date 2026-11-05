@@ -72,7 +72,7 @@ export class HeaderComponent {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.isScrolled.set(window.scrollY > 50);
+    this.isScrolled.set(window.scrollY > 30);
   }
 
   redirectTo(url: string): void {
