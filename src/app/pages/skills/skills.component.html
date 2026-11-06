@@ -1,9 +1,17 @@
 <main class="container-fluid dashboard-page px-0" data-aos="fade-up">
 	<section class="dashboard-panel skills-panel card border-1 rounded-4 shadow-sm">
 		<div class="panel-heading skills-heading">
-			<div class="skills-heading-copy">
-				<p class="panel-kicker mb-1">SKILLS MANAGEMENT</p>
-				<h1 class="panel-title mb-0">Skills <span class="skills-count">{{ total | number }}</span></h1>
+			<div class="skills-heading-copy d-flex justify-content-between align-items-center">
+				<div>
+					<p class="panel-kicker mb-1">SKILLS MANAGEMENT</p>
+					<h1 class="panel-title mb-0">Skills <span class="skills-count">{{ total | number }}</span></h1>
+				</div>
+				<div class="d-block d-md-none">
+					<a routerLink="/skills/add" class="btn btn-primary rounded-3 skills-add-button">
+						<i class="bi bi-plus-lg me-1"></i> New
+					</a>
+				</div>
+
 			</div>
 			<div class="skills-toolbar">
 				<div class="search-wrapper">
@@ -15,7 +23,7 @@
 						<i class="bi bi-x-lg"></i>
 					</button>
 				</div>
-				<a routerLink="/skills/add" class="btn btn-primary rounded-3 skills-add-button">
+				<a routerLink="/skills/add" class="d-none d-md-block btn btn-primary rounded-3 skills-add-button">
 					<i class="bi bi-plus-lg me-1"></i> New
 				</a>
 			</div>

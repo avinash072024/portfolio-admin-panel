@@ -26,9 +26,9 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	margin-bottom: 0.8rem;
 }
 
-.skills-heading-copy {
-	min-width: 0;
-}
+// .skills-heading-copy {
+// 	min-width: 0;
+// }
 
 .panel-kicker {
 	color: var(--bs-primary);
@@ -449,6 +449,25 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 /* Buttons adapt to theme/skin */
 .custom-modal .btn-outline-secondary {
 	border-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
+}
+
+/* Mobile devices (up to 767px) */
+.skills-heading-copy {
+    width: 100%;
+}
+
+/* Tablet devices (768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .skills-heading-copy {
+        width: 50%;
+    }
+}
+
+/* Large screen devices (992px and above) */
+@media (min-width: 992px) {
+    .skills-heading-copy {
+        width: 50%;
+    }
 }
 
 /* Small screens: stack modal content */

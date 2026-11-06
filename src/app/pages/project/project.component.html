@@ -1,9 +1,16 @@
 <main class="container-fluid dashboard-page px-0" data-aos="fade-up">
     <section class="dashboard-panel projects-panel card border-1 rounded-4 shadow-sm">
         <div class="panel-heading projects-heading">
-            <div class="projects-heading-copy">
-                <p class="panel-kicker mb-1">PROJECT MANAGEMENT</p>
-                <h1 class="panel-title mb-0">Projects <span class="projects-count">{{ total | number }}</span></h1>
+            <div class="projects-heading-copy d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="panel-kicker mb-1">PROJECT MANAGEMENT</p>
+                    <h1 class="panel-title mb-0">Projects <span class="projects-count">{{ total | number }}</span></h1>
+                </div>
+                <div class="d-block d-md-none">
+                    <a routerLink="/projects/add" class="btn btn-primary rounded-3 projects-add-button">
+                        <i class="bi bi-plus-lg me-1"></i> New
+                    </a>
+                </div>
             </div>
             <div class="projects-toolbar">
                 <div class="search-wrapper">
@@ -15,7 +22,7 @@
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
-                <a routerLink="/projects/add" class="btn btn-primary rounded-3 projects-add-button">
+                <a routerLink="/projects/add" class="d-none d-md-block btn btn-primary rounded-3 projects-add-button">
                     <i class="bi bi-plus-lg me-1"></i> New
                 </a>
             </div>

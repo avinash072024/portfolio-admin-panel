@@ -338,6 +338,25 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	// }
 }
 
+/* Mobile devices (up to 767px) */
+.services-heading-copy {
+    width: 100%;
+}
+
+/* Tablet devices (768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .services-heading-copy {
+        width: 50%;
+    }
+}
+
+/* Large screen devices (992px and above) */
+@media (min-width: 992px) {
+    .services-heading-copy {
+        width: 50%;
+    }
+}
+
 [data-bs-theme='dark'] .dashboard-page {
 	--panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
 }
