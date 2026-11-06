@@ -1,8 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, HostListener, inject, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, HostListener, inject, OnDestroy } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FooterComponent } from "../../components/footer/footer.component";
 import { HeaderComponent } from '../../components/header/header.component';
 import { SessionService } from '../../services/session/session.service';
@@ -28,23 +26,10 @@ interface NavigationSection {
 })
 export class LayoutComponent implements OnDestroy {
   isSidebarOpen = false;
-  showScrollTop = false;
-  openSection: string | null = null;
   readonly sessionService = inject(SessionService);
 
   private readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
   private previousBodyOverflow: string | null = null;
-
-  constructor() {
-    this.openSection = this.getActiveSection(this.router.url);
-    this.router.events
-      .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(event => this.openSection = this.getActiveSection(event.urlAfterRedirects));
-  }
 
   navSections: NavigationSection[] = [
     {
@@ -88,10 +73,6 @@ export class LayoutComponent implements OnDestroy {
     this.updateBodyScrollLock();
   }
 
-  toggleSection(sectionLabel: string): void {
-    this.openSection = this.openSection === sectionLabel ? null : sectionLabel;
-  }
-
   logout(): void {
     this.sessionService.logout();
     $('#LogoutStaticBackdrop').modal('hide');
@@ -110,24 +91,8 @@ export class LayoutComponent implements OnDestroy {
     this.closeSidebar();
   }
 
-  @HostListener('window:scroll')
-  onWindowScroll(): void {
-    this.showScrollTop = window.scrollY > 320;
-  }
-
-  scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   ngOnDestroy(): void {
     this.restoreBodyScroll();
-  }
-
-  private getActiveSection(url: string): string | null {
-    const path = url.split(/[?#]/)[0].replace(/\/+$/, '') || '/home';
-    return this.navSections.find(section =>
-      section.links.some(link => path === link.path || path.startsWith(`${link.path}/`))
-    )?.label ?? null;
   }
 
   private updateBodyScrollLock(): void {

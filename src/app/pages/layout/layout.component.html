@@ -22,15 +22,8 @@
 
             <nav class="sidebar-navigation">
                 @for (section of navSections; track section.label) {
-                    <div class="nav-section" [class.expanded]="openSection === section.label">
-                        <button class="nav-section-toggle" type="button"
-                            [attr.aria-expanded]="openSection === section.label"
-                            [attr.aria-label]="(openSection === section.label ? 'Collapse ' : 'Expand ') + section.label"
-                            [title]="section.label"
-                            (click)="toggleSection(section.label)">
-                            <span class="nav-section-title">{{ section.label }}</span>
-                            <i class="bi bi-chevron-down nav-section-chevron"></i>
-                        </button>
+                    <div class="nav-section">
+                        <div class="nav-section-title">{{ section.label }}</div>
                         <div class="sidebar-section-links">
                             @for (item of section.links; track item.path) {
                                 <a class="sidebar-link"
@@ -51,14 +44,6 @@
             </nav>
 
             <div class="sidebar-bottom">
-                <!-- <div class="workspace-card">
-                    <span class="workspace-icon"><i class="bi bi-stars"></i></span>
-                    <div>
-                        <strong>Your workspace</strong>
-                        <small>All systems ready</small>
-                    </div>
-                    <span class="workspace-status"></span>
-                </div> -->
                 <div class="sidebar-account">
                     <span class="account-avatar"><i class="bi bi-person"></i></span>
                     <div class="account-copy">
@@ -109,11 +94,4 @@
             </div>
         </div>
     </div>
-
-    @if (showScrollTop) {
-        <button class="scroll-top-button" type="button" aria-label="Scroll to top" title="Scroll to top"
-            (click)="scrollToTop()">
-            <i class="bi bi-arrow-up"></i>
-        </button>
-    }
 </div>
