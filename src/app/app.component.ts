@@ -14,7 +14,6 @@ import { ThemeService } from './services/theme/theme.service';
 export class AppComponent {
   title = 'portfolio-admin-panel';
   private platformId = inject(PLATFORM_ID);
-  private readonly themeService = inject(ThemeService);
 
   constructor(
     private router: Router

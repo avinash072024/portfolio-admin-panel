@@ -256,7 +256,6 @@
     max-width: 1680px;
     padding: clamp(0.9rem, 1.5vw, 1.4rem);
     margin: 0 auto;
-    animation: page-enter 360ms ease both;
 }
 
 .sidebar-backdrop {
@@ -284,18 +283,6 @@
     &:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 28px rgba(var(--bs-primary-rgb), 0.4);
-    }
-}
-
-@keyframes page-enter {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
 
@@ -367,7 +354,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .page-content,
     .scroll-top-button {
         animation: none;
     }
