@@ -1,9 +1,9 @@
-import { Component, effect, HostListener, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, HostListener, inject, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import * as AOS from 'aos';
-import { Constants } from './models/constants';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { isPlatformBrowser } from '@angular/common';
+import { ThemeService } from './services/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -14,32 +14,11 @@ import { isPlatformBrowser } from '@angular/common';
 export class AppComponent {
   title = 'portfolio-admin-panel';
   private platformId = inject(PLATFORM_ID);
-
-  theme = signal(localStorage.getItem(Constants.THEME_KEY) || 'light');
-  skin = signal(localStorage.getItem(Constants.SKIN_KEY) || 'default-blue');
+  private readonly themeService = inject(ThemeService);
 
   constructor(
     private router: Router
   ) {
-    // Automatically update DOM and localStorage when signals change
-    effect(() => {
-      document.documentElement.setAttribute('data-bs-theme', this.theme());
-      document.documentElement.setAttribute('data-skin', this.skin());
-      localStorage.setItem(Constants.THEME_KEY, this.theme());
-      localStorage.setItem(Constants.SKIN_KEY, this.skin());
-      // Update meta theme-color to match the current skin's primary color
-      try {
-        const style = getComputedStyle(document.documentElement);
-        const primary = style.getPropertyValue('--bs-primary')?.trim() || '';
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta && primary) {
-          meta.setAttribute('content', primary);
-        }
-      } catch (e) {
-        // ignore on server or if not available
-      }
-    });
-
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd && isPlatformBrowser(this.platformId)) {
         window.scrollTo({ top: 0, behavior: 'smooth' });

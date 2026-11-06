@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastrModule } from 'ngx-toastr';
 
 import { DataBackupComponent } from './data-backup.component';
 
@@ -8,7 +10,7 @@ describe('DataBackupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataBackupComponent]
+      imports: [DataBackupComponent, HttpClientTestingModule, ToastrModule.forRoot()]
     })
     .compileComponents();
 

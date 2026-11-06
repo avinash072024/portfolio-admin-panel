@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AddEditAboutComponent } from './add-edit-about.component';
 
@@ -8,7 +11,7 @@ describe('AddEditAboutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddEditAboutComponent]
+      imports: [AddEditAboutComponent, HttpClientTestingModule, RouterTestingModule, ToastrModule.forRoot()]
     })
     .compileComponents();
 

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrService } from 'ngx-toastr';
 import { ResumeService } from '../../services/resume/resume.service';
 
@@ -13,7 +15,7 @@ describe('GenerateCoverLetterComponent', () => {
     resumeService = jasmine.createSpyObj<ResumeService>('ResumeService', ['generateCoverLetter']);
 
     await TestBed.configureTestingModule({
-      imports: [GenerateCoverLetterComponent],
+      imports: [GenerateCoverLetterComponent, HttpClientTestingModule, RouterTestingModule],
       providers: [
         { provide: ResumeService, useValue: resumeService },
         { provide: ToastrService, useValue: jasmine.createSpyObj<ToastrService>('ToastrService', ['success', 'error']) },

@@ -270,10 +270,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 }
 
 @media (max-width: 767.98px) {
-    .dashboard-page {
-        padding-top: 1.25rem !important;
-    }
-
     .dashboard-hero {
         align-items: flex-start;
         flex-direction: column;

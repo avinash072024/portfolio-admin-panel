@@ -27,6 +27,10 @@
 
 body {
     font-family: var(--font-family) !important;
+    min-width: 320px;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    transition: background-color 180ms ease, color 180ms ease;
 }
 
 .cursor-pointer {
@@ -86,15 +90,23 @@ body {
 
 /* Apply global skin overrides */
 [data-skin] {
-    /* Override Bootstrap's internal variables */
     --bs-primary: var(--primary-color);
     --bs-primary-rgb: var(--primary-rgb);
+    --bs-primary-text-emphasis: color-mix(in srgb, var(--primary-color) 70%, var(--bs-body-color));
+    --bs-primary-bg-subtle: color-mix(in srgb, var(--primary-color) 14%, var(--bs-body-bg));
+    --bs-primary-border-subtle: color-mix(in srgb, var(--primary-color) 38%, var(--bs-border-color));
     --bs-link-color: var(--primary-color);
     --bs-link-hover-color: color-mix(in srgb, var(--primary-color), black 20%);
 }
 
 /* Specific component overrides if needed */
 .btn-primary {
+    --bs-btn-bg: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+    --bs-btn-hover-bg: color-mix(in srgb, var(--primary-color), black 15%);
+    --bs-btn-hover-border-color: color-mix(in srgb, var(--primary-color), black 18%);
+    --bs-btn-active-bg: color-mix(in srgb, var(--primary-color), black 20%);
+    --bs-btn-active-border-color: color-mix(in srgb, var(--primary-color), black 22%);
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
 
@@ -105,6 +117,10 @@ body {
 }
 
 .btn-outline-primary {
+    --bs-btn-hover-bg: var(--primary-color);
+    --bs-btn-hover-border-color: var(--primary-color);
+    --bs-btn-active-bg: color-mix(in srgb, var(--primary-color), black 15%);
+    --bs-btn-active-border-color: color-mix(in srgb, var(--primary-color), black 15%);
     --bs-btn-color: var(--primary-color);
     --bs-btn-border-color: var(--primary-color);
 
@@ -135,6 +151,23 @@ body {
 
 .text-primary {
     color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity, 1)) !important;
+}
+
+.border-primary {
+    border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity, 1)) !important;
+}
+
+.text-bg-primary {
+    color: #fff !important;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity, 1)) !important;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 ::selection {

@@ -19,4 +19,8 @@ export class ThemeTogglerComponent {
     { name: 'Cyan Wave', class: 'cyan-wave', hex: '#0dcaf0' },
     { name: 'Crimson', class: 'crimson-red', hex: '#dc3545' }
   ];
+
+  get selectedSkinName(): string {
+    return this.skins.find(skin => skin.class === this.themeService.skin())?.name ?? 'Default Blue';
+  }
 }

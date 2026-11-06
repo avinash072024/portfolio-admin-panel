@@ -1,44 +1,63 @@
-import { effect, inject, Injectable, Renderer2, RendererFactory2, signal } from '@angular/core';
+import { effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Constants } from '../../models/constants';
-import { SessionService } from '../session/session.service';
+
+type ThemeMode = 'light' | 'dark';
+
+const SKIN_NAMES = [
+  'default-blue',
+  'emerald-green',
+  'vibrant-purple',
+  'hot-pink',
+  'sunset-orange',
+  'cyan-wave',
+  'crimson-red'
+];
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  theme = signal(localStorage.getItem(Constants.THEME_KEY) || 'light');
-  skin = signal(localStorage.getItem(Constants.SKIN_KEY) || 'default-blue');
-  sessionService = inject(SessionService);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  theme = signal<ThemeMode>(this.readTheme());
+  skin = signal(this.readSkin());
 
   constructor() {
-    // Automatically update DOM and localStorage when signals change
     effect(() => {
+      if (!this.isBrowser) return;
+
       document.documentElement.setAttribute('data-bs-theme', this.theme());
       document.documentElement.setAttribute('data-skin', this.skin());
       localStorage.setItem(Constants.THEME_KEY, this.theme());
       localStorage.setItem(Constants.SKIN_KEY, this.skin());
-      // Update meta theme-color to match the current skin's primary color
-      try {
-        const style = getComputedStyle(document.documentElement);
-        const primary = style.getPropertyValue('--bs-primary')?.trim() || '';
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta && primary) {
-          meta.setAttribute('content', primary);
-        }
-      } catch (e) {
-        // ignore on server or if not available
+
+      const primary = getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim();
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta && primary) {
+        meta.setAttribute('content', primary);
       }
     });
   }
 
-  toggleTheme(theme: string) {
-    // this.theme.set(this.theme() === 'light' ? 'dark' : 'light');
+  toggleTheme(theme: ThemeMode): void {
     this.theme.set(theme);
-    this.sessionService.setThemeSession(this.theme());
   }
 
-  setSkin(color: string) {
-    this.skin.set(color);
-    this.sessionService.setSkinSession(this.skin())
+  setSkin(color: string): void {
+    if (SKIN_NAMES.includes(color)) this.skin.set(color);
+  }
+
+  private readTheme(): ThemeMode {
+    return this.readPreference(Constants.THEME_KEY, 'light') === 'dark' ? 'dark' : 'light';
+  }
+
+  private readSkin(): string {
+    const savedSkin = this.readPreference(Constants.SKIN_KEY, 'default-blue');
+    return SKIN_NAMES.includes(savedSkin) ? savedSkin : 'default-blue';
+  }
+
+  private readPreference(key: string, fallback: string): string {
+    if (!this.isBrowser) return fallback;
+    return localStorage.getItem(key) || fallback;
   }
 }
