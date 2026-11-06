@@ -333,9 +333,9 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 		font-size: 0.9rem;
 	}
 
-	.bulk-actions-bar {
-		justify-content: flex-start;
-	}
+	// .bulk-actions-bar {
+	// 	justify-content: flex-start;
+	// }
 }
 
 [data-bs-theme='dark'] .dashboard-page {

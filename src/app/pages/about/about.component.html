@@ -1,7 +1,7 @@
 <main class="container-fluid dashboard-page px-0" data-aos="fade-up">
 
 	<!-- Education Section -->
-	<section class="dashboard-panel education-panel card border-1 border-primary rounded-4 shadow mb-3 mb-xl-4"
+	<section class="dashboard-panel education-panel card border-1 rounded-4 shadow-sm mb-3 mb-xl-4"
 		aria-labelledby="education-heading">
 		<div class="panel-heading education-heading">
 			<div class="education-heading-copy">
@@ -14,7 +14,7 @@
 			</a>
 		</div>
 
-		<div class="table-responsive border-1 border-top border-primary">
+		<div class="table-responsive border-1 border-top">
 			<table class="table table-hover align-middle mb-0 dashboard-table education-table">
 				<thead>
 					<tr>
@@ -88,7 +88,7 @@
 	</section>
 
 	@if (selectedEducationIds.size > 0) {
-	<div class="bulk-actions-bar mb-4">
+	<div class="bulk-actions-bar mb-4 mt-3 mt-xl-4">
 		<!-- <span class="fw-semibold text-primary">{{ selectedEducationIds.size }} selected</span> -->
 		<button class="btn btn-danger d-flex align-items-center gap-2" type="button"
 			(click)="openBulkDeleteModal('education')" title="Delete selected education entries">
@@ -99,7 +99,7 @@
 	}
 
 	<!-- Experience Section -->
-	<section class="dashboard-panel experience-panel card border-1 border-primary rounded-4 shadow mb-3 mb-xl-4"
+	<section class="dashboard-panel experience-panel card border-1 rounded-4 shadow-sm"
 		aria-labelledby="experience-heading">
 		<div class="panel-heading experience-heading">
 			<div class="experience-heading-copy">
@@ -112,7 +112,7 @@
 			</a>
 		</div>
 
-		<div class="table-responsive border-1 border-top border-primary">
+		<div class="table-responsive border-1 border-top">
 			<table class="table table-hover align-middle mb-0 dashboard-table experience-table">
 				<thead>
 					<tr>
@@ -186,7 +186,7 @@
 	</section>
 
 	@if (selectedExperienceIds.size > 0) {
-	<div class="bulk-actions-bar">
+	<div class="bulk-actions-bar mt-3 mt-xl-4">
 		<!-- <span class="fw-semibold text-primary">{{ selectedExperienceIds.size }} selected</span> -->
 		<button class="btn btn-danger d-flex align-items-center gap-2" type="button"
 			(click)="openBulkDeleteModal('experience')" title="Delete selected experience entries">

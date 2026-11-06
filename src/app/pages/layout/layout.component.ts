@@ -1,7 +1,13 @@
-import { Component, HostListener } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { Component, DestroyRef, HostListener, inject, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from "../../components/footer/footer.component";
 import { HeaderComponent } from '../../components/header/header.component';
+import { SessionService } from '../../services/session/session.service';
+
+declare var $: any;
 
 interface NavigationLink {
   label: string;
@@ -16,13 +22,29 @@ interface NavigationSection {
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, FooterComponent],
+  imports: [AsyncPipe, RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, FooterComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnDestroy {
   isSidebarOpen = false;
   showScrollTop = false;
+  openSection: string | null = null;
+  readonly sessionService = inject(SessionService);
+
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+  private previousBodyOverflow: string | null = null;
+
+  constructor() {
+    this.openSection = this.getActiveSection(this.router.url);
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(event => this.openSection = this.getActiveSection(event.urlAfterRedirects));
+  }
 
   navSections: NavigationSection[] = [
     {
@@ -55,11 +77,37 @@ export class LayoutComponent {
   ];
 
   toggleSidebar(): void {
-    this.isSidebarOpen = !this.isSidebarOpen;
+    if (window.matchMedia('(max-width: 991.98px)').matches) {
+      this.isSidebarOpen = !this.isSidebarOpen;
+      this.updateBodyScrollLock();
+    }
   }
 
   closeSidebar(): void {
     this.isSidebarOpen = false;
+    this.updateBodyScrollLock();
+  }
+
+  toggleSection(sectionLabel: string): void {
+    this.openSection = this.openSection === sectionLabel ? null : sectionLabel;
+  }
+
+  logout(): void {
+    this.sessionService.logout();
+    $('#LogoutStaticBackdrop').modal('hide');
+    this.router.navigateByUrl('/login');
+  }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    if (!window.matchMedia('(max-width: 991.98px)').matches) {
+      this.closeSidebar();
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeSidebar();
   }
 
   @HostListener('window:scroll')
@@ -69,5 +117,35 @@ export class LayoutComponent {
 
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  ngOnDestroy(): void {
+    this.restoreBodyScroll();
+  }
+
+  private getActiveSection(url: string): string | null {
+    const path = url.split(/[?#]/)[0].replace(/\/+$/, '') || '/home';
+    return this.navSections.find(section =>
+      section.links.some(link => path === link.path || path.startsWith(`${link.path}/`))
+    )?.label ?? null;
+  }
+
+  private updateBodyScrollLock(): void {
+    const shouldLock = this.isSidebarOpen && window.matchMedia('(max-width: 991.98px)').matches;
+    if (shouldLock) {
+      if (this.previousBodyOverflow === null) {
+        this.previousBodyOverflow = document.body.style.overflow;
+      }
+      document.body.style.overflow = 'hidden';
+    } else {
+      this.restoreBodyScroll();
+    }
+  }
+
+  private restoreBodyScroll(): void {
+    if (this.previousBodyOverflow !== null) {
+      document.body.style.overflow = this.previousBodyOverflow;
+      this.previousBodyOverflow = null;
+    }
   }
 }

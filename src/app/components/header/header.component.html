@@ -1,5 +1,3 @@
-@let user = sessionService.currentUser$ | async;
-
 <header class="admin-header">
     <div class="header-leading">
         <button class="header-icon-button menu-toggle" type="button" aria-label="Toggle navigation"
@@ -14,60 +12,5 @@
 
     <div class="header-actions">
         <app-theme-toggler />
-
-        <span class="header-divider"></span>
-
-        <div class="dropdown">
-            <button class="account-button" type="button" id="accountMenuButton" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <span class="account-avatar"><i class="bi bi-person"></i></span>
-                <span class="account-copy">
-                    <strong>{{ user?.name || 'Administrator' }}</strong>
-                    <small>{{ user?.email || 'Workspace account' }}</small>
-                </span>
-                <i class="bi bi-chevron-down account-chevron"></i>
-            </button>
-
-            <ul class="dropdown-menu dropdown-menu-end account-menu shadow" aria-labelledby="accountMenuButton">
-                @for (item of userNavLinks; track item.path) {
-                    <li>
-                        <a class="dropdown-item" [routerLink]="item.path">
-                            <i [class]="item.icon"></i>{{ item.label }}
-                        </a>
-                    </li>
-                }
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <button class="dropdown-item logout-action" type="button" data-bs-toggle="modal"
-                        data-bs-target="#LogoutStaticBackdrop">
-                        <i class="bi bi-box-arrow-right"></i>Sign out
-                    </button>
-                </li>
-            </ul>
-        </div>
     </div>
 </header>
-
-<div class="modal fade" id="LogoutStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="logoutModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content logout-modal">
-            <div class="modal-header">
-                <div>
-                    <p class="modal-eyebrow">Account</p>
-                    <h2 class="modal-title fs-5 fw-bold" id="logoutModalTitle">Sign out?</h2>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-body-secondary">
-                You can sign back in any time to manage your portfolio.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary rounded-3 px-3" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger rounded-3 px-3" (click)="logout()">
-                    <i class="bi bi-box-arrow-right me-2"></i>Sign out
-                </button>
-            </div>
-        </div>
-    </div>
-</div>

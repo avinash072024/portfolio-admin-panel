@@ -1,18 +1,8 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThemeTogglerComponent } from '../theme-toggler/theme-toggler.component';
-import { SessionService } from '../../services/session/session.service';
-
-declare var $: any;
-
-interface HeaderLink {
-  label: string;
-  path: string;
-  icon: string;
-}
 
 interface PageRoute {
   label: string;
@@ -21,12 +11,11 @@ interface PageRoute {
 
 @Component({
   selector: 'app-header',
-  imports: [AsyncPipe, RouterLink, ThemeTogglerComponent],
+  imports: [ThemeTogglerComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-  readonly sessionService = inject(SessionService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -48,14 +37,6 @@ export class HeaderComponent implements OnInit {
 
   readonly currentPage = signal(this.getCurrentPage(this.router.url));
 
-  readonly userNavLinks: HeaderLink[] = [
-    { label: 'Reset password', path: '/reset-password', icon: 'bi bi-key' },
-    { label: 'Website visitors', path: '/website-visitor', icon: 'bi bi-globe2' },
-    { label: 'Feedback', path: '/feedback', icon: 'bi bi-chat-dots' },
-    { label: 'Cover letter', path: '/cover-letter', icon: 'bi bi-file-earmark-text' },
-    { label: 'Data backup', path: '/data-backup', icon: 'bi bi-cloud-arrow-down' }
-  ];
-
   ngOnInit(): void {
     this.router.events
       .pipe(
@@ -63,12 +44,6 @@ export class HeaderComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(event => this.currentPage.set(this.getCurrentPage(event.urlAfterRedirects)));
-  }
-
-  logout(): void {
-    this.sessionService.logout();
-    $('#LogoutStaticBackdrop').modal('hide');
-    this.router.navigateByUrl('/login');
   }
 
   private getCurrentPage(url: string): string {

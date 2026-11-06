@@ -1,3 +1,5 @@
+@let user = sessionService.currentUser$ | async;
+
 <div class="admin-shell" [class.sidebar-open]="isSidebarOpen">
     <app-header (menuToggle)="toggleSidebar()"></app-header>
 
@@ -20,33 +22,53 @@
 
             <nav class="sidebar-navigation">
                 @for (section of navSections; track section.label) {
-                    <div class="nav-section">
-                        <p class="nav-section-title">{{ section.label }}</p>
-                        @for (item of section.links; track item.path) {
-                            <a class="sidebar-link"
-                                [routerLink]="item.path"
-                                routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact: item.path === '/home' }"
-                                (click)="closeSidebar()">
-                                <i [class]="item.icon"></i>
-                                <span>{{ item.label }}</span>
-                                @if (item.path === '/home') {
-                                    <span class="sidebar-link-indicator"></span>
-                                }
-                            </a>
-                        }
+                    <div class="nav-section" [class.expanded]="openSection === section.label">
+                        <button class="nav-section-toggle" type="button"
+                            [attr.aria-expanded]="openSection === section.label"
+                            [attr.aria-label]="(openSection === section.label ? 'Collapse ' : 'Expand ') + section.label"
+                            [title]="section.label"
+                            (click)="toggleSection(section.label)">
+                            <span class="nav-section-title">{{ section.label }}</span>
+                            <i class="bi bi-chevron-down nav-section-chevron"></i>
+                        </button>
+                        <div class="sidebar-section-links">
+                            @for (item of section.links; track item.path) {
+                                <a class="sidebar-link"
+                                    [routerLink]="item.path"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: item.path === '/home' }"
+                                    (click)="closeSidebar()">
+                                    <i [class]="item.icon"></i>
+                                    <span>{{ item.label }}</span>
+                                    @if (item.path === '/home') {
+                                        <span class="sidebar-link-indicator"></span>
+                                    }
+                                </a>
+                            }
+                        </div>
                     </div>
                 }
             </nav>
 
             <div class="sidebar-bottom">
-                <div class="workspace-card">
+                <!-- <div class="workspace-card">
                     <span class="workspace-icon"><i class="bi bi-stars"></i></span>
                     <div>
                         <strong>Your workspace</strong>
                         <small>All systems ready</small>
                     </div>
                     <span class="workspace-status"></span>
+                </div> -->
+                <div class="sidebar-account">
+                    <span class="account-avatar"><i class="bi bi-person"></i></span>
+                    <div class="account-copy">
+                        <strong>{{ user?.name || 'Administrator' }}</strong>
+                        <small>{{ user?.email || 'Workspace account' }}</small>
+                    </div>
+                    <button class="sidebar-logout" type="button" aria-label="Sign out" title="Sign out"
+                        data-bs-toggle="modal" data-bs-target="#LogoutStaticBackdrop">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </aside>
@@ -57,6 +79,35 @@
             </div>
             <app-footer></app-footer>
         </main>
+    </div>
+
+    <div class="modal fade" id="LogoutStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="logoutModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+                <div class="modal-header">
+                    <div>
+                        <!-- <p class="text-primary text-uppercase fw-bold small mb-1">Account</p> -->
+                        <h2 class="modal-title fs-5 fw-bold" id="logoutModalTitle">Sign out?</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-body-secondary">
+                    <p class="mb-3">
+                        Are you sure you want to sign out of your account? Your session will be terminated and you will be redirected to the login page.
+                    </p>
+                    <p class="mb-0">
+                        You can sign back in any time to manage your portfolio.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary rounded-3 px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger rounded-3 px-3" (click)="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Sign out
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     @if (showScrollTop) {

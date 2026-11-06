@@ -1,5 +1,5 @@
 <main class="container-fluid dashboard-page px-0" data-aos="fade-up">
-    <section class="dashboard-panel projects-panel card border-1 border-primary rounded-4 shadow mb-3 mb-xl-4">
+    <section class="dashboard-panel projects-panel card border-1 rounded-4 shadow-sm">
         <div class="panel-heading projects-heading">
             <div class="projects-heading-copy">
                 <p class="panel-kicker mb-1">PROJECT MANAGEMENT</p>
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="table-responsive border-1 border-top border-primary">
+        <div class="table-responsive border-1 border-top">
             <table class="table table-hover align-middle mb-0 dashboard-table projects-table">
                 <thead>
                     <tr>
@@ -130,7 +130,7 @@
     </section>
 
     @if (selectedIds.size !== 0 && projects.length) {
-    <div class="bulk-actions-bar">
+    <div class="bulk-actions-bar mt-3 mt-xl-4">
         <!-- <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span> -->
         <button type="button" class="btn btn-danger d-flex align-items-center gap-2" (click)="openBulkDeleteModal()"
             id="bulk-delete-btn" title="Delete selected projects">

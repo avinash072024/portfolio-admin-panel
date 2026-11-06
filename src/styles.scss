@@ -166,6 +166,14 @@ body {
     background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity, 1)) !important;
 }
 
+.text-transparent {
+    color: transparent !important;
+}
+
+.bg-transparent {
+    background: transparent !important;
+}
+
 html {
     scroll-behavior: smooth;
 }

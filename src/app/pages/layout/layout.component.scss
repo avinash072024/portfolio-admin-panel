@@ -5,6 +5,7 @@
 
 .admin-shell {
     --sidebar-width: 264px;
+    padding-top: 76px;
     min-height: 100vh;
     background:
         radial-gradient(ellipse at 86% 4%, rgba(var(--bs-primary-rgb), 0.045), transparent 34%),
@@ -18,21 +19,22 @@
 
 .admin-sidebar {
     position: sticky;
+    align-self: flex-start;
     top: 76px;
     display: flex;
     flex: 0 0 var(--sidebar-width);
     flex-direction: column;
     width: var(--sidebar-width);
-    height: calc(100vh - 76px);
+    height: calc(100dvh - 76px);
     padding: 1.35rem 1rem 1rem;
-    overflow-y: auto;
+    overflow: hidden;
     border-right: 1px solid var(--bs-border-color);
     background: var(--bs-body-bg);
-    scrollbar-width: none;
 }
 
 .sidebar-brand-row {
     display: flex;
+    flex: 0 0 auto;
     align-items: flex-start;
     justify-content: space-between;
 }
@@ -91,18 +93,58 @@
 }
 
 .sidebar-navigation {
-    display: grid;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     gap: 1.25rem;
+    min-height: 0;
+    padding: 0.1rem 0.15rem 0.4rem 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.nav-section {
+    min-width: 0;
+}
+
+.nav-section-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    border: 0;
+    color: var(--bs-secondary-color);
+    background: transparent;
+    text-align: left;
 }
 
 .nav-section-title {
     padding: 0 0.7rem;
     margin: 0 0 0.45rem;
-    color: var(--bs-secondary-color);
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.11em;
     text-transform: uppercase;
+}
+
+.nav-section-chevron {
+    margin: 0 0.65rem 0.45rem;
+    font-size: 0.62rem;
+    transition: transform 180ms ease;
+}
+
+.nav-section.expanded .nav-section-chevron {
+    transform: rotate(180deg);
+}
+
+.sidebar-section-links {
+    display: none;
+}
+
+.nav-section.expanded .sidebar-section-links {
+    display: block;
 }
 
 .sidebar-link {
@@ -156,6 +198,9 @@
 }
 
 .sidebar-bottom {
+    display: grid;
+    flex: 0 0 auto;
+    gap: 0.75rem;
     margin-top: auto;
     padding-top: 1.5rem;
 }
@@ -202,6 +247,68 @@
     border-radius: 50%;
     background: #20b26b;
     box-shadow: 0 0 0 3px rgba(32, 178, 107, 0.13);
+}
+
+.sidebar-account {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.5rem 0;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.account-avatar {
+    display: grid;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.18);
+    border-radius: 12px;
+    color: var(--bs-primary);
+    background: rgba(var(--bs-primary-rgb), 0.11);
+    font-size: 1.05rem;
+}
+
+.account-copy {
+    display: grid;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 0.06rem;
+
+    strong,
+    small {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    strong {
+        font-size: 0.73rem;
+        font-weight: 650;
+    }
+
+    small {
+        color: var(--bs-secondary-color);
+        font-size: 0.64rem;
+    }
+}
+
+.sidebar-logout {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 0;
+    border-radius: 10px;
+    color: var(--bs-danger);
+    background: transparent;
+
+    &:hover {
+        background: rgba(var(--bs-danger-rgb), 0.1);
+    }
 }
 
 .admin-main {
@@ -273,6 +380,10 @@
 }
 
 @media (max-width: 991.98px) {
+    .admin-shell {
+        padding-top: 68px;
+    }
+
     .admin-body {
         min-height: calc(100vh - 68px);
     }
@@ -280,12 +391,14 @@
     .admin-sidebar {
         position: fixed;
         z-index: 1045;
+        align-self: auto;
         top: 0;
         bottom: 0;
         left: 0;
         width: min(var(--sidebar-width), calc(100vw - 56px));
         height: 100dvh;
         padding-top: 1.4rem;
+        flex-basis: auto;
         box-shadow: 18px 0 45px rgba(15, 23, 42, 0.12);
         transform: translateX(-105%);
         transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);

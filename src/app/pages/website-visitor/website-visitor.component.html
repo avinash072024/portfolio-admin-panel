@@ -1,5 +1,5 @@
 <main class="container-fluid dashboard-page px-0">
-    <section class="dashboard-panel activity-panel card border-1 border-primary rounded-4 shadow mb-3 mb-xl-4" data-aos="fade-up">
+    <section class="dashboard-panel activity-panel card border-1 rounded-4 shadow-sm mb-3 mb-xl-4" data-aos="fade-up">
         <div class="panel-heading visitor-heading">
             <div>
                 <p class="panel-kicker mb-1">LIVE ACTIVITY</p>
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="table-responsive border-1 border-top border-primary">
+        <div class="table-responsive border-1 border-top">
             <table class="table table-hover align-middle mb-0 dashboard-table">
                 <thead>
                     <tr>
@@ -74,7 +74,7 @@
 
     @if (dataRecieved) {
     <div class="visitor-actions">
-        <button type="button" class="btn btn-outline-danger" (click)="openDeleteModal()">
+        <button type="button" class="btn btn-outline-danger px-3 rounded-3" (click)="openDeleteModal()">
             <i class="bi bi-trash3 me-2"></i>Delete duplicate visitors
         </button>
     </div>
