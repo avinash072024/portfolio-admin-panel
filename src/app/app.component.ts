@@ -34,36 +34,36 @@ export class AppComponent {
     });
   }
 
-  @HostListener('document:contextmenu', ['$event'])
-  onRightClick(event: MouseEvent) {
-    event.preventDefault();
-  }
+  // @HostListener('document:contextmenu', ['$event'])
+  // onRightClick(event: MouseEvent) {
+  //   event.preventDefault();
+  // }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    // Disable Ctrl+C (Copy)
-    if (event.ctrlKey && event.key === 'c') {
-      event.preventDefault();
-    }
+    // // Disable Ctrl+C (Copy)
+    // if (event.ctrlKey && event.key === 'c') {
+    //   event.preventDefault();
+    // }
 
-    // Disable Ctrl+P (Print)
-    if (event.ctrlKey && event.key === 'p') {
-      event.preventDefault();
-    }
+    // // Disable Ctrl+P (Print)
+    // if (event.ctrlKey && event.key === 'p') {
+    //   event.preventDefault();
+    // }
 
-    // Disable F12 (Inspect Element)
-    if (event.key === 'F12') {
-      event.preventDefault();
-    }
+    // // Disable F12 (Inspect Element)
+    // if (event.key === 'F12') {
+    //   event.preventDefault();
+    // }
 
-    // Disable Ctrl+Shift+I (Inspect Element)
-    if (event.ctrlKey && event.shiftKey && event.key === 'I') {
-      event.preventDefault();
-    }
+    // // Disable Ctrl+Shift+I (Inspect Element)
+    // if (event.ctrlKey && event.shiftKey && event.key === 'I') {
+    //   event.preventDefault();
+    // }
 
-    // Disable Ctrl+U (View Source)
-    if (event.ctrlKey && event.key === 'u') {
-      event.preventDefault();
-    }
+    // // Disable Ctrl+U (View Source)
+    // if (event.ctrlKey && event.key === 'u') {
+    //   event.preventDefault();
+    // }
   }
 }

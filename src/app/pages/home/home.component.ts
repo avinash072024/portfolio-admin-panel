@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsMod
     forkJoin({
       visitors: this.visitorService.getAllVisitors(1, 5),
       visitorDailyCounts: forkJoin(chartDates.map(date => this.visitorService.getVisitorsByDate(date))),
-      projects: this.projectService.getProjects(),
+      projects: this.projectService.getProjectsAll(),
       skills: this.skillsService.getSkills(),
       feedbacks: this.feedbackService.getAllFeedbacks(),
       services: this.serviceService.getServices(),
@@ -279,7 +279,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsMod
 
   private subscribeToSocketUpdates(): void {
     this.socketService
-      .onRefreshOrDataUpdated(['dashboard', 'home', 'projects', 'skills', 'feedback', 'email', 'visitors', 'visitor'])
+      .onRefreshOrDataUpdated(['services', 'service', 'projects', 'project', 'skills', 'skill', 'feedbacks', 'feedback', 'visitors', 'visitor'])
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.loadDashboardData(true);
