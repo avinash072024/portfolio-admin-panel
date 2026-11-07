@@ -7,6 +7,7 @@ import { SessionService } from '../../services/session/session.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize, switchMap, throwError } from 'rxjs';
+import { Constants } from '../../models/constants';
 
 @Component({
   selector: 'app-reset-password',
@@ -38,11 +39,10 @@ export class ResetPasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.currentUser = this.sessionService.getUserSession();
-    // if (!this.currentUser) {
-    //   this.router.navigate(['/login']);
-    //   return;
-    // }
+    const token: any = this.sessionService.getCookie(Constants.token);
+    if (token) {
+      this.currentUser = this.sessionService.decodeToken(token);
+    }
 
     this.initForm();
   }
@@ -144,6 +144,11 @@ export class ResetPasswordComponent implements OnInit {
 
   sendOtp(): void {
     if (this.otpSending) {
+      return;
+    }
+
+    if(!this.currentUser || !this.currentUser.email) {
+      this.toastr.error('No email found for the current user');
       return;
     }
 

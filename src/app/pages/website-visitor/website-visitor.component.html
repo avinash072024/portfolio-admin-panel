@@ -85,7 +85,7 @@
     <div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
         <div class="modal-body">
             <h2 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm deletion</h2>
-            <p class="text-body-secondary">Are you sure you want to delete duplicate visitors? This action cannot be undone.</p>
+            <p class="text-body-secondary">Are you sure you want to delete <strong class="text-primary">duplicate visitors</strong>? This action cannot be undone.</p>
             <div class="d-flex justify-content-end gap-2 mt-3">
                 <button class="btn btn-primary" (click)="closeDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
                 <button class="btn btn-danger" (click)="deleteDuplicateVisitors()"><i class="bi bi-trash3"></i> Delete</button>

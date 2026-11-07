@@ -20,7 +20,7 @@ export class SessionService {
     this.initializeCurrentUser();
   }
 
-  private initializeCurrentUser(): void {
+  initializeCurrentUser(): void {
     const token = this.getCookie(Constants.token);
     if (token) {
       const decoded = this.decodeToken(token);
@@ -30,7 +30,7 @@ export class SessionService {
     }
   }
 
-  private decodeToken(token: string): User | null {
+  decodeToken(token: string): User | null {
     try {
       return jwtDecode<User>(token);
     } catch {
