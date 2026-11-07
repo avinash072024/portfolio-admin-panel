@@ -35,6 +35,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   bulkDeleteModalInstance: any = null;
   selectedIds: Set<string> = new Set<string>();
   showBulkDeleteModal: boolean = false;
+  showDeleteModal: boolean = false;
 
   feedbackService = inject(FeedbackService);
   backupService = inject(BackupService);
@@ -281,33 +282,45 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDeleteModal(feedback: any): void {
-    const feedbackId = feedback?._id;
-    if (!feedbackId) {
-      this.toastr.error('Invalid feedback id');
-      return;
-    }
-
-    this.deletingFeedbackId = feedbackId;
-    this.deletingFeedbackTitle = feedback?.name || 'this feedback';
-
-    const modalElement = document.getElementById('deleteFeedbackModal');
-    if (!modalElement) {
-      this.toastr.error('Delete modal not found');
-      return;
-    }
-
-    this.deleteModalInstance = new bootstrap.Modal(modalElement, {
-      backdrop: 'static',
-      keyboard: false
-    });
-    this.deleteModalInstance.show();
+  openDeleteModal(id: string, title: string) {
+    this.deletingFeedbackId = id;
+    this.deletingFeedbackTitle = title;
+    this.showDeleteModal = true;
+    document.body.style.overflow = 'hidden';
   }
 
+  // openDeleteModal(feedback: any): void {
+  //   const feedbackId = feedback?._id;
+  //   if (!feedbackId) {
+  //     this.toastr.error('Invalid feedback id');
+  //     return;
+  //   }
+
+  //   this.deletingFeedbackId = feedbackId;
+  //   this.deletingFeedbackTitle = feedback?.name || 'this feedback';
+
+  //   const modalElement = document.getElementById('deleteFeedbackModal');
+  //   if (!modalElement) {
+  //     this.toastr.error('Delete modal not found');
+  //     return;
+  //   }
+
+  //   this.deleteModalInstance = new bootstrap.Modal(modalElement, {
+  //     backdrop: 'static',
+  //     keyboard: false
+  //   });
+  //   this.deleteModalInstance.show();
+  // }
+
   closeDeleteModal(): void {
-    this.deleteModalInstance?.hide();
+    // this.deleteModalInstance?.hide();
+    // this.deletingFeedbackId = '';
+    // this.deletingFeedbackTitle = '';
+
+    this.showDeleteModal = false;
     this.deletingFeedbackId = '';
     this.deletingFeedbackTitle = '';
+    document.body.style.overflow = '';
   }
 
   confirmDeleteFeedback(): void {
