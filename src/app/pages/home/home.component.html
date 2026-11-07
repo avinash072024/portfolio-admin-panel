@@ -1,13 +1,13 @@
 <main class="container-fluid dashboard-page px-0">
     <section class="dashboard-hero rounded-4 mb-3 mb-xl-4" data-aos="fade-down">
         <div>
-            <p class="dashboard-eyebrow mb-2"><span class="status-dot"></span> PORTFOLIO OVERVIEW</p>
-            <h1 class="dashboard-title mb-2">Good to see you, <span>Avinash.</span></h1>
+            <p class="dashboard-eyebrow mb-0"><span class="status-dot"></span> PORTFOLIO OVERVIEW</p>
+            <h2 class="dashboard-title my-2">Good to see you, <span>Avinash.</span></h2>
             <p class="text-body-secondary mb-0">Your portfolio at a glance. Everything is moving.</p>
         </div>
-        <a routerLink="/projects/add" class="btn btn-primary rounded-4 dashboard-action">
+        <!-- <a routerLink="/projects/add" class="btn btn-primary rounded-4 dashboard-action">
             <i class="bi bi-plus-lg me-2"></i>New project
-        </a>
+        </a> -->
     </section>
 
     <section class="stats-grid mb-3 mb-xl-4" aria-label="Portfolio statistics">
@@ -108,7 +108,7 @@
                         <td><div class="visitor-identity"><span class="visitor-icon"><i class="bi" [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i></span><span><strong>{{ visitor.ip }}</strong><small>{{ visitor.version }}</small></span></div></td>
                         <td><div class="d-flex flex-column table-location"><span>{{ visitor.city }}, {{ visitor.region }}</span><small><i class="bi bi-geo-alt me-1"></i>{{ visitor.country_name }}</small></div></td>
                         <td><div class="d-flex flex-column"><span>{{ visitor.network }}</span><small>ASN: {{ visitor.asn }}</small></div></td>
-                        <td><span class="organization-cell" [title]="visitor.org">{{ visitor.org }}</span></td>
+                        <td><span class="organization-cell" [appTooltip]="visitor.org" tooltipPlacement="top">{{ visitor.org }}</span></td>
                         <td><div class="d-flex flex-column"><span class="timezone-badge rounded-3">{{ visitor.timezone }}</span><small class="mt-1">UTC {{ visitor.utc_offset }}</small></div></td>
                     </tr>
                     <tr *ngIf="visitors.length === 0"><td colspan="6" class="empty-state">No visitor records found.</td></tr>

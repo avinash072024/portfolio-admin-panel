@@ -1,18 +1,17 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ResumeService } from '../../services/resume/resume.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ContactService } from '../../services/contact/contact.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SocketService } from '../../services/socket/socket.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-generate-cover-letter',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './generate-cover-letter.component.html',
   styleUrl: './generate-cover-letter.component.scss'
 })

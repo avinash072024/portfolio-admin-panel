@@ -39,7 +39,7 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 }
 
 .dashboard-title {
-    font-size: clamp(1.7rem, 3.5vw, 2.7rem);
+    // font-size: clamp(1.7rem, 3.5vw, 2.7rem);
     font-weight: 700;
     line-height: 1.12;
 }
