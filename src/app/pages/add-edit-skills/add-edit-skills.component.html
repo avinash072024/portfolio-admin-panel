@@ -102,8 +102,8 @@
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 	aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-sm">
-		<div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content app-modal">
 			<div class="modal-body p-4 text-center">
 				<div class="mb-3 text-primary">
 					<i class="bi bi-trash3 fs-1"></i>
@@ -135,14 +135,14 @@
 <!-- Category Management Modal -->
 <div class="modal fade" id="categoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-		<div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-			<div class="modal-header bg-primary text-white py-3 border-0">
+		<div class="modal-content app-modal">
+			<div class="modal-header">
 				<h5 class="modal-title fw-semibold" id="categoryModalLabel"><i class="bi bi-grid me-2"></i>Manage Categories
 				</h5>
-				<button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+				<button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body px-4 pt-4">
+			<div class="modal-body">
 				<div class="input-group mb-4 shadow-sm">
 					<input type="text" class="form-control border-end-0 border-primary shadow-none"
 						placeholder="New category name e.g. Frontend" [(ngModel)]="newCategoryName"
@@ -182,7 +182,7 @@
 					}
 				</div>
 			</div>
-			<div class="modal-footer border-0 p-3 bg-body-tertiary">
+			<div class="modal-footer">
 				<button type="button" class="btn btn-primary fw-bold w-100 py-2 rounded-3 shadow"
 					data-bs-dismiss="modal">Done</button>
 			</div>

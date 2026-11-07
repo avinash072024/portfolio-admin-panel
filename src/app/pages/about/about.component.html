@@ -200,12 +200,12 @@
 
 <!-- Delete Confirmation Modal -->
 <div class="custom-modal-backdrop" *ngIf="showDeleteModal">
-	<div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
+	<div class="custom-modal app-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
 		(click)="$event.stopPropagation()">
 		<div class="modal-body">
 			<h5 id="delete-modal-title" class="modal-title text-primary"><i class="bi bi-trash3 me-2"></i>Confirm
 				deletion</h5>
-			<p class="text-muted mt-2">Are you sure you want to delete <strong>{{ pendingTitle }}</strong>? This action
+			<p class="text-muted mt-2">Are you sure you want to delete <strong class="text-primary">{{ pendingTitle }}</strong>? This action
 				cannot be undone.</p>
 			<div class="d-flex justify-content-end gap-2 mt-3">
 				<button class="btn btn-primary" type="button" (click)="closeDeleteModal()"><i
@@ -219,7 +219,7 @@
 
 <!-- Bulk Delete Confirmation Modal -->
 <div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
-	<div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="bulk-delete-modal-title"
+	<div class="custom-modal app-modal" role="dialog" aria-modal="true" aria-labelledby="bulk-delete-modal-title"
 		(click)="$event.stopPropagation()">
 		<div class="modal-body">
 			<h5 id="bulk-delete-modal-title" class="modal-title text-danger"><i

@@ -218,6 +218,166 @@ thead th {
     min-width: 780px;
 }
 
+/* Shared modal appearance */
+.modal-backdrop {
+    --bs-backdrop-bg: #101827;
+    --bs-backdrop-opacity: 0.58;
+    backdrop-filter: blur(3px);
+}
+
+.modal-content.app-modal,
+.app-modal.confirm-dialog,
+.app-modal.custom-modal {
+    color: var(--bs-body-color);
+    background: var(--bs-body-bg);
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.2);
+}
+
+.modal-content.app-modal {
+    overflow: hidden;
+}
+
+.modal-content.app-modal .modal-header {
+    padding: 1.25rem 1.5rem;
+    color: var(--bs-body-color);
+    background: var(--bs-body-bg);
+    border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+}
+
+.modal-content.app-modal .modal-body {
+    padding: 1.5rem;
+}
+
+.modal-content.app-modal .modal-footer {
+    padding: 1rem 1.5rem;
+    background: rgba(var(--bs-emphasis-color-rgb), 0.025);
+    border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+}
+
+.modal-dialog.app-modal-dialog {
+    max-width: 460px;
+}
+
+.modal-content.app-modal-confirmation .modal-body {
+    padding: 1.5rem;
+}
+
+.modal-content.app-modal-confirmation .modal-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+}
+
+.app-modal-confirmation .modal-body p:last-of-type {
+    margin-bottom: 0;
+}
+
+.app-modal-confirmation .modal-body > .d-flex {
+    margin-top: 1.25rem;
+}
+
+.app-modal .modal-title {
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+.custom-modal-backdrop,
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(16, 24, 39, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.app-modal.custom-modal,
+.app-modal.confirm-dialog {
+    width: min(100%, 460px);
+    max-height: min(90vh, 720px);
+    overflow: auto;
+    animation: app-modal-in 180ms ease both;
+}
+
+.app-modal.custom-modal .modal-body,
+.app-modal.confirm-dialog .confirm-body {
+    padding: 1.5rem;
+}
+
+.app-modal.custom-modal .modal-title,
+.app-modal.confirm-dialog .confirm-header h5 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.app-modal.custom-modal .modal-body p:last-child,
+.app-modal.confirm-dialog .confirm-body p:last-child {
+    margin-bottom: 0;
+}
+
+.app-modal.custom-modal .modal-body > .d-flex,
+.app-modal.confirm-dialog .confirm-footer {
+    margin-top: 1.25rem;
+}
+
+.app-modal.confirm-dialog {
+    padding: 1.5rem;
+}
+
+.app-modal.confirm-dialog .confirm-body {
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.app-modal.confirm-dialog .confirm-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+@keyframes app-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.99);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        margin: 0.75rem;
+    }
+
+    .modal-content.app-modal .modal-header,
+    .modal-content.app-modal .modal-body,
+    .modal-content.app-modal .modal-footer,
+    .modal-content.app-modal-confirmation .modal-body,
+    .app-modal.custom-modal .modal-body {
+        padding: 1.125rem;
+    }
+
+    .app-modal.custom-modal .modal-body > .d-flex,
+    .app-modal.confirm-dialog .confirm-footer {
+        flex-wrap: wrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app-modal.custom-modal,
+    .app-modal.confirm-dialog {
+        animation-duration: 0.01ms;
+    }
+}
+
 .dashboard-table th {
     padding: 0.8rem 1rem;
     border-color: var(--panel-border, rgba(var(--bs-emphasis-color-rgb), 0.1));

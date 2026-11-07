@@ -276,55 +276,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 }
 
 
-/* Custom modal styles */
-.custom-modal-backdrop {
-	position: fixed;
-	inset: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: linear-gradient(rgba(10, 10, 10, 0.45), rgba(10, 10, 10, 0.45));
-	z-index: 1050;
-	padding: 1rem;
-}
-
-.custom-modal {
-	width: 100%;
-	max-width: 520px;
-	background: var(--bs-body-bg);
-	color: var(--bs-body-color);
-	border-radius: 12px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-	overflow: hidden;
-	display: flex;
-	gap: 0.5rem;
-	align-items: center;
-	transform: translateY(-8px);
-	animation: modalIn 220ms ease both;
-}
-
-.modal-body {
-	padding: 1.25rem 1.5rem;
-	flex: 1 1 auto;
-}
-
-.modal-title {
-	margin: 0 0 0.25rem 0;
-	font-weight: 700;
-}
-
-@keyframes modalIn {
-	from {
-		opacity: 0;
-		transform: translateY(-12px) scale(0.995);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
-}
-
 /* Search Box Styles */
 .search-wrapper {
 	position: relative;
@@ -446,11 +397,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	}
 }
 
-/* Buttons adapt to theme/skin */
-.custom-modal .btn-outline-secondary {
-	border-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
-}
-
 /* Mobile devices (up to 767px) */
 .skills-heading-copy {
     width: 100%;
@@ -468,12 +414,4 @@ $primary-skin: var(--primary-color, var(--bs-primary));
     .skills-heading-copy {
         width: 50%;
     }
-}
-
-/* Small screens: stack modal content */
-@media (max-width: 540px) {
-	.custom-modal {
-		flex-direction: column;
-		align-items: stretch;
-	}
 }

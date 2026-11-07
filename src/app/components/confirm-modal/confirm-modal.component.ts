@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
     standalone: true,
     imports: [CommonModule],
     templateUrl: './confirm-modal.component.html',
-    styleUrls: ['./confirm-modal.component.scss']
 })
 export class ConfirmModalComponent {
     visible = false;
