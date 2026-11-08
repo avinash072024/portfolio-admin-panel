@@ -23,6 +23,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';
 import { GenerateCoverLetterComponent } from './pages/generate-cover-letter/generate-cover-letter.component';
 import { DataBackupComponent } from './pages/data-backup/data-backup.component';
+import { BackupRestoreComponent } from './components/backup-restore/backup-restore.component';
 
 export const routes: Routes = [
     {
@@ -140,6 +141,11 @@ export const routes: Routes = [
                 path: 'data-backup',
                 component: DataBackupComponent,
                 title: `Data Backup | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'data-restore',
+                component: BackupRestoreComponent,
+                title: `Data Restore | ${Constants.APP_NAME}`
             }
         ]
     },

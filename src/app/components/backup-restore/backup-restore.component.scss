@@ -1,0 +1,58 @@
+.restore-panel {
+    min-width: 0;
+    overflow: hidden;
+    border-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.restore-heading {
+    padding: 1.15rem 1.35rem 1rem;
+}
+
+.restore-body {
+    padding: 0.9rem 1.35rem 1.25rem;
+}
+
+.panel-kicker {
+    color: var(--bs-primary);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 650;
+}
+
+.restore-description,
+.restore-note {
+    color: var(--bs-secondary-color);
+    font-size: 0.82rem;
+}
+
+.restore-note {
+    margin-top: 1rem;
+}
+
+.form-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+@media (max-width: 767.98px) {
+    .restore-heading {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .restore-body {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+}
+
+[data-bs-theme='dark'] .restore-panel {
+    border-color: rgba(var(--bs-emphasis-color-rgb), 0.13);
+}

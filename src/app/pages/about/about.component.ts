@@ -150,6 +150,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   }
 
   confirmBulkDelete(): void {
+    debugger;
     const selected = this.pendingType === 'education' ? this.selectedEducationIds : this.selectedExperienceIds;
     if (!selected.size) return;
     this.spinner.show();
@@ -159,6 +160,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       : this.experienceService.deleteMultipleExperience(ids);
     request.subscribe({
       next: (res: any) => {
+        debugger;
         this.spinner.hide();
         if (res?.success === false) {
           this.toastr.error(res?.message || 'Bulk delete failed');
@@ -170,6 +172,7 @@ export class AboutComponent implements OnInit, OnDestroy {
         this.loadAllData();
       },
       error: (err: any) => {
+        debugger;
         this.spinner.hide();
         this.toastr.error(err?.error?.message || err?.message || 'Bulk delete failed');
       }

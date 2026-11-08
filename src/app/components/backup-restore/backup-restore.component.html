@@ -1,0 +1,50 @@
+<section class="restore-panel card border-1 rounded-4 shadow-sm" aria-labelledby="restore-heading">
+    <div class="restore-heading panel-heading">
+        <div>
+            <p class="panel-kicker mb-1">IMPORT DATA</p>
+            <h2 id="restore-heading" class="panel-title mb-0">Restore from backup</h2>
+        </div>
+    </div>
+
+    <div class="restore-body border-1 border-top">
+        <p class="restore-description">
+            Choose the data type, then upload the matching JSON file downloaded from this page.
+            Records are added to the database; existing records are not replaced.
+        </p>
+
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-4">
+                <label class="form-label" for="backup-type">Backup type</label>
+                <select id="backup-type" class="form-select" [value]="selectedBackup" (change)="onBackupTypeChange($event)"
+                    [disabled]="isImporting">
+                    <option value="">Select backup type</option>
+                    @for (backup of backupTypes; track backup.value) {
+                    <option [value]="backup.value">{{backup.label}}</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12 col-md-4">
+                <label class="form-label" for="backup-file">JSON backup file</label>
+                <input id="backup-file" class="form-control" type="file" accept=".json,application/json"
+                    (change)="onFileSelected($event)" [disabled]="isImporting">
+            </div>
+            <div class="col-12 col-md-4 d-flex justify-content-md-start justify-content-center gap-2">
+                <button class="btn btn-primary d-flex justify-content-center align-items-center gap-2"
+                    type="button" (click)="importBackup()" [disabled]="isImporting">
+                    @if (isImporting) {
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    Importing...
+                    } @else {
+                    <i class="bi bi-upload" aria-hidden="true"></i>
+                    Upload backup
+                    }
+                </button>
+            </div>
+        </div>
+
+        <p class="restore-note d-none d-md-block mb-0">
+            Visitor and Feedback backups can still be downloaded, but cannot be restored because the API does not
+            currently provide record-creation operations for those data types.
+        </p>
+    </div>
+</section>

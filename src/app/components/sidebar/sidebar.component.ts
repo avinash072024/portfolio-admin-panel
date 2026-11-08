@@ -53,8 +53,9 @@ export class SidebarComponent implements OnDestroy {
       links: [
         { label: 'Website visitors', path: '/website-visitor', icon: 'bi bi-graph-up-arrow' },
         { label: 'Feedback', path: '/feedback', icon: 'bi bi-chat-square-text' },
+        { label: 'Cover letter', path: '/cover-letter', icon: 'bi bi-file-earmark-richtext' },
         { label: 'Data backup', path: '/data-backup', icon: 'bi bi-cloud-arrow-down' },
-        { label: 'Cover letter', path: '/cover-letter', icon: 'bi bi-file-earmark-richtext' }
+        { label: 'Data restore', path: '/data-restore', icon: 'bi bi-cloud-arrow-up' }
       ]
     },
     {
