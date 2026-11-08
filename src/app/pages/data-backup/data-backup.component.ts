@@ -92,7 +92,7 @@ export class DataBackupComponent implements OnInit {
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || 'Failed to load about details. Please try again.');
+        this.toastr.error(err?.error?.message || 'Failed to load details. Please try again.');
       }
     });
   }
@@ -100,28 +100,56 @@ export class DataBackupComponent implements OnInit {
   commonDownloadClick(section: string): void {
     switch (section) {
       case 'Education':
+        if (this.educations.length === 0) {
+          this.toastr.warning('No education data available to download.');
+          return;
+        }
         this.downloadBackup(this.educations, section);
         break;
       case 'Experience':
+        if (this.experiences.length === 0) {
+          this.toastr.warning('No experience data available to download.');
+          return;
+        }
         this.downloadBackup(this.experiences, section);
         break;
       case 'Services':
+        if (this.services.length === 0) {
+          this.toastr.warning('No services data available to download.');
+          return;
+        }
         this.downloadBackup(this.services, section);
         break;
       case 'Projects':
+        if (this.projects.length === 0) {
+          this.toastr.warning('No projects data available to download.');
+          return;
+        }
         this.downloadBackup(this.projects, section);
         break;
       case 'Skills':
+        if (this.skills.length === 0) {
+          this.toastr.warning('No skills data available to download.');
+          return;
+        }
         this.downloadBackup(this.skills, section);
         break;
       case 'Visitor':
+        if (this.visitors.length === 0) {
+          this.toastr.warning('No visitor data available to download.');
+          return;
+        }
         this.downloadBackup(this.visitors, section);
         break;
       case 'Feedback':
+        if (this.feedbacks.length === 0) {
+          this.toastr.warning('No feedback data available to download.');
+          return;
+        }
         this.downloadBackup(this.feedbacks, section);
         break;
       default:
-
+        this.toastr.error('Invalid section selected.');
     }
   }
 

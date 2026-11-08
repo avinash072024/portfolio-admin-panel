@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, HostListener, inject, OnDestroy } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { SessionService } from '../../services/session/session.service';
+import { Constants } from '../../models/constants';
 
 declare var $: any;
 
@@ -28,6 +29,9 @@ export class SidebarComponent implements OnDestroy {
 
   private readonly router = inject(Router);
   private previousBodyOverflow: string | null = null;
+
+  appName1 = Constants.APP_NAME1;
+  appName2 = Constants.APP_NAME2;
 
   readonly navSections: NavigationSection[] = [
     {
