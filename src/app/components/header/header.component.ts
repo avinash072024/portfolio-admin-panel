@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
     { label: 'Feedback', path: '/feedback' },
     { label: 'Cover letter', path: '/cover-letter' },
     { label: 'Data backup', path: '/data-backup' },
+    { label: 'Data restore', path: '/data-restore' },
     { label: 'Reset password', path: '/reset-password' }
   ];
 
