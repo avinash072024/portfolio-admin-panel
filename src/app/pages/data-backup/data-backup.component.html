@@ -2,14 +2,16 @@
     <section class="dashboard-panel education-panel card border-1 rounded-4 shadow-sm"
         aria-labelledby="education-heading">
         <div class="panel-heading experience-heading">
-			<div class="education-heading-copy">
+            <div class="education-heading-copy">
                 <p class="panel-kicker mb-1">DATA BACKUP MANAGEMENT</p>
-                <h1 id="education-heading" class="panel-title mb-0">Data Backup <span class="edu-count">{{dataBackupTable.length}}</span></h1>
+                <h1 id="education-heading" class="panel-title mb-0">Data Backup <span
+                        class="edu-count">{{dataBackupTable.length}}</span></h1>
             </div>
-			<button class="btn btn-primary d-flex align-items-center gap-2" type="button" (click)="downloadAllSectionsBackup()">
-                    <i class="bi bi-download"></i> Download All
-                </button>
-		</div>
+            <button class="btn btn-primary d-flex align-items-center gap-2" type="button"
+                (click)="downloadAllSectionsBackup()">
+                <i class="bi bi-download"></i> Download All
+            </button>
+        </div>
 
         <div class="table-responsive border-1 border-top">
             <table class="table table-hover table-stripped table-sm align-middle mb-0 my-table">
@@ -31,15 +33,45 @@
                         </td>
                         <td>
                             <div class="fw-semibold text-body edu-title">
-                            {{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}
+                                {{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}
                             </div>
                         </td>
-                        <td class="text-center">{{item.totalItems == 0 ? '-' : item.totalItems}}</td>
+                        <!-- <td class="text-center">{{item.totalItems == 0 ? '-' : item.totalItems}}</td>
                         <td class="text-center">{{item.activeItems == 0 ? '-' : item.activeItems}}</td>
-                        <td class="text-center">{{item.inactiveItems == 0 ? '-' : item.inactiveItems}}</td>
+                        <td class="text-center">{{item.inactiveItems == 0 ? '-' : item.inactiveItems}}</td> -->
+                        <td class="text-center">
+                            @if (item.totalItems == 0) {
+                            -
+                            } @else {
+                            <span
+                                class="badge bg-primary-subtle text-primary border border-primary-subtle fw-semibold fs-8">
+                                {{item.totalItems}}
+                            </span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (item.activeItems == 0) {
+                            -
+                            } @else {
+                            <span
+                                class="badge bg-success-subtle text-success border border-success-subtle fw-semibold fs-8">
+                                {{item.activeItems}}
+                            </span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (item.inactiveItems == 0) {
+                            -
+                            } @else {
+                            <span
+                                class="badge bg-danger-subtle text-danger border border-danger-subtle fw-semibold fs-8">
+                                {{item.inactiveItems}}
+                            </span>
+                            }
+                        </td>
                         <td class="text-center table-actions-column">
-                            <button class="btn btn-action-edit" type="button" appTooltip="Download Backup" (click)="commonDownloadClick(item.sectionTitle)"><i
-                                    class="bi bi-download"></i></button>
+                            <button class="btn btn-action-edit" type="button" appTooltip="Download Backup"
+                                (click)="commonDownloadClick(item.sectionTitle)"><i class="bi bi-download"></i></button>
 
                         </td>
                     </tr>
