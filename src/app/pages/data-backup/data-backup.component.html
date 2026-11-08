@@ -17,6 +17,9 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Section&nbsp;Title</th>
+                        <th class="text-center">Total&nbsp;Items</th>
+                        <th class="text-center">Active&nbsp;Items</th>
+                        <th class="text-center">Inactive&nbsp;Items</th>
                         <th class="text-center table-actions-column">Action</th>
                     </tr>
                 </thead>
@@ -24,13 +27,16 @@
                     @for (item of dataBackupTable; track $index) {
                     <tr>
                         <td class="text-center">
-                            {{item.id}}
+                            {{$index + 1}}
                         </td>
                         <td>
                             <div class="fw-semibold text-body edu-title">
                             {{item.sectionTitle === 'Visitor' ? 'Website Visitor' : item.sectionTitle}}
                             </div>
                         </td>
+                        <td class="text-center">{{item.totalItems == 0 ? '-' : item.totalItems}}</td>
+                        <td class="text-center">{{item.activeItems == 0 ? '-' : item.activeItems}}</td>
+                        <td class="text-center">{{item.inactiveItems == 0 ? '-' : item.inactiveItems}}</td>
                         <td class="text-center table-actions-column">
                             <button class="btn btn-action-edit" type="button" appTooltip="Download Backup" (click)="commonDownloadClick(item.sectionTitle)"><i
                                     class="bi bi-download"></i></button>

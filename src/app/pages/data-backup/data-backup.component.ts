@@ -14,8 +14,10 @@ import { VisitorService } from '../../services/visitor/visitor.service';
 import { BackupService } from '../../services/backup/backup.service';
 
 interface DataBackup {
-  id: number;
   sectionTitle: string;
+  totalItems: number;
+  activeItems: number;
+  inactiveItems: number;
 }
 
 @Component({
@@ -52,13 +54,13 @@ export class DataBackupComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataBackupTable = [
-      { id: 1, sectionTitle: 'Education' },
-      { id: 2, sectionTitle: 'Experience' },
-      { id: 3, sectionTitle: 'Services' },
-      { id: 4, sectionTitle: 'Projects' },
-      { id: 5, sectionTitle: 'Skills' },
-      { id: 6, sectionTitle: 'Visitor' },
-      { id: 7, sectionTitle: 'Feedback' }
+      { sectionTitle: 'Education', totalItems: 0, activeItems: 0, inactiveItems: 0 },
+      { sectionTitle: 'Experience', totalItems: 0, activeItems: 0, inactiveItems: 0 },
+      { sectionTitle: 'Services', totalItems: 0, activeItems: 0, inactiveItems: 0 },
+      { sectionTitle: 'Projects', totalItems: 0, activeItems: 0, inactiveItems: 0 },
+      { sectionTitle: 'Skills', totalItems: 0, activeItems: 0, inactiveItems: 0 },
+      { sectionTitle: 'Visitor', totalItems: 0, activeItems: 0, inactiveItems: 0 },
+      { sectionTitle: 'Feedback', totalItems: 0, activeItems: 0, inactiveItems: 0 }
     ]
 
     this.loadAllData();
@@ -88,12 +90,38 @@ export class DataBackupComponent implements OnInit {
         this.feedbacks = res.feedbacks?.feedback || res?.feedback || [];
         this.visitors = res.visitors?.Visitors || res?.Visitors || [];
 
+        // Update total, active and inactive counts
+        this.updateBackupCounts();
+
         this.spinner.hide();
       },
       error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error(err?.error?.message || 'Failed to load details. Please try again.');
+        this.toastr.error(err?.error?.message || 'Failed to load data. Please try again.');
       }
+    });
+  }
+
+  updateBackupCounts(): void {
+    const sections = [
+      { sectionTitle: 'Education', data: this.educations },
+      { sectionTitle: 'Experience', data: this.experiences },
+      { sectionTitle: 'Services', data: this.services },
+      { sectionTitle: 'Projects', data: this.projects },
+      { sectionTitle: 'Skills', data: this.skills },
+      { sectionTitle: 'Visitor', data: this.visitors },
+      { sectionTitle: 'Feedback', data: this.feedbacks }
+    ];
+
+    this.dataBackupTable = sections.map(section => {
+      const data = section.data || [];
+
+      return {
+        sectionTitle: section.sectionTitle,
+        totalItems: data.length,
+        activeItems: data.filter((item: any) => item.isActive === true).length,
+        inactiveItems: data.filter((item: any) => item.isActive === false).length
+      };
     });
   }
 
