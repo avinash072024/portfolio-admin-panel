@@ -5,7 +5,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThemeTogglerComponent } from '../theme-toggler/theme-toggler.component';
 
 interface PageRoute {
-  label: string;
+  menu: string;
+  submenu: string;
   path: string;
 }
 
@@ -22,21 +23,22 @@ export class HeaderComponent implements OnInit {
   @Output() menuToggle = new EventEmitter<void>();
 
   private readonly pageRoutes: PageRoute[] = [
-    { label: 'Dashboard', path: '/home' },
-    { label: 'About', path: '/about' },
-    { label: 'Services', path: '/services' },
-    { label: 'Projects', path: '/projects' },
-    { label: 'Skills', path: '/skills' },
-    { label: 'Contact', path: '/contact' },
-    { label: 'Website visitors', path: '/website-visitor' },
-    { label: 'Feedback', path: '/feedback' },
-    { label: 'Cover letter', path: '/cover-letter' },
-    { label: 'Data backup', path: '/data-backup' },
-    { label: 'Data restore', path: '/data-restore' },
-    { label: 'Reset password', path: '/reset-password' }
+    { menu: 'Overview', submenu: 'Dashboard', path: '/home' },
+    { menu: 'Manage content', submenu: 'About', path: '/about' },
+    { menu: 'Manage content', submenu: 'Services', path: '/services' },
+    { menu: 'Manage content', submenu: 'Projects', path: '/projects' },
+    { menu: 'Manage content', submenu: 'Skills', path: '/skills' },
+    { menu: 'Manage content', submenu: 'Contact', path: '/contact' },
+    { menu: 'Insights & tools', submenu: 'Website visitors', path: '/website-visitor' },
+    { menu: 'Insights & tools', submenu: 'Feedback', path: '/feedback' },
+    { menu: 'Insights & tools', submenu: 'Cover letter', path: '/cover-letter' },
+    { menu: 'Insights & tools', submenu: 'Data backup', path: '/data-backup' },
+    { menu: 'Insights & tools', submenu: 'Data restore', path: '/data-restore' },
+    { menu: 'Account', submenu: 'Reset password', path: '/reset-password' }
   ];
 
   readonly currentPage = signal(this.getCurrentPage(this.router.url));
+  readonly currentMenu = signal(this.getCurrentMenu(this.router.url));
 
   ngOnInit(): void {
     this.router.events
@@ -44,15 +46,25 @@ export class HeaderComponent implements OnInit {
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(event => this.currentPage.set(this.getCurrentPage(event.urlAfterRedirects)));
+      .subscribe(event => {
+        this.currentPage.set(this.getCurrentPage(event.urlAfterRedirects));
+        this.currentMenu.set(this.getCurrentMenu(event.urlAfterRedirects));
+      });
   }
 
   private getCurrentPage(url: string): string {
     const path = url.split(/[?#]/)[0].replace(/\/+$/, '') || '/home';
     const match = this.pageRoutes.find(link => path === link.path || path.startsWith(`${link.path}/`));
     if (!match) return 'Dashboard';
-    if (path.includes('/add')) return `Add ${match.label.replace(/s$/, '')}`;
-    if (path.includes('/edit')) return `Edit ${match.label.replace(/s$/, '')}`;
-    return match.label;
+    if (path.includes('/add')) return `Add ${match.submenu.replace(/s$/, '')}`;
+    if (path.includes('/edit')) return `Edit ${match.submenu.replace(/s$/, '')}`;
+    return match.submenu;
+  }
+
+  private getCurrentMenu(url: string): string {
+    const path = url.split(/[?#]/)[0].replace(/\/+$/, '') || '/home';
+    const match = this.pageRoutes.find(link => path === link.path || path.startsWith(`${link.path}/`));
+    if (!match) return 'Overview';
+    return match.menu;
   }
 }
