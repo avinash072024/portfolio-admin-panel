@@ -167,7 +167,8 @@ export class DataBackupComponent implements OnInit {
           this.toastr.warning('No visitor data available to download.');
           return;
         }
-        this.downloadBackup(this.visitors, section);
+        const sortedVisitors = this.sortedArrayByDate(this.visitors);
+        this.downloadBackup(sortedVisitors, section);
         break;
       case 'Feedback':
         if (this.feedbacks.length === 0) {
@@ -179,6 +180,10 @@ export class DataBackupComponent implements OnInit {
       default:
         this.toastr.error('Invalid section selected.');
     }
+  }
+
+  sortedArrayByDate(array: any[]): any[] {
+    return [...array].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
   }
 
   downloadBackup(data: any, fileNamePrefix: string): void {

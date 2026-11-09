@@ -23,12 +23,12 @@
                     }
                 </select>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-5">
                 <label class="form-label" for="backup-file">JSON backup file</label>
                 <input id="backup-file" class="form-control" type="file" accept=".json,application/json"
                     (change)="onFileSelected($event)" [disabled]="isImporting">
             </div>
-            <div class="col-12 col-md-4 d-flex justify-content-md-start justify-content-center gap-2">
+            <div class="col-12 col-md-3 d-flex justify-content-md-start justify-content-center gap-2">
                 <button class="btn btn-primary d-flex justify-content-center align-items-center gap-2"
                     type="button" (click)="importBackup()" [disabled]="isImporting">
                     @if (isImporting) {
@@ -42,9 +42,9 @@
             </div>
         </div>
 
-        <p class="restore-note d-none d-md-block mb-0">
+        <!-- <p class="restore-note d-none d-md-block mb-0">
             Visitor and Feedback backups can still be downloaded, but cannot be restored because the API does not
             currently provide record-creation operations for those data types.
-        </p>
+        </p> -->
     </div>
 </section>
