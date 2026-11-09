@@ -15,6 +15,10 @@ export class FeedbackService {
     return this.http.get(environment.apiUrl + '/feedback');
   }
 
+  addMultipleFeedbacks(data: any[]): Observable<any> {
+    return this.http.post(environment.apiUrl + '/feedback/bulk', data, this.sessionService.getAuthHeaders());
+  }
+
   getAllFeedbacks(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
     let url = `${environment.apiUrl}/feedback?page=${page}&limit=${limit}`;
     if (search?.trim()) {

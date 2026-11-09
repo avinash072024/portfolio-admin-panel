@@ -38,6 +38,10 @@ export class ProjectsService {
     return this.http.post(environment.apiUrl + '/projects', data, this.sessionService.getAuthHeaders());
   }
 
+  addMultipleProjects(data: any[]): Observable<any> {
+    return this.http.post(environment.apiUrl + '/projects/bulk', data, this.sessionService.getAuthHeaders());
+  }
+
   updateProject(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/projects/${id}`, data, this.sessionService.getAuthHeaders());
   }

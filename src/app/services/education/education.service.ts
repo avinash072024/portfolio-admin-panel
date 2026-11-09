@@ -23,6 +23,10 @@ export class EducationService {
     return this.http.post(environment.apiUrl + '/education', data, this.sessionService.getAuthHeaders());
   }
 
+  addMultipleEducation(data: any[]): Observable<any> {
+    return this.http.post(environment.apiUrl + '/education/bulk', data, this.sessionService.getAuthHeaders());
+  }
+
   updateEducation(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/education/${id}`, data, this.sessionService.getAuthHeaders());
   }

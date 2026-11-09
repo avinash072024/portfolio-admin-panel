@@ -37,6 +37,10 @@ export class SkillsService {
     return this.http.post(environment.apiUrl + '/skills', data, this.sessionService.getAuthHeaders());
   }
 
+  addMultipleSkills(data: any[]): Observable<any> {
+    return this.http.post(environment.apiUrl + '/skills/bulk', data, this.sessionService.getAuthHeaders());
+  }
+
   updateSkill(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/skills/${id}`, data, this.sessionService.getAuthHeaders());
   }

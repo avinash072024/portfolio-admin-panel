@@ -17,6 +17,10 @@ export class VisitorService {
     return this.http.get(environment.apiUrl + '/visitor/all', this.sessionService.getAuthHeaders());
   }
 
+  addMultipleVisitors(data: any[]): Observable<any> {
+    return this.http.post(environment.apiUrl + '/visitor/bulk', data, this.sessionService.getAuthHeaders());
+  }
+
   getAllVisitors(page: number = 1, limit: number = 5, date?: string): Observable<any> {
     const queryParams: string[] = [];
 

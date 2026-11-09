@@ -34,6 +34,10 @@ export class ServicesService {
     return this.http.post(`${environment.apiUrl}/services`, data, this.sessionService.getAuthHeaders());
   }
 
+  addMultipleServices(data: any[]): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/services/bulk`, data, this.sessionService.getAuthHeaders());
+  }
+
   // PUT /api/services/:id
   updateService(id: string, data: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/services/${id}`, data, this.sessionService.getAuthHeaders());
@@ -52,4 +56,3 @@ export class ServicesService {
     });
   }
 }
-

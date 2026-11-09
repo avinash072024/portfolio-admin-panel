@@ -23,6 +23,10 @@ export class ExperienceService {
     return this.http.post(environment.apiUrl + '/experience', data, this.sessionService.getAuthHeaders());
   }
 
+  addMultipleExperience(data: any[]): Observable<any> {
+    return this.http.post(environment.apiUrl + '/experience/bulk', data, this.sessionService.getAuthHeaders());
+  }
+
   updateExperience(id: string, data: any): Observable<any> {
     return this.http.put(environment.apiUrl + `/experience/${id}`, data, this.sessionService.getAuthHeaders());
   }
