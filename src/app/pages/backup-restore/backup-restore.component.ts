@@ -149,9 +149,9 @@ export class BackupRestoreComponent {
 
   private prepareRecord(record: BackupRecord): BackupRecord {
     const payload = { ...record };
-    delete payload['_id'];
-    delete payload['id'];
-    delete payload['__v'];
+    // delete payload['_id'];
+    // delete payload['id'];
+    // delete payload['__v'];
 
     if (this.selectedBackup === 'projects' || this.selectedBackup === 'skills') {
       const category = payload['category'];
