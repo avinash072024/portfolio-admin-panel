@@ -17,6 +17,11 @@
         font-size: 0.95rem;
     }
 
+    span {
+        position: relative;
+        top: -1.5px;
+    }
+
     &:hover,
     &[aria-expanded='true'] {
         border-color: rgba(var(--bs-primary-rgb), 0.3);
