@@ -213,6 +213,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.deletingProjectId = '';
     this.deletingProjectTitle = '';
     document.body.style.overflow = '';
+    $('#DeleteConfirmationModal').modal('hide');
   }
 
   confirmDelete() {
@@ -288,6 +289,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   closeBulkDeleteModal(): void {
     this.showBulkDeleteModal = false;
     document.body.style.overflow = '';
+    $('#DeleteConfirmationModal').modal('hide');
   }
 
   confirmBulkDelete(): void {

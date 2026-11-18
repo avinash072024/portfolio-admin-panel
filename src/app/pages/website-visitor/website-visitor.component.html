@@ -3,7 +3,8 @@
         <div class="panel-heading visitor-heading">
             <div>
                 <p class="panel-kicker mb-1">LIVE ACTIVITY</p>
-                <h1 class="panel-title mb-0">Website visitors <span class="visitor-count">{{ total | number }}</span></h1>
+                <h1 class="panel-title mb-0">Website visitors <span class="visitor-count">{{ total | number }}</span>
+                </h1>
             </div>
             <div class="visitor-filter">
                 <span class="text-body-secondary small">Filter by date</span>
@@ -35,7 +36,8 @@
                         <td>
                             <div class="visitor-identity">
                                 <span class="visitor-icon">
-                                    <i class="bi" [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i>
+                                    <i class="bi"
+                                        [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i>
                                 </span>
                                 <span><strong>{{ visitor.ip }}</strong><small>{{ visitor.version }}</small></span>
                             </div>
@@ -52,7 +54,8 @@
                                 <small>ASN: {{ visitor.asn }}</small>
                             </div>
                         </td>
-                        <td><span class="organization-cell" [appTooltip]="visitor.org" tooltipPlacement="top">{{ visitor.org }}</span></td>
+                        <td><span class="organization-cell" [appTooltip]="visitor.org" tooltipPlacement="top">{{
+                                visitor.org }}</span></td>
                         <td>
                             <div class="d-flex flex-column">
                                 <span class="timezone-badge rounded-3">{{ visitor.timezone }}</span>
@@ -67,21 +70,60 @@
             </table>
         </div>
 
-        <app-pagination *ngIf="visitors.length" [page]="page" [limit]="limit" [total]="total"
-            [totalPages]="totalPages" (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
+        <app-pagination *ngIf="visitors.length" [page]="page" [limit]="limit" [total]="total" [totalPages]="totalPages"
+            (pageChange)="changePage($event)" (limitChange)="setLimit($event)">
         </app-pagination>
     </section>
 
     @if (dataRecieved) {
     <div class="visitor-actions">
-        <button type="button" class="btn btn-outline-danger px-3 rounded-3" (click)="openDeleteModal()">
+        <button type="button" class="btn btn-outline-danger px-3 rounded-3" (click)="openCloseModal(true)">
             <i class="bi bi-trash3 me-2"></i>Delete duplicate visitors
         </button>
     </div>
     }
 </main>
 
-<div class="custom-modal-backdrop" *ngIf="showDeleteModal">
+<div class="modal fade" id="DeleteConfirmationModal" tabindex="-1" aria-labelledby="DeleteConfirmationModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
+                    <i class="bi bi-trash3"></i>
+                    Confirm deletion
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="openCloseModal(false)"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <p class="text-body-secondary mb-0">
+                    {{ delelteStatement1 }}
+                    <strong>duplicate visitors</strong>?
+                    <span [innerHTML]="delelteStatement3"></span>
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="openCloseModal(false)" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-danger" (click)="deleteDuplicateVisitors()"><i class="bi bi-trash3"></i> Delete</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div class="custom-modal-backdrop" *ngIf="showDeleteModal">
     <div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
         <div class="modal-body">
             <h2 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm deletion</h2>
@@ -92,4 +134,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

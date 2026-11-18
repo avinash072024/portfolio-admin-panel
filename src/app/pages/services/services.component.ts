@@ -90,7 +90,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
   closeBulkDeleteModal(): void {
     this.showBulkDeleteModal = false;
-    document.body.style.overflow = '';
+    $('#DeleteConfirmationModal').modal('hide');
   }
 
   confirmBulkDelete(): void {
@@ -215,6 +215,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     this.deletingServiceId = '';
     this.deletingServiceTitle = '';
     document.body.style.overflow = '';
+    $('#DeleteConfirmationModal').modal('hide');
   }
 
   confirmDelete() {

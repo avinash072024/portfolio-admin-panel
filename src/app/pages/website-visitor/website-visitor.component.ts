@@ -10,6 +10,9 @@ import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { BackupService } from '../../services/backup/backup.service';
+import { Constants } from '../../models/constants';
+
+declare var $: any;
 
 @Component({
   selector: 'app-website-visitor',
@@ -20,7 +23,7 @@ import { BackupService } from '../../services/backup/backup.service';
 export class WebsiteVisitorComponent implements OnInit, OnDestroy {
   dateFilter: string = '';
   dataRecieved: boolean = false;
-  showDeleteModal: boolean = false;
+  // showDeleteModal: boolean = false;
 
   visitors: any[] = [];
 
@@ -36,6 +39,10 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
   themeService = inject(ThemeService);
   private socketService = inject(SocketService);
   private destroy$ = new Subject<void>();
+
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement2: string = Constants.DELETE_STATEMENT2;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
 
   ngOnInit(): void {
     this.loadVisitors(true);
@@ -137,7 +144,7 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
     this.visitorService.deleteDuplicateVisitors().subscribe({
       next: (res: any) => {
         this.spinner.hide();
-        this.closeDeleteModal();
+        this.openCloseModal(false);
         if (res?.success) {
           this.toastr.success(res?.message || 'Duplicate visitors deleted successfully');
           this.page = 1;
@@ -153,14 +160,24 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDeleteModal(): void {
-    this.showDeleteModal = true;
-    document.body.style.overflow = 'hidden';
-  }
+  // openDeleteModal(): void {
+  //   // this.showDeleteModal = true;
+  //   // document.body.style.overflow = 'hidden';
+  //   $('#DeleteConfirmationModal').modal('show');
+  // }
 
-  closeDeleteModal(): void {
-    this.showDeleteModal = false;
-    document.body.style.overflow = '';
+  // closeDeleteModal(): void {
+  //   // this.showDeleteModal = false;
+  //   // document.body.style.overflow = '';
+  //   $('#DeleteConfirmationModal').modal('hide');
+  // }
+
+  openCloseModal(open: boolean): void {
+    if (open) {
+      $('#DeleteConfirmationModal').modal('show');
+    } else {
+      $('#DeleteConfirmationModal').modal('hide');
+    }
   }
 
   private subscribeToSocketUpdates(): void {

@@ -11,6 +11,9 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { BackupService } from '../../services/backup/backup.service';
+import { Constants } from '../../models/constants';
+
+declare var $: any;
 
 interface Category {
   __id: string;
@@ -61,6 +64,10 @@ export class SkillsComponent implements OnInit, OnDestroy {
   selectedIds: Set<string> = new Set();
   showBulkDeleteModal: boolean = false;
 
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement2: string = Constants.DELETE_STATEMENT2;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
+
   get allSelected(): boolean {
     return this.skills.length > 0 && this.skills.every(s => this.selectedIds.has(s._id));
   }
@@ -84,12 +91,13 @@ export class SkillsComponent implements OnInit, OnDestroy {
   openBulkDeleteModal(): void {
     if (this.selectedIds.size === 0) return;
     this.showBulkDeleteModal = true;
-    document.body.style.overflow = 'hidden';
+    $('#DeleteConfirmationModal').modal('show');
   }
 
   closeBulkDeleteModal(): void {
     this.showBulkDeleteModal = false;
     document.body.style.overflow = '';
+    $('#DeleteConfirmationModal').modal('hide');
   }
 
   confirmBulkDelete(): void {
@@ -262,17 +270,11 @@ export class SkillsComponent implements OnInit, OnDestroy {
     return Math.min(this.page * this.limit, this.total);
   }
 
-  onDelete(id: string) {
-    // fallback method (kept for API compatibility) — opens the modal
-    this.openDeleteModal(id, 'this project');
-  }
-
   openDeleteModal(id: string, title: string) {
     this.deletingSkillId = id;
     this.deletingSkillTitle = title;
-    this.showDeleteModal = true;
-    // prevent body scroll when modal open
-    document.body.style.overflow = 'hidden';
+    this.showBulkDeleteModal = false;
+    $('#DeleteConfirmationModal').modal('show');
   }
 
   closeDeleteModal() {
@@ -305,24 +307,24 @@ export class SkillsComponent implements OnInit, OnDestroy {
   }
 
   updateSkillStatus(skill: Skill): void {
-      this.toastr.clear();
-      const isActive = skill.isActive === false;
-      this.spinner.show();
-      this.skillsService.updateSkill(skill._id, { ...skill, isActive }).subscribe({
-        next: (res: any) => {
-          this.spinner.hide();
-          if (res?.success) {
-            this.getSkills(true);
-            this.toastr.success(res?.message);
-          } else {
-            this.toastr.error(res?.message);
-          }
-        },
-        error: (err: any) => {
-          this.spinner.hide();
-          this.toastr.error(err?.error?.message || err?.message || 'Failed to update status. Please try again.');
+    this.toastr.clear();
+    const isActive = skill.isActive === false;
+    this.spinner.show();
+    this.skillsService.updateSkill(skill._id, { ...skill, isActive }).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.getSkills(true);
+          this.toastr.success(res?.message);
+        } else {
+          this.toastr.error(res?.message);
         }
-      });
-    }
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || err?.message || 'Failed to update status. Please try again.');
+      }
+    });
+  }
 
 }
