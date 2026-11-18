@@ -12,6 +12,8 @@ import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { BackupService } from '../../services/backup/backup.service';
 
+declare var $: any;
+
 export interface Service {
   _id: string;
   title: string;
@@ -200,8 +202,9 @@ export class ServicesComponent implements OnInit, OnDestroy {
   openDeleteModal(id: string, title: string) {
     this.deletingServiceId = id;
     this.deletingServiceTitle = title;
-    this.showDeleteModal = true;
-    document.body.style.overflow = 'hidden';
+    $('#DeleteConfirmationModal').modal('show');
+    // this.showDeleteModal = true;
+    // document.body.style.overflow = 'hidden';
   }
 
   closeDeleteModal() {
