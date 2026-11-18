@@ -141,18 +141,31 @@
 			<div class="modal-header">
 				<h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
 					<i class="bi bi-trash3"></i>
+					@if(showBulkDeleteModal){
+					Confirm Bulk Deletion
+					} @else {
 					Confirm Deletion
+					}
 				</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 			<!-- Body -->
 			<div class="modal-body">
+				@if(!showBulkDeleteModal){
 				<p class="text-body-secondary mb-0">
 					Are you sure you want to delete
 					<strong>{{ deletingServiceTitle }}</strong> service?
 					This action <strong>cannot be undone</strong>.
 				</p>
+				} @else {
+				<p class="text-body-secondary mb-0">
+					Are you sure you want to delete
+					<strong>{{ selectedIds.size }} {{ selectedIds.size === 1 ? 'service' : 'services'
+						}}</strong>.
+					This action <strong>cannot be undone</strong>.
+				</p>
+				}
 			</div>
 
 			<!-- Footer -->
@@ -162,10 +175,16 @@
 					Cancel
 				</button>
 
+				@if(!showBulkDeleteModal){
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">
 					<i class="bi bi-trash3"></i>
 					Delete
 				</button>
+				} @else {
+				<button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()">
+					<i class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
+				}
+
 			</div>
 
 		</div>
@@ -190,7 +209,7 @@
 </div> -->
 
 <!-- Bulk Delete Confirmation Modal -->
-<div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
+<!-- <div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
 	<div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
 		<div class="modal-body">
 			<h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
@@ -207,4 +226,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
