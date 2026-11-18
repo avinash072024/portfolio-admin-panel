@@ -11,6 +11,7 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { BackupService } from '../../services/backup/backup.service';
+import { Constants } from '../../models/constants';
 
 declare var $: any;
 
@@ -49,7 +50,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
   socketService = inject(SocketService);
   private destroy$ = new Subject<void>();
 
-  showDeleteModal: boolean = false;
   deletingServiceId!: string;
   deletingServiceTitle!: string;
   private searchSubject = new Subject<string>();
@@ -57,6 +57,10 @@ export class ServicesComponent implements OnInit, OnDestroy {
   // Bulk delete
   selectedIds: Set<string> = new Set();
   showBulkDeleteModal: boolean = false;
+
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement2: string = Constants.DELETE_STATEMENT2;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
 
   get allSelected(): boolean {
     return this.services.length > 0 && this.services.every(s => this.selectedIds.has(s._id));
@@ -82,7 +86,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
     if (this.selectedIds.size === 0) return;
     this.showBulkDeleteModal = true;
     $('#DeleteConfirmationModal').modal('show');
-    // document.body.style.overflow = 'hidden';
   }
 
   closeBulkDeleteModal(): void {
@@ -205,12 +208,9 @@ export class ServicesComponent implements OnInit, OnDestroy {
     this.deletingServiceTitle = title;
     this.showBulkDeleteModal = false;
     $('#DeleteConfirmationModal').modal('show');
-    // this.showDeleteModal = true;
-    // document.body.style.overflow = 'hidden';
   }
 
   closeDeleteModal() {
-    this.showDeleteModal = false;
     this.showBulkDeleteModal = false;
     this.deletingServiceId = '';
     this.deletingServiceTitle = '';

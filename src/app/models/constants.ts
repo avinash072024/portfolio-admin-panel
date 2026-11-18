@@ -12,4 +12,10 @@ export class Constants {
 
     // token
     public static token: string = `${this.APP_NAME_COMBINE.toLowerCase()}-token`;
+
+    // delete statements
+    public static DELETE_STATEMENT: string = 'Are you sure you want to delete';
+    public static DELETE_STATEMENT1: string = `${this.DELETE_STATEMENT} the`;
+    public static DELETE_STATEMENT2: string = `${this.DELETE_STATEMENT} selected`;
+    public static DELETE_STATEMENT3: string = 'This action <strong>cannot be undone</strong>.';
 }
