@@ -11,6 +11,9 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { BackupService } from '../../services/backup/backup.service';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { Constants } from '../../models/constants';
+
+declare var $: any;
 
 interface Category {
   _id: string;
@@ -64,6 +67,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   socketService = inject(SocketService);
 
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement2: string = Constants.DELETE_STATEMENT2;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
+
   onSearch(): void {
     this.searchSubject.next(this.searchTerm);
   }
@@ -109,7 +116,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getProjects();
@@ -189,17 +196,16 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.router.navigate(['/projects/edit', project._id], { queryParams: { page: this.page } });
   }
 
-  onDelete(id: string) {
-    // fallback method (kept for API compatibility) — opens the modal
-    this.openDeleteModal(id, 'this project');
-  }
+  // onDelete(id: string) {
+  //   // fallback method (kept for API compatibility) — opens the modal
+  //   this.openDeleteModal(id, 'this project');
+  // }
 
   openDeleteModal(id: string, title: string) {
     this.deletingProjectId = id;
     this.deletingProjectTitle = title;
-    this.showDeleteModal = true;
-    // prevent body scroll when modal open
-    document.body.style.overflow = 'hidden';
+    this.showBulkDeleteModal = false;
+    $('#DeleteConfirmationModal').modal('show');
   }
 
   closeDeleteModal() {
@@ -276,7 +282,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   openBulkDeleteModal(): void {
     if (this.selectedIds.size === 0) return;
     this.showBulkDeleteModal = true;
-    document.body.style.overflow = 'hidden';
+    $('#DeleteConfirmationModal').modal('show');
   }
 
   closeBulkDeleteModal(): void {

@@ -148,39 +148,62 @@
     }
 </main>
 
-<!-- Delete Confirmation Modal (static backdrop) -->
-<div class="custom-modal-backdrop" *ngIf="showDeleteModal">
-    <div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-        <div class="modal-body">
-            <h5 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm Deletion</h5>
-            <p class="text-muted">Are you sure you want to delete <strong class="text-primary">{{ deletingProjectTitle
-                    }}</strong>?
-                This action cannot be undone.
-            </p>
-            <div class="d-flex justify-content-end gap-2 mt-3">
-                <button class="btn btn-primary" (click)="closeDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-                <button class="btn btn-danger" (click)="confirmDelete()"><i class="bi bi-trash3"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="modal fade" id="DeleteConfirmationModal" tabindex="-1" aria-labelledby="DeleteConfirmationModalLabel"
+	aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 
-<!-- Bulk Delete Confirmation Modal -->
-<div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
-    <div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-        <div class="modal-body">
-            <h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
-            <p class="text-muted">
-                Are you sure you want to delete
-                <strong class="text-danger">{{ selectedIds.size }} project{{ selectedIds.size === 1 ? '' : 's'
-                    }}</strong>.
-                This action <strong>cannot be undone</strong>.
-            </p>
-            <div class="d-flex justify-content-end gap-2 mt-3">
-                <button class="btn btn-primary" (click)="closeBulkDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-                <button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()"><i
-                        class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content rounded-4">
+
+			<!-- Header -->
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
+					<i class="bi bi-trash3"></i>
+					@if(showBulkDeleteModal){
+					Confirm Bulk Deletion
+					} @else {
+					Confirm Deletion
+					}
+				</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<!-- Body -->
+			<div class="modal-body">
+				@if(!showBulkDeleteModal){
+				<p class="text-body-secondary mb-0">
+					{{ delelteStatement1 }}
+					<strong>{{ deletingProjectTitle }}</strong> project?
+					<span [innerHTML]="delelteStatement3"></span>
+				</p>
+				} @else {
+				<p class="text-body-secondary mb-0">
+					{{ delelteStatement2 }}
+					<strong>{{ selectedIds.size }} {{ selectedIds.size === 1 ? 'project' : 'projects'
+						}}</strong>.
+					<span [innerHTML]="delelteStatement3"></span>
+				</p>
+				}
+			</div>
+
+			<!-- Footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="closeDeleteModal()" data-bs-dismiss="modal">
+					<i class="bi bi-x-lg"></i>
+					Cancel
+				</button>
+
+				@if(!showBulkDeleteModal){
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">
+					<i class="bi bi-trash3"></i>
+					Delete
+				</button>
+				} @else {
+				<button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()">
+					<i class="bi bi-trash3"></i> Delete Selected</button>
+				}
+
+			</div>
+
+		</div>
+	</div>
 </div>
