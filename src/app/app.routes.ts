@@ -24,6 +24,7 @@ import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.com
 import { GenerateCoverLetterComponent } from './pages/generate-cover-letter/generate-cover-letter.component';
 import { DataBackupComponent } from './pages/data-backup/data-backup.component';
 import { BackupRestoreComponent } from './pages/backup-restore/backup-restore.component';
+import { FeedbacksComponent } from './pages/feedbacks/feedbacks.component';
 
 export const routes: Routes = [
     {
@@ -124,7 +125,7 @@ export const routes: Routes = [
             },
             {
                 path: 'feedback',
-                component: FeedbackComponent,
+                component: FeedbacksComponent,
                 title: `Feedback | ${Constants.APP_NAME}`
             },
             {
