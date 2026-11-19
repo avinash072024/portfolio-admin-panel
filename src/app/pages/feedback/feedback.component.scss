@@ -69,18 +69,6 @@
     white-space: nowrap;
 }
 
-.bulk-actions-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 0.9rem 1rem;
-    border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
-    border-radius: 1rem;
-    background: rgba(var(--bs-primary-rgb), 0.06);
-}
-
 .btn-action-edit,
 .btn-action-delete,
 .btn-action-view {
@@ -261,11 +249,6 @@
         font-size: 0.9rem;
     }
 
-    .bulk-actions-bar {
-        border-radius: 1rem;
-        justify-content: flex-start;
-        flex-direction: column;
-    }
 }
 
 [data-bs-theme="dark"] {

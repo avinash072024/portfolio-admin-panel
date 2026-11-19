@@ -117,29 +117,12 @@ $primary-skin: var(--primary-color, var(--bs-primary));
 	color: var(--bs-danger);
 }
 
-/* ── Bulk actions bar ── */
-.bulk-actions-bar {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	gap: 0.6rem;
-	padding: 0.9rem 1rem;
-	border: 1px solid rgba(var(--bs-primary-rgb), 0.14);
-	border-radius: 1rem;
-	background: rgba(var(--bs-primary-rgb), 0.06);
-}
-
 /* ── Responsive ── */
 @media (max-width: 767.98px) {
 	.education-heading,
 	.experience-heading {
 		padding: 0 1rem;
 	}
-
-	// .bulk-actions-bar {
-	// 	justify-content: flex-start;
-	// }
 }
 
 [data-bs-theme='dark'] .dashboard-page {
