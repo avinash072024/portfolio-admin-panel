@@ -57,7 +57,7 @@ export class GenerateCoverLetterComponent implements OnInit {
           this.toastr.error('Failed to fetch contact details. Please try again.');
         }
       },
-      error: (err: any) => {
+      error: () => {
         this.spinner.hide();
         this.toastr.error('Failed to fetch contact details. Please try again.');
       }

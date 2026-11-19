@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 import { Constants } from './models/constants';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
-// import { AboutComponent } from './pages/about/about.component';
-// import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
@@ -16,8 +14,6 @@ import { ForgotPasswordFormComponent } from './pages/forgot-password-form/forgot
 import { ServicesComponent } from './pages/services/services.component';
 import { AddEditServicesComponent } from './pages/add-edit-services/add-edit-services.component';
 import { WebsiteVisitorComponent } from './pages/website-visitor/website-visitor.component';
-import { FeedbackComponent } from './pages/feedback/feedback.component';
-// import { EmailComponent } from './pages/email/email.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AddEditAboutComponent } from './pages/add-edit-about/add-edit-about.component';

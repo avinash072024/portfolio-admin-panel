@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
 import * as AOS from 'aos';
 import { RouterLink } from '@angular/router';
 import { VisitorService } from '../../services/visitor/visitor.service';
-import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectsService } from '../../services/projects/projects.service';
 import { SkillsService } from '../../services/skills/skills.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
-import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { AvatarService } from '../../services/avatar/avatar.service';
 import { ThemeService } from '../../services/theme/theme.service';
 import { SocketService } from '../../services/socket/socket.service';
@@ -18,7 +18,6 @@ import { ServicesService } from '../../services/service/services.service';
 import { ResumeService } from '../../services/resume/resume.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ContactService } from '../../services/contact/contact.service';
-import { FormsModule } from '@angular/forms';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 @Component({
@@ -27,7 +26,7 @@ import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsModule {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('trafficChart') trafficChartCanvas!: ElementRef<HTMLCanvasElement>;
   chart: Chart | undefined;
   visitorChartDates: string[] = [];
@@ -307,15 +306,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit, FormsMod
         this.toastr.success('Resume downloaded successfully');
         this.isDownloading.set(false);
       },
-      error: (err: any) => {
-        // console.error('Error fetching ATS resume from API:', err);
+      error: () => {
         this.toastr.error('Failed to download resume');
         this.isDownloading.set(false);
       }
     });
-  }
-
-  downloadCoverLetter(): void {
-    // this.spinner.show();
   }
 }

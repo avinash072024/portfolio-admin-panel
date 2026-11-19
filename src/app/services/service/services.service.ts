@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { SessionService } from '../session/session.service';
 
@@ -9,7 +8,6 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class ServicesService {
-  // private cachedServices$?: Observable<any>;
   sessionService = inject(SessionService);
 
   constructor(private http: HttpClient) { }

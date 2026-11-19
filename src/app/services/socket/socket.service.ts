@@ -64,9 +64,4 @@ export class SocketService {
     this.socket.emit(eventName, payload);
   }
 
-  disconnect(): void {
-    if (this.socket && this.socket.connected) {
-      this.socket.disconnect();
-    }
-  }
 }

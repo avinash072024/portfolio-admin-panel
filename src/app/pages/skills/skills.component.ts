@@ -233,13 +233,6 @@ export class SkillsComponent implements OnInit, OnDestroy {
     this.getSkills();
   }
 
-  prev() {
-    if (this.page > 1) {
-      this.page--;
-      this.getSkills();
-    }
-  }
-
   next() {
     if (this.page < this.totalPages) {
       this.page++;

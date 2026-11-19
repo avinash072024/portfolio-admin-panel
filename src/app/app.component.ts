@@ -3,7 +3,6 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import * as AOS from 'aos';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { isPlatformBrowser } from '@angular/common';
-import { ThemeService } from './services/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +28,6 @@ export class AppComponent {
     AOS.init({
       duration: 1000,
       mirror: false,
-      // easing: 'ease-in-out'
     });
   }
 

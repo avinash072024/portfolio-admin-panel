@@ -31,42 +31,6 @@
     margin: 0 auto;
 }
 
-.scroll-top-button {
-    position: fixed;
-    right: clamp(1rem, 2vw, 1.7rem);
-    bottom: clamp(1rem, 2vw, 1.7rem);
-    z-index: 1020;
-    display: grid;
-    width: 46px;
-    height: 46px;
-    place-items: center;
-    border: 0;
-    border-radius: 15px;
-    color: #fff;
-    background: var(--bs-primary);
-    box-shadow: 0 9px 24px rgba(var(--bs-primary-rgb), 0.32);
-    font-size: 1.1rem;
-    animation: scroll-button-enter 180ms ease both;
-    transition: transform 180ms ease, box-shadow 180ms ease;
-
-    &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 28px rgba(var(--bs-primary-rgb), 0.4);
-    }
-}
-
-@keyframes scroll-button-enter {
-    from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.9);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
 @media (max-width: 991.98px) {
     .admin-shell {
         padding-top: 68px;
@@ -78,11 +42,5 @@
 
     .page-content {
         padding: 0.85rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .scroll-top-button {
-        animation: none;
     }
 }

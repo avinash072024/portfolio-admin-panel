@@ -48,20 +48,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
     color: var(--bs-primary);
 }
 
-.dashboard-action {
-    flex: 0 0 auto;
-    padding: 0.75rem 1.1rem;
-    border-radius: 6px;
-    font-weight: 600;
-    box-shadow: 0 5px 14px rgba(var(--bs-primary-rgb), 0.2);
-    transition: transform 180ms ease, box-shadow 180ms ease;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(var(--bs-primary-rgb), 0.28);
-    }
-}
-
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -273,10 +259,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
     .dashboard-hero {
         align-items: flex-start;
         flex-direction: column;
-    }
-
-    .dashboard-action {
-        width: 100%;
     }
 
     .stats-grid {

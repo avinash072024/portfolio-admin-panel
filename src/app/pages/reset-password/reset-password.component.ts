@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { SessionService } from '../../services/session/session.service';
 import { ToastrService } from 'ngx-toastr';
@@ -33,7 +32,6 @@ export class ResetPasswordComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private sessionService: SessionService,
-    private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
   ) { }
