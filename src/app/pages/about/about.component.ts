@@ -8,8 +8,11 @@ import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
 import { SocketService } from '../../services/socket/socket.service';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { Constants } from '../../models/constants';
 
 type AboutRecordType = 'education' | 'experience';
+
+declare var $: any;
 
 @Component({
   selector: 'app-about',
@@ -30,11 +33,17 @@ export class AboutComponent implements OnInit, OnDestroy {
   experiences: any[] = [];
   selectedEducationIds = new Set<string>();
   selectedExperienceIds = new Set<string>();
-  showDeleteModal = false;
   showBulkDeleteModal = false;
   pendingType: AboutRecordType = 'education';
   private pendingId = '';
   pendingTitle = '';
+  deleteStatement1: string = Constants.DELETE_STATEMENT1;
+  deleteStatement2: string = Constants.DELETE_STATEMENT2;
+  deleteStatement3: string = Constants.DELETE_STATEMENT3;
+
+  get pendingSelectionCount(): number {
+    return this.pendingType === 'education' ? this.selectedEducationIds.size : this.selectedExperienceIds.size;
+  }
 
   ngOnInit(): void {
     this.loadAllData();
@@ -101,8 +110,8 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.pendingType = type;
     this.pendingId = this.getRecordId(record);
     this.pendingTitle = record.title || 'this entry';
-    this.showDeleteModal = true;
-    document.body.style.overflow = 'hidden';
+    this.showBulkDeleteModal = false;
+    $('#DeleteConfirmationModal').modal('show');
   }
 
   openBulkDeleteModal(type: AboutRecordType): void {
@@ -110,17 +119,18 @@ export class AboutComponent implements OnInit, OnDestroy {
     if (!selected.size) return;
     this.pendingType = type;
     this.showBulkDeleteModal = true;
-    document.body.style.overflow = 'hidden';
+    $('#DeleteConfirmationModal').modal('show');
   }
 
   closeDeleteModal(): void {
-    this.showDeleteModal = false;
-    this.restoreBodyScroll();
+    this.showBulkDeleteModal = false;
+    this.pendingId = '';
+    this.pendingTitle = '';
+    $('#DeleteConfirmationModal').modal('hide');
   }
 
   closeBulkDeleteModal(): void {
-    this.showBulkDeleteModal = false;
-    this.restoreBodyScroll();
+    this.closeDeleteModal();
   }
 
   confirmDelete(): void {
@@ -179,10 +189,6 @@ export class AboutComponent implements OnInit, OnDestroy {
   edit(type: AboutRecordType, record: any): void {
     const id = this.getRecordId(record);
     if (id) this.router.navigate(['/about', type, 'edit', id]);
-  }
-
-  private restoreBodyScroll(): void {
-    if (!this.showDeleteModal && !this.showBulkDeleteModal) document.body.style.overflow = '';
   }
 
   updateEducationStatus(data: any): void {
