@@ -42,6 +42,7 @@ interface Project {
 export class ProjectComponent implements OnInit, OnDestroy {
   protected readonly Math = Math;
   projects: Project[] = [];
+  PROJECT_IMAGE_URL: string = Constants.PROJECT_IMAGE_URL;
   // pagination state
   page: number = 1;
   limit: number = 5;
