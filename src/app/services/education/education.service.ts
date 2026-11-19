@@ -20,22 +20,22 @@ export class EducationService {
   }
 
   addEducation(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/education', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/education', data);
   }
 
   addMultipleEducation(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/education/bulk', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/education/bulk', data);
   }
 
   updateEducation(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/education/${id}`, data, this.sessionService.getAuthHeaders());
+    return this.http.put(environment.apiUrl + `/education/${id}`, data);
   }
 
   deleteEducation(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/education/${id}`, this.sessionService.getAuthHeaders())
+    return this.http.delete(environment.apiUrl + `/education/${id}`)
   }
 
   deleteMultipleEducation(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/education/bulk`, { ...this.sessionService.getAuthHeaders(), body: { ids } });
+    return this.http.delete(`${environment.apiUrl}/education/bulk`, { body: { ids } });
   }
 }

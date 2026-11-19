@@ -29,27 +29,26 @@ export class ServicesService {
 
   // POST /api/services
   addService(data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/services`, data, this.sessionService.getAuthHeaders());
+    return this.http.post(`${environment.apiUrl}/services`, data);
   }
 
   addMultipleServices(data: any[]): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/services/bulk`, data, this.sessionService.getAuthHeaders());
+    return this.http.post(`${environment.apiUrl}/services/bulk`, data);
   }
 
   // PUT /api/services/:id
   updateService(id: string, data: any): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/services/${id}`, data, this.sessionService.getAuthHeaders());
+    return this.http.put(`${environment.apiUrl}/services/${id}`, data);
   }
 
   // DELETE /api/services/:id
   deleteService(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/services/${id}`, this.sessionService.getAuthHeaders());
+    return this.http.delete(`${environment.apiUrl}/services/${id}`);
   }
 
   // DELETE /api/services/bulk
   deleteMultipleServices(ids: string[]): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/services/bulk`, {
-      ...this.sessionService.getAuthHeaders(),
       body: { ids }
     });
   }

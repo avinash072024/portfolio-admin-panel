@@ -20,22 +20,22 @@ export class ExperienceService {
   }
 
   addExperience(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/experience', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/experience', data);
   }
 
   addMultipleExperience(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/experience/bulk', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/experience/bulk', data);
   }
 
   updateExperience(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/experience/${id}`, data, this.sessionService.getAuthHeaders());
+    return this.http.put(environment.apiUrl + `/experience/${id}`, data);
   }
 
   deleteExperience(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/experience/${id}`, this.sessionService.getAuthHeaders())
+    return this.http.delete(environment.apiUrl + `/experience/${id}`)
   }
 
   deleteMultipleExperience(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/experience/bulk`, { ...this.sessionService.getAuthHeaders(), body: { ids } });
+    return this.http.delete(`${environment.apiUrl}/experience/bulk`, { body: { ids } });
   }
 }

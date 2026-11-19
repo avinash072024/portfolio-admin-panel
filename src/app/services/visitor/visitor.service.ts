@@ -14,11 +14,11 @@ export class VisitorService {
 
   /** Fetch all visitors without pagination (used for summary/count widgets) */
   getVisitor(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/visitor/all', this.sessionService.getAuthHeaders());
+    return this.http.get(environment.apiUrl + '/visitor/all');
   }
 
   addMultipleVisitors(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/visitor/bulk', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/visitor/bulk', data);
   }
 
   getAllVisitors(page: number = 1, limit: number = 5, date?: string): Observable<any> {
@@ -33,7 +33,7 @@ export class VisitorService {
     }
 
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-    return this.http.get(`${environment.apiUrl}/visitor/all${queryString}`, this.sessionService.getAuthHeaders());
+    return this.http.get(`${environment.apiUrl}/visitor/all${queryString}`);
   }
 
   getVisitorsByDate(date: string): Observable<any> {
@@ -41,6 +41,6 @@ export class VisitorService {
   }
 
   deleteDuplicateVisitors(): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/visitor/duplicates`, this.sessionService.getAuthHeaders());
+    return this.http.delete(`${environment.apiUrl}/visitor/duplicates`);
   }
 }

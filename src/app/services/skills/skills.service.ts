@@ -34,24 +34,23 @@ export class SkillsService {
   }
 
   addSkill(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/skills', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/skills', data);
   }
 
   addMultipleSkills(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/skills/bulk', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/skills/bulk', data);
   }
 
   updateSkill(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/skills/${id}`, data, this.sessionService.getAuthHeaders());
+    return this.http.put(environment.apiUrl + `/skills/${id}`, data);
   }
 
   deleteSkill(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/skills/${id}`, this.sessionService.getAuthHeaders());
+    return this.http.delete(environment.apiUrl + `/skills/${id}`);
   }
 
   deleteMultipleSkills(ids: string[]): Observable<any> {
     return this.http.delete(environment.apiUrl + `/skills/bulk`, {
-      ...this.sessionService.getAuthHeaders(),
       body: { ids }
     });
   }
@@ -61,14 +60,14 @@ export class SkillsService {
   }
 
   addSkillCategory(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/skill-categories', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/skill-categories', data);
   }
 
   deleteSkillCategory(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/skill-categories/${id}`, this.sessionService.getAuthHeaders());
+    return this.http.delete(environment.apiUrl + `/skill-categories/${id}`);
   }
 
   updateSkillCategory(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/skill-categories/${id}`, data, this.sessionService.getAuthHeaders());
+    return this.http.put(environment.apiUrl + `/skill-categories/${id}`, data);
   }
 }

@@ -16,7 +16,7 @@ export class FeedbackService {
   }
 
   addMultipleFeedbacks(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/feedback/bulk', data, this.sessionService.getAuthHeaders());
+    return this.http.post(environment.apiUrl + '/feedback/bulk', data);
   }
 
   getAllFeedbacks(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
@@ -28,18 +28,18 @@ export class FeedbackService {
   }
 
   updateFeedbackVerified(id: string, verified: boolean): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/feedback/${id}/verified`, { verified }, this.sessionService.getAuthHeaders());
+    return this.http.patch(`${environment.apiUrl}/feedback/${id}/verified`, { verified });
   }
 
   deleteFeedback(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/feedback/${id}`, this.sessionService.getAuthHeaders());
+    return this.http.delete(`${environment.apiUrl}/feedback/${id}`);
   }
 
   deleteMultipleFeedbacks(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/feedback/bulk`, { ...this.sessionService.getAuthHeaders(), body: { ids } });
+    return this.http.delete(`${environment.apiUrl}/feedback/bulk`, { body: { ids } });
   }
 
   updateMultipleFeedbackVerified(ids: string[], verified: boolean): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/feedback/bulk/verified`, { ids, verified }, this.sessionService.getAuthHeaders());
+    return this.http.patch(`${environment.apiUrl}/feedback/bulk/verified`, { ids, verified });
   }
 }
