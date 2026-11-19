@@ -103,13 +103,38 @@
     </section>
 
     @if (selectedIds.size !== 0 && feedbacks.length) {
-    <div class="bulk-actions-bar mt-3 mt-xl-4">
-        <!-- <span class="fw-semibold text-primary">{{ selectedIds.size }} selected</span> -->
-        <button type="button" class="btn btn-danger d-flex align-items-center gap-2" id="bulk-delete-btn"
-            title="Delete selected feedback" (click)="openBulkDeleteModal()">
-            <i class="bi bi-trash3"></i>
-            Delete selected <span class="badge rounded-4 bg-white text-danger">{{ selectedIds.size }}</span>
-        </button>
+    <div class="bulk-actions-bar mt-4 mb-2" role="region" aria-label="Bulk feedback actions">
+        <div class="bulk-actions-summary" aria-live="polite">
+            <span class="bulk-selection-icon" aria-hidden="true">
+                <i class="bi bi-check2-all"></i>
+            </span>
+            <span class="bulk-selection-copy">
+                <strong class="bulk-selection-count">{{ selectedIds.size }}</strong>
+                <span class="bulk-selection-label">selected</span>
+            </span>
+        </div>
+        <div class="bulk-actions-controls">
+            <button type="button" class="btn bulk-action-btn bulk-action-cancel"
+                title="Clear selected feedback" (click)="selectedIds.clear()">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span>Cancel</span>
+            </button>
+            <button type="button" class="btn bulk-action-btn bulk-action-verify"
+                title="Verify selected feedback" (click)="bulkVerifySelected(true)">
+                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                <span>Verify</span>
+            </button>
+            <button type="button" class="btn bulk-action-btn bulk-action-unverify"
+                title="Unverify selected feedback" (click)="bulkVerifySelected(false)">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span>Unverify</span>
+            </button>
+            <button type="button" class="btn bulk-action-btn bulk-action-delete"
+                title="Delete selected feedback" (click)="openBulkDeleteModal()">
+                <i class="bi bi-trash3" aria-hidden="true"></i>
+                <span>Delete</span>
+            </button>
+        </div>
     </div>
     }
 </main>

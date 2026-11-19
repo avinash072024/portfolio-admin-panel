@@ -259,4 +259,30 @@ export class FeedbacksComponent implements OnInit, OnDestroy {
     });
   }
 
+  bulkVerifySelected(verified: boolean): void {
+    const ids = Array.from(this.selectedIds);
+    if (!ids.length) {
+      this.toastr.error('Please select feedback to update');
+      return;
+    }
+
+    this.spinner.show();
+    this.feedbackService.updateMultipleFeedbackVerified(ids, verified).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.success) {
+          this.selectedIds.clear();
+          this.getFeedbacks();
+          this.toastr.success(res?.message || 'Feedback verification status updated successfully');
+          return;
+        }
+        this.toastr.error(res?.message || 'Failed to update feedback verification status');
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.message || 'Failed to update feedback verification status');
+      }
+    });
+  }
+
 }

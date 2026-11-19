@@ -747,3 +747,238 @@ thead th {
         background-color: rgba(255, 255, 255, 0.85) !important;
     }
 }
+
+.dashboard-page > .bulk-actions-bar {
+    --bulk-accent: var(--primary-color, var(--bs-primary));
+    --bulk-bar-border: color-mix(in srgb, var(--bulk-accent) 24%, var(--bs-border-color));
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    overflow: hidden;
+    padding: 0.85rem 1rem 0.85rem 1.15rem;
+    border: 1px solid var(--bulk-bar-border);
+    border-radius: 1.15rem;
+    background:
+        radial-gradient(ellipse at 0% 50%, color-mix(in srgb, var(--bulk-accent) 14%, transparent), transparent 52%),
+        color-mix(in srgb, var(--bulk-accent) 4%, var(--bs-body-bg));
+    box-shadow: 0 0.75rem 1.75rem rgba(var(--bs-emphasis-color-rgb), 0.08);
+    backdrop-filter: blur(14px);
+    animation: bulk-actions-enter 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+    // &::before {
+    //     position: absolute;
+    //     inset: 0 auto 0 0;
+    //     width: 4px;
+    //     border-radius: inherit;
+    //     background: linear-gradient(180deg, color-mix(in srgb, var(--bulk-accent) 55%, white), var(--bulk-accent));
+    //     content: "";
+    // }
+
+    .bulk-actions-summary {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 0.7rem;
+        min-width: 9.5rem;
+        color: var(--bs-body-color);
+        white-space: nowrap;
+    }
+
+    .bulk-selection-icon {
+        display: grid;
+        flex: 0 0 2.45rem;
+        width: 2.45rem;
+        height: 2.45rem;
+        place-items: center;
+        border: 1px solid color-mix(in srgb, var(--bulk-accent) 18%, transparent);
+        border-radius: 0.85rem;
+        background: color-mix(in srgb, var(--bulk-accent) 12%, var(--bs-body-bg));
+        color: var(--bulk-accent);
+        font-size: 1.15rem;
+    }
+
+    .bulk-selection-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 0.05rem;
+        line-height: 1.1;
+    }
+
+    .bulk-selection-count {
+        color: var(--bs-body-color);
+        font-size: 1rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .bulk-selection-label {
+        color: var(--bs-secondary-color);
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .bulk-actions-controls {
+        display: flex;
+        flex: 1 1 auto;
+        justify-content: space-between;
+        gap: 0.6rem;
+        min-width: 0;
+    }
+
+    .bulk-action-btn {
+        display: inline-flex;
+        flex: 1 1 0;
+        min-width: 6rem;
+        max-width: 10rem;
+        min-height: 2.7rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.55rem 0.9rem;
+        border: 1px solid transparent;
+        border-radius: 0.8rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
+
+        &:hover {
+            transform: translateY(-2px) scale(1.015);
+            box-shadow: 0 0.45rem 0.9rem rgba(var(--bs-emphasis-color-rgb), 0.12);
+        }
+
+        &:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        &:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--bulk-accent) 38%, transparent);
+            outline-offset: 2px;
+        }
+
+        i {
+            font-size: 0.95rem;
+        }
+    }
+
+    .bulk-action-cancel {
+        border-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+        background: color-mix(in srgb, var(--bs-body-bg) 85%, var(--bs-secondary-color));
+        color: var(--bs-body-color);
+
+        &:hover {
+            border-color: rgba(var(--bs-emphasis-color-rgb), 0.18);
+            background: color-mix(in srgb, var(--bs-body-bg) 72%, var(--bs-secondary-color));
+            color: var(--bs-body-color);
+        }
+    }
+
+    .bulk-action-verify {
+        background: color-mix(in srgb, var(--bulk-accent) 82%, #000);
+        color: #fff;
+        box-shadow: 0 0.35rem 0.8rem color-mix(in srgb, var(--bulk-accent) 25%, transparent);
+
+        &:hover,
+        &:focus {
+            background: color-mix(in srgb, var(--bulk-accent) 72%, #000);
+            color: #fff;
+        }
+    }
+
+    .bulk-action-unverify {
+        border-color: color-mix(in srgb, var(--bs-danger) 25%, transparent);
+        background: color-mix(in srgb, var(--bs-danger) 7%, var(--bs-body-bg));
+        color: var(--bs-danger);
+
+        &:hover {
+            border-color: var(--bs-danger);
+            background: color-mix(in srgb, var(--bs-danger) 12%, var(--bs-body-bg));
+            color: var(--bs-danger);
+        }
+    }
+
+    .bulk-action-delete {
+        background: var(--bs-danger);
+        color: var(--bs-white);
+        box-shadow: 0 0.35rem 0.8rem rgba(var(--bs-danger-rgb), 0.2);
+
+        &:hover,
+        &:focus {
+            background: color-mix(in srgb, var(--bs-danger) 82%, #000);
+            color: var(--bs-white);
+        }
+    }
+}
+
+@keyframes bulk-actions-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.8rem) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dashboard-page > .bulk-actions-bar {
+        flex-direction: column;
+        gap: 0.85rem;
+        padding: 0.9rem;
+
+        .bulk-actions-summary {
+            justify-content: center;
+        }
+
+        .bulk-actions-controls {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            width: 100%;
+        }
+
+        .bulk-action-btn {
+            width: 100%;
+            min-width: 0;
+            padding-right: 0.4rem;
+            padding-left: 0.4rem;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .dashboard-page > .bulk-actions-bar .bulk-actions-controls {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+    }
+
+    .dashboard-page > .bulk-actions-bar .bulk-action-btn {
+        width: min(100%, 13rem);
+        justify-self: center;
+    }
+}
+
+[data-bs-theme="dark"] .dashboard-page > .bulk-actions-bar {
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-page > .bulk-actions-bar {
+        animation: none;
+
+        .bulk-action-btn {
+            transition: none;
+
+            &:hover,
+            &:active {
+                transform: none;
+            }
+        }
+    }
+}
