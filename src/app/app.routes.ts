@@ -51,7 +51,6 @@ export const routes: Routes = [
             {
                 path: 'about',
                 component: AboutComponent,
-                pathMatch: 'full',
                 title: `About | ${Constants.APP_NAME}`
             },
             {
