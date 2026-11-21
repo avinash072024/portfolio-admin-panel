@@ -21,6 +21,7 @@ import { GenerateCoverLetterComponent } from './pages/generate-cover-letter/gene
 import { DataBackupComponent } from './pages/data-backup/data-backup.component';
 import { BackupRestoreComponent } from './pages/backup-restore/backup-restore.component';
 import { FeedbacksComponent } from './pages/feedbacks/feedbacks.component';
+import { PositionsComponent } from './pages/positions/positions.component';
 
 export const routes: Routes = [
     {
@@ -142,6 +143,11 @@ export const routes: Routes = [
                 path: 'data-restore',
                 component: BackupRestoreComponent,
                 title: `Data Restore | ${Constants.APP_NAME}`
+            },
+            {
+                path: 'positions',
+                component: PositionsComponent,
+                title: `Positions | ${Constants.APP_NAME}`
             }
         ]
     },

@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
     { menu: 'Manage content', submenu: 'Projects', path: '/projects' },
     { menu: 'Manage content', submenu: 'Skills', path: '/skills' },
     { menu: 'Manage content', submenu: 'Contact', path: '/contact' },
+    { menu: 'Manage content', submenu: 'Positions', path: '/positions' },
     { menu: 'Insights & tools', submenu: 'Website visitors', path: '/website-visitor' },
     { menu: 'Insights & tools', submenu: 'Feedback', path: '/feedback' },
     { menu: 'Insights & tools', submenu: 'Cover letter', path: '/cover-letter' },
