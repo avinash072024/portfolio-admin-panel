@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { SocketService } from '../../services/socket/socket.service';
 import { Position, PositionsService } from '../../services/positions/positions.service';
+import { Constants } from '../../models/constants';
+
+declare var $: any;
 
 @Component({
   selector: 'app-positions',
@@ -28,6 +31,10 @@ export class PositionsComponent implements OnInit, OnDestroy {
   private readonly toastr = inject(ToastrService);
   private readonly socketService = inject(SocketService);
   private readonly destroy$ = new Subject<void>();
+
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement2: string = Constants.DELETE_STATEMENT2;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
 
   constructor() {
     this.positionForm = this.formBuilder.group({
@@ -79,6 +86,7 @@ export class PositionsComponent implements OnInit, OnDestroy {
     this.editingPosition = null;
     this.positionForm.reset({ actualPosition: '', technicalPosition: '', isActive: false });
     this.isFormVisible = true;
+    $("#AddEditPosisition").modal('show');
   }
 
   openEditForm(position: Position): void {
@@ -88,11 +96,13 @@ export class PositionsComponent implements OnInit, OnDestroy {
       technicalPosition: position.technicalPosition,
       isActive: position.isActive
     });
-    this.isFormVisible = true;
+    // this.isFormVisible = true;
+    $("#AddEditPosisition").modal('show');
   }
 
   closeForm(): void {
-    this.isFormVisible = false;
+    // this.isFormVisible = false;
+    $("#AddEditPosisition").modal('hide');
     this.editingPosition = null;
     this.positionForm.reset({ actualPosition: '', technicalPosition: '', isActive: false });
   }
@@ -159,6 +169,7 @@ export class PositionsComponent implements OnInit, OnDestroy {
 
   askDelete(position: Position): void {
     this.deletingPosition = position;
+    $("#DeleteConfirmationModal").modal('show');
   }
 
   cancelDelete(): void {

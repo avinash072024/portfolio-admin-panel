@@ -1,82 +1,157 @@
 <main class="container-fluid dashboard-page px-0" data-aos="fade-up">
-	<section class="dashboard-panel positions-panel card border-1 rounded-4 shadow-sm">
-		<div class="panel-heading positions-heading">
-			<div class="positions-heading-copy">
-				<p class="panel-kicker mb-1">POSITIONS MANAGEMENT</p>
-				<h1 class="panel-title mb-0">Positions <span class="positions-count">{{ positions.length }}</span></h1>
-			</div>
-			<button type="button" class="btn btn-primary rounded-3" (click)="openCreateForm()">
-				<i class="bi bi-plus-lg me-1"></i> New Position
-			</button>
-		</div>
+    <section class="dashboard-panel positions-panel card border-1 rounded-4 shadow-sm">
+        <div class="panel-heading positions-heading">
+            <div class="positions-heading-copy">
+                <p class="panel-kicker mb-1">POSITIONS MANAGEMENT</p>
+                <h1 class="panel-title mb-0">Positions <span class="positions-count">{{ positions.length }}</span></h1>
+            </div>
+            <button type="button" class="btn btn-primary rounded-3" (click)="openCreateForm()">
+                <i class="bi bi-plus-lg me-1"></i> New Position
+            </button>
+        </div>
 
-		@if (activePosition) {
-		<div class="active-position-banner mx-3 mx-md-4 mb-3">
-			<span class="active-position-icon"><i class="bi bi-check2-circle"></i></span>
-			<div class="active-position-copy">
-				<span class="active-position-label">CURRENT ACTIVE POSITION</span>
-				<strong>{{ activePosition.actualPosition }}</strong>
-				<span>{{ activePosition.technicalPosition }}</span>
-			</div>
-		</div>
-		}
+        @if (activePosition) {
+        <div class="active-position-banner mx-3 mx-md-4 mb-3">
+            <span class="active-position-icon"><i class="bi bi-check2-circle"></i></span>
+            <div class="active-position-copy">
+                <span class="active-position-label">CURRENT ACTIVE POSITION</span>
+                <strong>{{ activePosition.actualPosition }}</strong>
+                <span>{{ activePosition.technicalPosition }}</span>
+            </div>
+        </div>
+        }
 
-		<div class="table-responsive border-1 border-top">
-			<table class="table table-hover align-middle mb-0 dashboard-table positions-table">
-				<thead>
-					<tr>
-						<th class="position-name-column">Actual Position</th>
-						<th class="position-technical-column">Technical Position</th>
-						<th class="text-center position-status-column">Status</th>
-						<th class="text-end table-actions-column">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					@for (position of positions; track position._id) {
-					<tr>
-						<td>
-							<div class="position-name">
-								<i class="bi bi-person-workspace text-primary"></i>
-								<strong>{{ position.actualPosition }}</strong>
-							</div>
-						</td>
-						<td><span class="technical-position">{{ position.technicalPosition }}</span></td>
-						<td class="text-center">
-							<button type="button" class="btn btn-sm rounded-pill px-3"
-								[ngClass]="position.isActive ? 'btn-primary' : 'btn-secondary'"
-								(click)="toggleActive(position)"
-								[attr.aria-label]="(position.isActive ? 'Deactivate ' : 'Activate ') + position.actualPosition">
-								{{ position.isActive ? 'Active' : 'Inactive' }}
-							</button>
-						</td>
-						<td class="text-end table-actions-column">
-							<div class="d-flex justify-content-end gap-2">
-								<button type="button" class="btn btn-action-edit" (click)="openEditForm(position)"
-									[attr.aria-label]="'Edit ' + position.actualPosition" title="Edit position">
-									<i class="bi bi-pencil"></i>
-								</button>
-								<button type="button" class="btn btn-action-delete" (click)="askDelete(position)"
-									[attr.aria-label]="'Delete ' + position.actualPosition" title="Delete position">
-									<i class="bi bi-trash3"></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-					} @empty {
-					<tr>
-						<td colspan="4" class="empty-state">
-							<i class="bi bi-person-badge fs-1 d-block mb-2 opacity-25"></i>
-							<span>No positions found. Add your first position.</span>
-						</td>
-					</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-	</section>
+        <div class="table-responsive border-1 border-top">
+            <table class="table table-hover align-middle mb-0 dashboard-table positions-table">
+                <thead>
+                    <tr>
+                        <th class="position-name-column">Actual Position</th>
+                        <th class="position-technical-column">Technical Position</th>
+                        <th class="text-center position-status-column">Status</th>
+                        <th class="text-end table-actions-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (position of positions; track position._id) {
+                    <tr>
+                        <td>
+                            <div class="position-name">
+                                <i class="bi bi-person-workspace text-primary"></i>
+                                <strong>{{ position.actualPosition }}</strong>
+                            </div>
+                        </td>
+                        <td><span class="technical-position">{{ position.technicalPosition }}</span></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm rounded-pill px-3"
+                                [ngClass]="position.isActive ? 'btn-primary' : 'btn-secondary'"
+                                (click)="toggleActive(position)"
+                                [attr.aria-label]="(position.isActive ? 'Deactivate ' : 'Activate ') + position.actualPosition">
+                                {{ position.isActive ? 'Active' : 'Inactive' }}
+                            </button>
+                        </td>
+                        <td class="text-end table-actions-column">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-action-edit" (click)="openEditForm(position)"
+                                    [attr.aria-label]="'Edit ' + position.actualPosition" title="Edit position">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-action-delete" (click)="askDelete(position)"
+                                    [attr.aria-label]="'Delete ' + position.actualPosition" title="Delete position">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            <i class="bi bi-person-badge fs-1 d-block mb-2 opacity-25"></i>
+                            <span>No positions found. Add your first position.</span>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
 </main>
 
-@if (isFormVisible) {
+<!-- Modal -->
+<div class="modal fade" id="AddEditPosisition" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="AddEditPosisitionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form [formGroup]="positionForm" (ngSubmit)="savePosition()" class="modal-content rounded-4">
+            <div class="modal-header">
+                <h1 id="position-form-title" class="h5 mb-0 text-primary">
+                    <i class="bi bi-person-badge me-2"></i>{{ editingPosition ? 'Edit Position' : 'Create Position' }}
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeForm()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold" for="actualPosition">Actual Position</label>
+                    <input id="actualPosition" type="text" class="form-control" formControlName="actualPosition"
+                        [class.is-invalid]="isInvalid('actualPosition')" placeholder="e.g. Senior Software Engineer">
+                    <div class="invalid-feedback">Enter a non-empty actual position.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold" for="technicalPosition">Technical Position</label>
+                    <input id="technicalPosition" type="text" class="form-control" formControlName="technicalPosition"
+                        [class.is-invalid]="isInvalid('technicalPosition')" placeholder="e.g. Full-stack Developer">
+                    <div class="invalid-feedback">Enter a non-empty technical position.</div>
+                </div>
+                <div class="form-check">
+                    <input id="positionIsActive" class="form-check-input" type="checkbox" formControlName="isActive">
+                    <label class="form-check-label fw-bold" for="positionIsActive">Set as active position</label>
+                    <div class="form-text">Activating this position deactivates any other. If there are no positions
+                        yet, the first position becomes active automatically.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" (click)="closeForm()">
+                    <i class="bi bi-x-lg"></i>
+					Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check2 me-1"></i>{{ editingPosition ? 'Save Changes' : 'Create Position' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="DeleteConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="DeleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="DeleteConfirmationModalLabel"><i class="bi bi-trash3"></i> Confirm Deletion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelDelete()"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-body-secondary mb-0">
+					{{ delelteStatement1 }}
+					<strong>{{ deletingPosition?.actualPosition }}</strong> position?
+					<span [innerHTML]="delelteStatement3"></span>
+				</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="cancelDelete()">
+                    <i class="bi bi-x-lg"></i>
+					Cancel
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deletePosition()">
+					<i class="bi bi-trash3"></i>
+					Delete
+				</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- @if (isFormVisible) {
 <div class="position-modal-backdrop" (click)="closeForm()">
 	<section class="position-modal card" role="dialog" aria-modal="true"
 		[attr.aria-labelledby]="'position-form-title'" (click)="$event.stopPropagation()">
@@ -138,4 +213,4 @@
 		</footer>
 	</section>
 </div>
-}
+} -->
