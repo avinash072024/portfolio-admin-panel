@@ -46,7 +46,7 @@ export class SidebarComponent implements OnDestroy {
         { label: 'Projects', path: '/projects', icon: 'bi bi-kanban' },
         { label: 'Skills', path: '/skills', icon: 'bi bi-lightning-charge' },
         { label: 'Contact', path: '/contact', icon: 'bi bi-envelope' },
-        { label: 'Positions', path: '/positions', icon: 'bi bi-person' }
+        { label: 'Positions', path: '/positions', icon: 'bi bi-person-workspace' }
 
       ]
     },
