@@ -35,7 +35,7 @@
 						<th class="table-checkbox-column">
 							<input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
 								[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-								(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
+								(change)="toggleSelectAll()"
 								aria-label="Select all services">
 						</th>
 						<th class="service-name-column">Service</th>
@@ -48,7 +48,7 @@
 				<tbody>
 					<tr *ngFor="let s of services" [class.table-active]="selectedIds.has(s._id)">
 						<td class="table-checkbox-column">
-							<input [appTooltip]="selectedIds.has(s._id) ? 'Deselect' : 'Select'" type="checkbox"
+							<input type="checkbox"
 								class="form-check-input table-checkbox" [checked]="selectedIds.has(s._id)"
 								(change)="toggleSelect(s._id)" [id]="'chk-' + s._id"
 								[attr.aria-label]="(selectedIds.has(s._id) ? 'Deselect ' : 'Select ') + s.title">
@@ -70,8 +70,7 @@
 							<button type="button" class="btn btn-sm rounded-pill px-3"
 								[ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
 								(click)="updateServiceStatus(s)"
-								[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title"
-								[appTooltip]="s.isActive === false ? 'Activate service' : 'Deactivate service'">
+								[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.title">
 								{{ s.isActive === false ? 'Inactive' : 'Active' }}
 							</button>
 						</td>
@@ -91,12 +90,12 @@
 						</td>
 						<td class="text-end table-actions-column">
 							<div class="d-flex justify-content-end gap-2">
-								<a appTooltip="Edit service" [routerLink]="['/services/edit', s._id]"
+								<a [routerLink]="['/services/edit', s._id]"
 									[queryParams]="{ page: page }" class="btn btn-action-edit"
 									[attr.aria-label]="'Edit ' + s.title">
 									<i class="bi bi-pencil"></i>
 								</a>
-								<button appTooltip="Delete service" class="btn btn-action-delete"
+								<button class="btn btn-action-delete"
 									(click)="openDeleteModal(s._id, s.title)" [attr.aria-label]="'Delete ' + s.title">
 									<i class="bi bi-trash3"></i>
 								</button>

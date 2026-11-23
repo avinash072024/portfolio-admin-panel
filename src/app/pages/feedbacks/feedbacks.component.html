@@ -24,8 +24,7 @@
                         <th class="table-checkbox-column">
                             <input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
                                 [checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
-                                aria-label="Select all feedback">
+                                (change)="toggleSelectAll()" aria-label="Select all feedback">
                         </th>
                         <th>Date &amp; Time</th>
                         <th>Name</th>
@@ -38,9 +37,9 @@
                 <tbody>
                     <tr *ngFor="let feedback of feedbacks" [class.table-active]="selectedIds.has(feedback._id)">
                         <td class="table-checkbox-column">
-                            <input [appTooltip]="selectedIds.has(feedback._id) ? 'Deselect' : 'Select'" type="checkbox"
-                                class="form-check-input table-checkbox" [checked]="selectedIds.has(feedback._id)"
-                                (change)="toggleSelect(feedback._id)" [id]="'feedback-' + feedback._id"
+                            <input type="checkbox" class="form-check-input table-checkbox"
+                                [checked]="selectedIds.has(feedback._id)" (change)="toggleSelect(feedback._id)"
+                                [id]="'feedback-' + feedback._id"
                                 [attr.aria-label]="(selectedIds.has(feedback._id) ? 'Deselect ' : 'Select ') + (feedback.name || 'anonymous feedback')">
                         </td>
                         <td>
@@ -72,13 +71,12 @@
                         </td>
                         <td class="text-end table-actions-column">
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-action-edit"
-                                    [appTooltip]="feedback?.verified ? 'Mark as unverified' : 'Mark as verified'"
-                                    (click)="onUpdateVerified(feedback)">
+                                <button class="btn btn-action-edit" (click)="onUpdateVerified(feedback)">
                                     <i class="bi"
                                         [class]="feedback?.verified ? 'bi-x-lg text-danger' : 'bi-check-lg text-success'"></i>
                                 </button>
-                                <button class="btn btn-action-delete" appTooltip="Delete feedback" (click)="openDeleteModal(feedback._id, feedback.name)">
+                                <button class="btn btn-action-delete"
+                                    (click)="openDeleteModal(feedback._id, feedback.name)">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </div>
@@ -114,23 +112,23 @@
             </span>
         </div>
         <div class="bulk-actions-controls">
-            <button type="button" class="btn bulk-action-btn bulk-action-cancel"
-                title="Clear selected feedback" (click)="selectedIds.clear()">
+            <button type="button" class="btn bulk-action-btn bulk-action-cancel" title="Clear selected feedback"
+                (click)="selectedIds.clear()">
                 <i class="bi bi-x-lg" aria-hidden="true"></i>
                 <span>Cancel</span>
             </button>
-            <button type="button" class="btn bulk-action-btn bulk-action-verify"
-                title="Verify selected feedback" (click)="bulkVerifySelected(true)">
+            <button type="button" class="btn bulk-action-btn bulk-action-verify" title="Verify selected feedback"
+                (click)="bulkVerifySelected(true)">
                 <i class="bi bi-check-lg" aria-hidden="true"></i>
                 <span>Verify</span>
             </button>
-            <button type="button" class="btn bulk-action-btn bulk-action-unverify"
-                title="Unverify selected feedback" (click)="bulkVerifySelected(false)">
+            <button type="button" class="btn bulk-action-btn bulk-action-unverify" title="Unverify selected feedback"
+                (click)="bulkVerifySelected(false)">
                 <i class="bi bi-x-lg" aria-hidden="true"></i>
                 <span>Unverify</span>
             </button>
-            <button type="button" class="btn bulk-action-btn bulk-action-delete"
-                title="Delete selected feedback" (click)="openBulkDeleteModal()">
+            <button type="button" class="btn bulk-action-btn bulk-action-delete" title="Delete selected feedback"
+                (click)="openBulkDeleteModal()">
                 <i class="bi bi-trash3" aria-hidden="true"></i>
                 <span>Delete</span>
             </button>

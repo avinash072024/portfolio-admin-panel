@@ -36,8 +36,7 @@
 						<th class="table-checkbox-column">
 							<input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
 								[checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-								(change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
-								aria-label="Select all skills">
+								(change)="toggleSelectAll()" aria-label="Select all skills">
 						</th>
 						<th class="skill-name-column">Skill</th>
 						<th class="text-center skill-status-column">Status</th>
@@ -49,9 +48,8 @@
 				<tbody>
 					<tr *ngFor="let s of skills" [class.table-active]="selectedIds.has(s._id)">
 						<td class="table-checkbox-column">
-							<input [appTooltip]="selectedIds.has(s._id) ? 'Deselect' : 'Select'" type="checkbox"
-								class="form-check-input table-checkbox" [checked]="selectedIds.has(s._id)"
-								(change)="toggleSelect(s._id)" [id]="'chk-' + s._id"
+							<input type="checkbox" class="form-check-input table-checkbox"
+								[checked]="selectedIds.has(s._id)" (change)="toggleSelect(s._id)" [id]="'chk-' + s._id"
 								[attr.aria-label]="(selectedIds.has(s._id) ? 'Deselect ' : 'Select ') + s.name">
 						</td>
 						<td>
@@ -72,8 +70,7 @@
 							<button type="button" class="btn btn-sm rounded-pill px-3"
 								[ngClass]="s.isActive === false ? 'btn-secondary' : 'btn-primary'"
 								(click)="updateSkillStatus(s)"
-								[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.name"
-								[appTooltip]="s.isActive === false ? 'Activate skill' : 'Deactivate skill'">
+								[attr.aria-label]="(s.isActive === false ? 'Activate ' : 'Deactivate ') + s.name">
 								{{ s.isActive === false ? 'Inactive' : 'Active' }}
 							</button>
 						</td>
@@ -93,10 +90,10 @@
 						<td class="text-end table-actions-column">
 							<div class="d-flex justify-content-end gap-2">
 								<a [routerLink]="['/skills/edit', s._id]" [queryParams]="{ page: page }"
-									class="btn btn-action-edit" appTooltip="Edit skill" aria-label="Edit skill">
+									class="btn btn-action-edit" aria-label="Edit skill">
 									<i class="bi bi-pencil"></i>
 								</a>
-								<button type="button" class="btn btn-action-delete" appTooltip="Delete skill"
+								<button type="button" class="btn btn-action-delete"
 									(click)="openDeleteModal(s._id, s.name)" [attr.aria-label]="'Delete ' + s.name">
 									<i class="bi bi-trash3"></i>
 								</button>
@@ -129,12 +126,12 @@
 			</span>
 		</div>
 		<div class="bulk-actions-controls">
-			<button type="button" class="btn bulk-action-btn bulk-action-cancel"
-				title="Clear selected skills" (click)="selectedIds.clear()">
+			<button type="button" class="btn bulk-action-btn bulk-action-cancel" title="Clear selected skills"
+				(click)="selectedIds.clear()">
 				<i class="bi bi-x-lg" aria-hidden="true"></i><span>Cancel</span>
 			</button>
-			<button type="button" class="btn bulk-action-btn bulk-action-delete"
-				title="Delete selected skills" (click)="openBulkDeleteModal()" id="bulk-delete-btn">
+			<button type="button" class="btn bulk-action-btn bulk-action-delete" title="Delete selected skills"
+				(click)="openBulkDeleteModal()" id="bulk-delete-btn">
 				<i class="bi bi-trash3" aria-hidden="true"></i><span>Delete</span>
 			</button>
 		</div>
@@ -201,40 +198,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- Delete Confirmation Modal (static backdrop) -->
-<!-- <div class="custom-modal-backdrop" *ngIf="showDeleteModal">
-	<div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-		<div class="modal-body">
-			<h5 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm Deletion</h5>
-			<p class="text-muted">Are you sure you want to delete <strong class="text-primary">{{ deletingSkillTitle
-					}}</strong>?
-				This action cannot be undone.
-			</p>
-			<div class="d-flex justify-content-end gap-2 mt-3">
-				<button class="btn btn-primary" (click)="closeDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-				<button class="btn btn-danger" (click)="confirmDelete()"><i class="bi bi-trash3"></i> Delete</button>
-			</div>
-		</div>
-	</div>
-</div> -->
-
-<!-- Bulk Delete Confirmation Modal -->
-<!-- <div class="custom-modal-backdrop" *ngIf="showBulkDeleteModal">
-	<div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-		<div class="modal-body">
-			<h5 class="modal-title text-danger"><i class="bi bi-trash3-fill"></i> Confirm Bulk Deletion</h5>
-			<p class="text-muted">
-				Are you sure you want to delete
-				<strong class="text-danger">{{ selectedIds.size }} skill{{ selectedIds.size === 1 ? '' : 's'
-					}}</strong>.
-				This action <strong>cannot be undone</strong>.
-			</p>
-			<div class="d-flex justify-content-end gap-2 mt-3">
-				<button class="btn btn-primary" (click)="closeBulkDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-				<button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()"><i
-						class="bi bi-trash3"></i> Delete {{ selectedIds.size }} Selected</button>
-			</div>
-		</div>
-	</div>
-</div> -->

@@ -1,5 +1,5 @@
 <main class="container-fluid dashboard-page px-0">
-    <section class="dashboard-panel activity-panel card border-1 rounded-4 shadow-sm mb-3 mb-xl-4" data-aos="fade-up">
+    <section class="dashboard-panel activity-panel card border-1 rounded-4 shadow-sm" data-aos="fade-up">
         <div class="panel-heading visitor-heading">
             <div>
                 <p class="panel-kicker mb-1">LIVE ACTIVITY</p>
@@ -76,7 +76,7 @@
     </section>
 
     @if (dataRecieved) {
-    <div class="visitor-actions">
+    <div class="visitor-actions mt-5 mb-4">
         <button type="button" class="btn btn-outline-danger px-3 rounded-3" (click)="openCloseModal(true)">
             <i class="bi bi-trash3 me-2"></i>Delete duplicate visitors
         </button>
@@ -122,16 +122,3 @@
         </div>
     </div>
 </div>
-
-<!-- <div class="custom-modal-backdrop" *ngIf="showDeleteModal">
-    <div class="custom-modal app-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-        <div class="modal-body">
-            <h2 class="modal-title text-primary"><i class="bi bi-trash3"></i> Confirm deletion</h2>
-            <p class="text-body-secondary">Are you sure you want to delete <strong class="text-primary">duplicate visitors</strong>? This action cannot be undone.</p>
-            <div class="d-flex justify-content-end gap-2 mt-3">
-                <button class="btn btn-primary" (click)="closeDeleteModal()"><i class="bi bi-x"></i> Cancel</button>
-                <button class="btn btn-danger" (click)="deleteDuplicateVisitors()"><i class="bi bi-trash3"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-</div> -->

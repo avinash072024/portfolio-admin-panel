@@ -74,11 +74,6 @@ $primary-skin: var(--primary-color, var(--bs-primary));
     justify-content: center;
 }
 
-.visitor-actions .btn {
-    border-radius: 6px;
-    font-weight: 600;
-}
-
 [data-bs-theme='dark'] .dashboard-page {
     --panel-border: rgba(var(--bs-emphasis-color-rgb), 0.13);
 }

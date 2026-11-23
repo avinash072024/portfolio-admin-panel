@@ -35,8 +35,7 @@
                         <th class="table-checkbox-column">
                             <input type="checkbox" class="form-check-input table-checkbox" id="select-all-checkbox"
                                 [checked]="allSelected" [indeterminate]="selectedIds.size > 0 && !allSelected"
-                                (change)="toggleSelectAll()" [appTooltip]="allSelected ? 'Deselect all' : 'Select all'"
-                                aria-label="Select all projects">
+                                (change)="toggleSelectAll()" aria-label="Select all projects">
                         </th>
                         <th class="project-name-column">Project&nbsp;Title</th>
                         <th class="text-center project-status-column">Status</th>
@@ -51,16 +50,15 @@
                     @for (project of projects; track project._id) {
                     <tr [class.table-active]="selectedIds.has(project._id)">
                         <td class="table-checkbox-column">
-                            <input [appTooltip]="selectedIds.has(project._id) ? 'Deselect' : 'Select'" type="checkbox"
-                                class="form-check-input table-checkbox" [checked]="selectedIds.has(project._id)"
-                                (change)="toggleSelect(project._id)" [id]="'chk-' + project._id"
+                            <input type="checkbox" class="form-check-input table-checkbox"
+                                [checked]="selectedIds.has(project._id)" (change)="toggleSelect(project._id)"
+                                [id]="'chk-' + project._id"
                                 [attr.aria-label]="(selectedIds.has(project._id) ? 'Deselect ' : 'Select ') + project.title">
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="project-img-wrapper me-3">
-                                    <img [src]="project.image || `${PROJECT_IMAGE_URL}`"
-                                        class="rounded-3" alt="">
+                                    <img [src]="project.image || `${PROJECT_IMAGE_URL}`" class="rounded-3" alt="">
                                 </div>
                                 <div class="project-copy">
                                     <div class="fw-bold text-body">{{ project.title }}</div>
@@ -75,8 +73,7 @@
                             <button type="button" class="btn btn-sm rounded-pill px-3"
                                 [ngClass]="project.isActive === false ? 'btn-secondary' : 'btn-primary'"
                                 (click)="updateProjectStatus(project)"
-                                [attr.aria-label]="(project.isActive === false ? 'Activate ' : 'Deactivate ') + project.title"
-                                [appTooltip]="project.isActive === false ? 'Activate project' : 'Deactivate project'">
+                                [attr.aria-label]="(project.isActive === false ? 'Activate ' : 'Deactivate ') + project.title">
                                 {{ project.isActive === false ? 'Inactive' : 'Active' }}
                             </button>
                         </td>
@@ -104,17 +101,16 @@
                         <td class="text-end table-actions-column">
                             <div class="d-flex justify-content-end gap-2">
                                 <a [href]="project.link" target="_blank" rel="noopener noreferrer"
-                                    class="btn btn-action-view" *ngIf="project.link" appTooltip="Live link"
+                                    class="btn btn-action-view" *ngIf="project.link"
                                     [attr.aria-label]="'View ' + project.title + ' live'">
                                     <i class="bi bi-box-arrow-up-right"></i>
                                 </a>
                                 <button type="button" (click)="onEdit(project)" class="btn btn-action-edit"
-                                    appTooltip="Edit project" [attr.aria-label]="'Edit ' + project.title">
+                                    [attr.aria-label]="'Edit ' + project.title">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <button type="button" (click)="openDeleteModal(project._id, project.title)"
-                                    class="btn btn-action-delete" appTooltip="Delete project"
-                                    [attr.aria-label]="'Delete ' + project.title">
+                                    class="btn btn-action-delete" [attr.aria-label]="'Delete ' + project.title">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </div>
@@ -146,12 +142,12 @@
             </span>
         </div>
         <div class="bulk-actions-controls">
-            <button type="button" class="btn bulk-action-btn bulk-action-cancel"
-                title="Clear selected projects" (click)="selectedIds.clear()">
+            <button type="button" class="btn bulk-action-btn bulk-action-cancel" title="Clear selected projects"
+                (click)="selectedIds.clear()">
                 <i class="bi bi-x-lg" aria-hidden="true"></i><span>Cancel</span>
             </button>
-            <button type="button" class="btn bulk-action-btn bulk-action-delete"
-                title="Delete selected projects" (click)="openBulkDeleteModal()" id="bulk-delete-btn">
+            <button type="button" class="btn bulk-action-btn bulk-action-delete" title="Delete selected projects"
+                (click)="openBulkDeleteModal()" id="bulk-delete-btn">
                 <i class="bi bi-trash3" aria-hidden="true"></i><span>Delete</span>
             </button>
         </div>
@@ -160,61 +156,61 @@
 </main>
 
 <div class="modal fade" id="DeleteConfirmationModal" tabindex="-1" aria-labelledby="DeleteConfirmationModalLabel"
-	aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 
-	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-		<div class="modal-content rounded-4">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4">
 
-			<!-- Header -->
-			<div class="modal-header">
-				<h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
-					<i class="bi bi-trash3"></i>
-					@if(showBulkDeleteModal){
-					Confirm Bulk Deletion
-					} @else {
-					Confirm Deletion
-					}
-				</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
+                    <i class="bi bi-trash3"></i>
+                    @if(showBulkDeleteModal){
+                    Confirm Bulk Deletion
+                    } @else {
+                    Confirm Deletion
+                    }
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-			<!-- Body -->
-			<div class="modal-body">
-				@if(!showBulkDeleteModal){
-				<p class="text-body-secondary mb-0">
-					{{ delelteStatement1 }}
-					<strong>{{ deletingProjectTitle }}</strong> project?
-					<span [innerHTML]="delelteStatement3"></span>
-				</p>
-				} @else {
-				<p class="text-body-secondary mb-0">
-					{{ delelteStatement2 }}
-					<strong>{{ selectedIds.size }} {{ selectedIds.size === 1 ? 'project' : 'projects'
-						}}</strong>.
-					<span [innerHTML]="delelteStatement3"></span>
-				</p>
-				}
-			</div>
+            <!-- Body -->
+            <div class="modal-body">
+                @if(!showBulkDeleteModal){
+                <p class="text-body-secondary mb-0">
+                    {{ delelteStatement1 }}
+                    <strong>{{ deletingProjectTitle }}</strong> project?
+                    <span [innerHTML]="delelteStatement3"></span>
+                </p>
+                } @else {
+                <p class="text-body-secondary mb-0">
+                    {{ delelteStatement2 }}
+                    <strong>{{ selectedIds.size }} {{ selectedIds.size === 1 ? 'project' : 'projects'
+                        }}</strong>.
+                    <span [innerHTML]="delelteStatement3"></span>
+                </p>
+                }
+            </div>
 
-			<!-- Footer -->
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="closeDeleteModal()" data-bs-dismiss="modal">
-					<i class="bi bi-x-lg"></i>
-					Cancel
-				</button>
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="closeDeleteModal()" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg"></i>
+                    Cancel
+                </button>
 
-				@if(!showBulkDeleteModal){
-				<button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">
-					<i class="bi bi-trash3"></i>
-					Delete
-				</button>
-				} @else {
-				<button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()">
-					<i class="bi bi-trash3"></i> Delete Selected</button>
-				}
+                @if(!showBulkDeleteModal){
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">
+                    <i class="bi bi-trash3"></i>
+                    Delete
+                </button>
+                } @else {
+                <button class="btn btn-danger" id="confirm-bulk-delete-btn" (click)="confirmBulkDelete()">
+                    <i class="bi bi-trash3"></i> Delete Selected</button>
+                }
 
-			</div>
+            </div>
 
-		</div>
-	</div>
+        </div>
+    </div>
 </div>

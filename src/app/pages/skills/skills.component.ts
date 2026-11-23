@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { SocketService } from '../../services/socket/socket.service';
-import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { BackupService } from '../../services/backup/backup.service';
 import { Constants } from '../../models/constants';
 
@@ -32,7 +31,7 @@ interface Skill {
 
 @Component({
   selector: 'app-skills',
-  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent, TooltipDirective],
+  imports: [CommonModule, RouterLink, FormsModule, PaginationComponent],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
