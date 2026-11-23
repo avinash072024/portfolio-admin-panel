@@ -58,23 +58,25 @@
             <div class="shortcut-list">
                 <a routerLink="/skills" class="shortcut-link">
                     <span class="shortcut-icon"><i class="bi bi-sliders"></i></span>
-                    <span class="shortcut-copy"><strong>Update skills</strong><small>Refresh your technical profile</small></span>
+                    <span class="shortcut-copy"><strong>Update skills</strong><small>Refresh your technical
+                            profile</small></span>
                     <i class="bi bi-arrow-up-right shortcut-arrow"></i>
                 </a>
                 <a (click)="downloadResume()" class="shortcut-link cursor-pointer">
                     <span class="shortcut-icon"><i class="bi bi-file-earmark-arrow-down"></i></span>
                     <span class="shortcut-copy">
                         @if(isDownloading()) {
-                            <strong>Downloading...</strong><small>Preparing your latest resume</small>
+                        <strong>Downloading...</strong><small>Preparing your latest resume</small>
                         } @else {
-                            <strong>Download resume</strong><small>Get your latest CV</small>
+                        <strong>Download resume</strong><small>Get your latest CV</small>
                         }
                     </span>
                     <i class="bi bi-arrow-down shortcut-arrow"></i>
                 </a>
                 <a routerLink="/cover-letter" class="shortcut-link">
                     <span class="shortcut-icon"><i class="bi bi-file-earmark-text"></i></span>
-                    <span class="shortcut-copy"><strong>Cover letter</strong><small>Create a tailored letter</small></span>
+                    <span class="shortcut-copy"><strong>Cover letter</strong><small>Create a tailored
+                            letter</small></span>
                     <i class="bi bi-arrow-up-right shortcut-arrow"></i>
                 </a>
                 <a routerLink="/data-backup" class="shortcut-link">
@@ -92,23 +94,51 @@
                 <p class="panel-kicker mb-1">LIVE ACTIVITY</p>
                 <h2 class="panel-title mb-0">Recent visitors</h2>
             </div>
-            <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary panel-link">View all<i class="bi bi-arrow-up-right ms-2"></i></a>
+            <a routerLink="/website-visitor" class="btn btn-sm btn-outline-primary panel-link">View all<i
+                    class="bi bi-arrow-up-right ms-2"></i></a>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0 dashboard-table">
-                <thead><tr>
-                    <th>Date &amp; time</th><th>Visitor</th><th>Location</th><th>Network</th><th>Organization</th><th>Timezone</th>
-                </tr></thead>
+                <thead>
+                    <tr>
+                        <th>Date &amp; time</th>
+                        <th>Visitor</th>
+                        <th>Location</th>
+                        <th>Network</th>
+                        <th>Organization</th>
+                        <th>Timezone</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr *ngFor="let visitor of visitors">
-                        <td><div class="d-flex flex-column table-date"><span>{{ visitor.createdAt | date:'dd MMM, yyyy' }}</span><small>{{ visitor.createdAt | date:'HH:mm:ss' }}</small></div></td>
-                        <td><div class="visitor-identity"><span class="visitor-icon"><i class="bi" [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i></span><span><strong>{{ visitor.ip }}</strong><small>{{ visitor.version }}</small></span></div></td>
-                        <td><div class="d-flex flex-column table-location"><span>{{ visitor.city }}, {{ visitor.region }}</span><small><i class="bi bi-geo-alt me-1"></i>{{ visitor.country_name }}</small></div></td>
-                        <td><div class="d-flex flex-column"><span>{{ visitor.network }}</span><small>ASN: {{ visitor.asn }}</small></div></td>
-                        <td><span class="organization-cell" [appTooltip]="visitor.org" tooltipPlacement="top">{{ visitor.org }}</span></td>
-                        <td><div class="d-flex flex-column"><span class="timezone-badge rounded-3">{{ visitor.timezone }}</span><small class="mt-1">UTC {{ visitor.utc_offset }}</small></div></td>
+                        <td>
+                            <div class="d-flex flex-column table-date"><span>{{ visitor.createdAt | date:'dd MMM, yyyy'
+                                    }}</span><small>{{ visitor.createdAt | date:'HH:mm:ss' }}</small></div>
+                        </td>
+                        <td>
+                            <div class="visitor-identity"><span class="visitor-icon"><i class="bi"
+                                        [ngClass]="visitor.version === 'IPv6' ? 'bi-cpu-fill' : 'bi-globe2'"></i></span><span><strong>{{
+                                        visitor.ip }}</strong><small>{{ visitor.version }}</small></span></div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column table-location"><span>{{ visitor.city }}, {{ visitor.region
+                                    }}</span><small><i class="bi bi-geo-alt me-1"></i>{{ visitor.country_name }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column"><span>{{ visitor.network || 'Unknown Network'
+                                    }}</span><small>ASN: {{ visitor.asn }}</small></div>
+                        </td>
+                        <td><span class="organization-cell" [appTooltip]="visitor.org" tooltipPlacement="top">{{
+                                visitor.org }}</span></td>
+                        <td>
+                            <div class="d-flex flex-column"><span class="timezone-badge rounded-3">{{ visitor.timezone
+                                    }}</span><small class="mt-1">UTC {{ visitor.utc_offset }}</small></div>
+                        </td>
                     </tr>
-                    <tr *ngIf="visitors.length === 0"><td colspan="6" class="empty-state">No visitor records found.</td></tr>
+                    <tr *ngIf="visitors.length === 0">
+                        <td colspan="6" class="empty-state">No visitor records found.</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -120,20 +150,43 @@
                 <p class="panel-kicker mb-1">FROM YOUR COMMUNITY</p>
                 <h2 class="panel-title mb-0">Recent feedback</h2>
             </div>
-            <a routerLink="/feedback" class="btn btn-sm btn-outline-primary panel-link">View all<i class="bi bi-arrow-up-right ms-2"></i></a>
+            <a routerLink="/feedback" class="btn btn-sm btn-outline-primary panel-link">View all<i
+                    class="bi bi-arrow-up-right ms-2"></i></a>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0 dashboard-table">
-                <thead><tr><th>Date</th><th>Name</th><th>Designation</th><th>Message</th><th class="text-center">Rating</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Message</th>
+                        <th class="text-center">Rating</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr *ngFor="let feedback of feedbacks">
-                        <td><div class="d-flex flex-column table-date"><span>{{ feedback.createdAt | date:'dd MMM, yyyy' }}</span><small>{{ feedback.createdAt | date:'HH:mm:ss' }}</small></div></td>
-                        <td><div class="feedback-identity" [title]="feedback.name || 'Anonymous'"><img [src]="avatarService.getAvatar(feedback.name)" alt="" /><span>{{ feedback.name || 'Anonymous' }}</span></div></td>
-                        <td><div class="d-flex flex-column table-designation"><span>{{ feedback.designation || '-' }}</span><small>&#64; {{ feedback.organization || '-' }}</small></div></td>
-                        <td><span class="feedback-message" [appTooltip]="feedback.message">{{ feedback.message || '-' }}</span></td>
-                        <td class="text-center"><span class="rating-value timezone-badge rounded-3"><i class="bi bi-star-fill me-1"></i>{{ feedback.rating }}</span></td>
+                        <td>
+                            <div class="d-flex flex-column table-date"><span>{{ feedback.createdAt | date:'dd MMM, yyyy'
+                                    }}</span><small>{{ feedback.createdAt | date:'HH:mm:ss' }}</small></div>
+                        </td>
+                        <td>
+                            <div class="feedback-identity" [title]="feedback.name || 'Anonymous'"><img
+                                    [src]="avatarService.getAvatar(feedback.name)" alt="" /><span>{{ feedback.name ||
+                                    'Anonymous' }}</span></div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column table-designation"><span>{{ feedback.designation || '-'
+                                    }}</span><small>&#64; {{ feedback.organization || '-' }}</small></div>
+                        </td>
+                        <td><span class="feedback-message" [appTooltip]="feedback.message">{{ feedback.message || '-'
+                                }}</span></td>
+                        <td class="text-center"><span class="rating-value timezone-badge rounded-3"><i
+                                    class="bi bi-star-fill me-1"></i>{{ feedback.rating }}</span></td>
                     </tr>
-                    <tr *ngIf="feedbacks.length === 0"><td colspan="5" class="empty-state">No feedback records found.</td></tr>
+                    <tr *ngIf="feedbacks.length === 0">
+                        <td colspan="5" class="empty-state">No feedback records found.</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
