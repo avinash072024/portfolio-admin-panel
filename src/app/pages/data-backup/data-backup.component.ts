@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { EducationService } from '../../services/education/education.service';
 import { ExperienceService } from '../../services/experience/experience.service';
@@ -22,7 +21,7 @@ interface DataBackup {
 
 @Component({
   selector: 'app-data-backup',
-  imports: [TooltipDirective],
+  imports: [],
   templateUrl: './data-backup.component.html',
   styleUrl: './data-backup.component.scss'
 })
@@ -41,7 +40,6 @@ export class DataBackupComponent implements OnInit {
   private toastr = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private socketService = inject(SocketService);
-  // private router = inject(Router);
   private destroy$ = new Subject<void>();
 
   educations: any[] = [];

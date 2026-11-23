@@ -86,42 +86,6 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
     this.loadVisitors(true);
   }
 
-  downloadBackup(): void {
-    if (!this.visitors.length && this.total === 0) {
-      this.toastr.info('No visitor records available to backup');
-      return;
-    }
-    this.spinner.show();
-    this.visitorService.getVisitor().subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        const list = res?.Visitors ?? res?.visitors ?? res ?? this.visitors;
-        this.backupService.downloadJson(list, 'website-visitors');
-        this.toastr.success('Website visitors backup downloaded successfully');
-      },
-      error: () => {
-        const fetchLimit = this.total > 0 ? this.total : 1000;
-        this.visitorService.getAllVisitors(1, fetchLimit, this.dateFilter || undefined).subscribe({
-          next: (res: any) => {
-            this.spinner.hide();
-            const list = res?.Visitors ?? this.visitors;
-            this.backupService.downloadJson(list, 'website-visitors');
-            this.toastr.success('Website visitors backup downloaded successfully');
-          },
-          error: () => {
-            this.spinner.hide();
-            if (this.visitors.length) {
-              this.backupService.downloadJson(this.visitors, 'website-visitors');
-              this.toastr.success('Current visitors backup downloaded');
-            } else {
-              this.toastr.error('Failed to download visitor records backup');
-            }
-          }
-        });
-      }
-    });
-  }
-
   changePage(newPage: number): void {
     if (newPage < 1 || newPage > this.totalPages || newPage === this.page) return;
     this.page = newPage;
@@ -159,18 +123,6 @@ export class WebsiteVisitorComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  // openDeleteModal(): void {
-  //   // this.showDeleteModal = true;
-  //   // document.body.style.overflow = 'hidden';
-  //   $('#DeleteConfirmationModal').modal('show');
-  // }
-
-  // closeDeleteModal(): void {
-  //   // this.showDeleteModal = false;
-  //   // document.body.style.overflow = '';
-  //   $('#DeleteConfirmationModal').modal('hide');
-  // }
 
   openCloseModal(open: boolean): void {
     if (open) {

@@ -182,42 +182,6 @@ export class SkillsComponent implements OnInit, OnDestroy {
     this.onSearch();
   }
 
-  downloadBackup(): void {
-    if (!this.skills.length && this.total === 0) {
-      this.toastr.info('No skills available to backup');
-      return;
-    }
-    this.spinner.show();
-    const fetchLimit = this.total > 0 ? this.total : 1000;
-    this.skillsService.getAllSkills(1, fetchLimit).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        const list = res?.skills || this.skills;
-        this.backupService.downloadJson(list, 'skills');
-        this.toastr.success('Skills backup downloaded successfully');
-      },
-      error: () => {
-        this.skillsService.getSkills().subscribe({
-          next: (res: any) => {
-            this.spinner.hide();
-            const list = res?.skills || res || this.skills;
-            this.backupService.downloadJson(list, 'skills');
-            this.toastr.success('Skills backup downloaded successfully');
-          },
-          error: () => {
-            this.spinner.hide();
-            if (this.skills.length) {
-              this.backupService.downloadJson(this.skills, 'skills');
-              this.toastr.success('Current skills backup downloaded');
-            } else {
-              this.toastr.error('Failed to download skills backup');
-            }
-          }
-        });
-      }
-    });
-  }
-
   buildPages() {
     const pages: number[] = [];
     for (let i = 1; i <= this.totalPages; i++) {

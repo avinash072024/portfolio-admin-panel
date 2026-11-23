@@ -82,42 +82,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.getProjects();
   }
 
-  downloadBackup(): void {
-    if (!this.projects.length && this.total === 0) {
-      this.toastr.info('No projects available to backup');
-      return;
-    }
-    this.spinner.show();
-    const fetchLimit = this.total > 0 ? this.total : 1000;
-    this.projectService.getAllProjects(1, fetchLimit).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-        const list = res?.projects || res?.data || this.projects;
-        this.backupService.downloadJson(list, 'projects');
-        this.toastr.success('Projects backup downloaded successfully');
-      },
-      error: () => {
-        this.projectService.getProjects().subscribe({
-          next: (res: any) => {
-            this.spinner.hide();
-            const list = res?.projects || res || this.projects;
-            this.backupService.downloadJson(list, 'projects');
-            this.toastr.success('Projects backup downloaded successfully');
-          },
-          error: () => {
-            this.spinner.hide();
-            if (this.projects.length) {
-              this.backupService.downloadJson(this.projects, 'projects');
-              this.toastr.success('Current projects backup downloaded');
-            } else {
-              this.toastr.error('Failed to download projects backup');
-            }
-          }
-        });
-      }
-    });
-  }
-
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.getProjects();
