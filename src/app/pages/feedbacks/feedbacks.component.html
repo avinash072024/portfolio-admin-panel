@@ -148,9 +148,9 @@
                 <h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
                     <i class="bi bi-trash3"></i>
                     @if(showBulkDeleteModal){
-                    Confirm Bulk Deletion
+                    {{confirmBulkDeleteStatement}}
                     } @else {
-                    Confirm Deletion
+                    {{confirmDeleteStatement}}
                     }
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
@@ -162,7 +162,7 @@
                 @if(!showBulkDeleteModal){
                 <p class="text-body-secondary mb-0">
                     {{ delelteStatement1 }}
-                    <strong>{{ deletingFeedbackTitle }}</strong> feedback?
+                    <strong>{{ deletingFeedbackTitle }}'s</strong> feedback?
                     <span [innerHTML]="delelteStatement3"></span>
                 </p>
                 } @else {

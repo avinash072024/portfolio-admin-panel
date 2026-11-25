@@ -32,6 +32,8 @@ export class PositionsComponent implements OnInit, OnDestroy {
   private readonly socketService = inject(SocketService);
   private readonly destroy$ = new Subject<void>();
 
+  confirmDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT1;
+
   delelteStatement1: string = Constants.DELETE_STATEMENT1;
   delelteStatement2: string = Constants.DELETE_STATEMENT2;
   delelteStatement3: string = Constants.DELETE_STATEMENT3;

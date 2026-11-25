@@ -13,6 +13,9 @@ export class Constants {
     public static token: string = `${this.APP_NAME_COMBINE.toLowerCase()}-token`;
 
     // delete statements
+    public static DELETE_CONFIRM_STATEMENT1: string = 'Confirm Deletion';
+    public static DELETE_CONFIRM_STATEMENT2: string = 'Confirm Bulk Deletion';
+
     public static DELETE_STATEMENT: string = 'Are you sure you want to delete';
     public static DELETE_STATEMENT1: string = `${this.DELETE_STATEMENT} the`;
     public static DELETE_STATEMENT2: string = `${this.DELETE_STATEMENT} selected`;

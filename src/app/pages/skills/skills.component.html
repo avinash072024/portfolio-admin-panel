@@ -8,7 +8,7 @@
 				</div>
 				<div class="d-block d-md-none">
 					<a routerLink="/skills/add" class="btn btn-primary rounded-3 skills-add-button">
-						<i class="bi bi-plus-lg me-1"></i> New
+						<i class="bi bi-plus-lg"></i> New
 					</a>
 				</div>
 
@@ -24,7 +24,7 @@
 					</button>
 				</div>
 				<a routerLink="/skills/add" class="d-none d-md-block btn btn-primary rounded-3 skills-add-button">
-					<i class="bi bi-plus-lg me-1"></i> New
+					<i class="bi bi-plus-lg"></i> New
 				</a>
 			</div>
 		</div>
@@ -150,9 +150,9 @@
 				<h5 class="modal-title text-primary" id="DeleteConfirmationModalLabel">
 					<i class="bi bi-trash3"></i>
 					@if(showBulkDeleteModal){
-					Confirm Bulk Deletion
+					{{confirmBulkDeleteStatement}}
 					} @else {
-					Confirm Deletion
+					{{confirmDeleteStatement}}
 					}
 				</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

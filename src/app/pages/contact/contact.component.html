@@ -16,9 +16,9 @@
       <div class="action-btn-wrapper">
         <button type="button"
           class="btn btn-primary-custom d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3 shadow-sm"
-          (click)="enableEditableFields()" [title]="editableFields ? 'Cancel Editing' : 'Edit Contact Details'">
-          <i class="bi" [ngClass]="editableFields ? 'bi-x-lg' : 'bi-pencil-square'"></i>
-          <span class="fw-semibold">{{ editableFields ? 'Cancel' : 'Edit Info' }}</span>
+          (click)="enableEditableFields()">
+          <i [ngClass]="editableFields ? 'bi bi-x-lg' : 'bi bi-pencil-square'"></i>
+          <span class="fw-normal">{{ editableFields ? 'Cancel' : 'Edit Info' }}</span>
         </button>
       </div>
     </div>

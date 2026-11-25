@@ -37,6 +37,10 @@ export class AboutComponent implements OnInit, OnDestroy {
   pendingType: AboutRecordType = 'education';
   private pendingId = '';
   pendingTitle = '';
+
+  confirmDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT1;
+  confirmBulkDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT2;
+
   deleteStatement1: string = Constants.DELETE_STATEMENT1;
   deleteStatement2: string = Constants.DELETE_STATEMENT2;
   deleteStatement3: string = Constants.DELETE_STATEMENT3;

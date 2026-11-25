@@ -46,6 +46,9 @@ export class FeedbacksComponent implements OnInit, OnDestroy {
   // Bulk delete
   showBulkDeleteModal: boolean = false;
 
+  confirmDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT1;
+  confirmBulkDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT2;
+
   delelteStatement1: string = Constants.DELETE_STATEMENT1;
   delelteStatement2: string = Constants.DELETE_STATEMENT2;
   delelteStatement3: string = Constants.DELETE_STATEMENT3;
