@@ -2,7 +2,8 @@
     <div class="card shadow-sm border-1 rounded-4 overflow-hidden" data-aos="fade-up">
         <div class="card-header d-flex justify-content-between align-items-center py-3">
             <h5 class="text-primary mb-0"><i class="bi bi-kanban me-2"></i>{{ isEdit ? 'Edit Project' : 'Create New Project' }}</h5>
-            <a routerLink="/projects" [queryParams]="{ page: page }" class="btn btn-primary px-3 rounded-3 fw-bold"><i class="bi bi-arrow-left"></i> Back</a>
+            <a routerLink="/projects" [queryParams]="{ page: page }" class="btn btn-primary px-3 rounded-3 fw-bold"><i
+                    class="bi bi-arrow-left"></i> Back</a>
         </div>
 
         <div class="card-body p-3 p-md-4">
@@ -12,12 +13,13 @@
                     <div class="col-md-6 col-lg-4">
                         <label class="form-label fw-bold">Project Title</label>
                         <input type="text" formControlName="title" class="form-control"
-                            [class.is-invalid]="isInvalid('title')" placeholder="e.g. E-Commerce Dashboard" appCapitalize="space">
+                            [class.is-invalid]="isInvalid('title')" placeholder="e.g. E-Commerce Dashboard"
+                            appCapitalize="space">
                         <div class="invalid-feedback">Title is required (min 3 chars).</div>
                     </div>
 
                     <div class="col-md-6 col-lg-4">
-                         <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
                             <label class="form-label fw-bold mb-0">Category</label>
                             <button type="button" class="btn btn-sm btn-outline-primary border-0 fw-semibold"
                                 data-bs-toggle="modal" data-bs-target="#categoryModal">
@@ -28,7 +30,7 @@
                             [class.is-invalid]="isInvalid('category')">
                             <option value="">Select Category</option>
                             @for (item of projectCategories; track $index) {
-                                <option [value]="item._id">{{ item.name }}</option>
+                            <option [value]="item._id">{{ item.name }}</option>
                             }
                         </select>
                         <div class="invalid-feedback">Please select a category.</div>
@@ -36,25 +38,35 @@
 
                     <div class="col-md-6 col-lg-4">
                         <label class="form-label fw-bold">Client Name</label>
-                        <input type="text" formControlName="clientName" class="form-control" placeholder="e.g. John Doe" appCapitalize="space">
+                        <input type="text" formControlName="clientName" class="form-control" placeholder="e.g. John Doe"
+                            appCapitalize="space">
                     </div>
 
                     <div class="col-md-6 col-lg-4">
                         <label class="form-label fw-bold">Team Size</label>
-                        <input type="text" formControlName="teamSize" class="form-control" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                        <input type="text" formControlName="teamSize" class="form-control" inputmode="numeric"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                             [class.is-invalid]="isInvalid('teamSize')" placeholder="e.g. 5">
                         <div class="invalid-feedback">Team size is required.</div>
                     </div>
 
                     <div class="col-md-6 col-lg-4">
                         <label class="form-label fw-bold">Completion Year</label>
-                        <input type="text" formControlName="completedYear" class="form-control" placeholder="e.g. 2020 or Current"
-                            [class.is-invalid]="isInvalid('completedYear')">
+                        <input type="text" formControlName="completedYear" class="form-control"
+                            placeholder="e.g. 2020 or Current" [class.is-invalid]="isInvalid('completedYear')">
                         <div class="invalid-feedback">Please select Year.</div>
                     </div>
 
                     <div class="col-md-6 col-lg-4">
-                        <label class="form-label fw-bold">Live Link (Optional)</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="form-label fw-bold">Live Link (Optional)</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showLink" formControlName="showLink">
+                                <label class="form-check-label" for="showLink">
+                                    Show link
+                                </label>
+                            </div>
+                        </div>
                         <input type="url" formControlName="link" class="form-control" placeholder="https://...">
                     </div>
 
@@ -67,8 +79,9 @@
                             </button> -->
                         </div>
                         <div *ngFor="let d of descArray.controls; let i=index" class="input-group mb-2">
-                            <input #descriptionInput [formControlName]="i" class="form-control" [placeholder]="`Describe feature ${i + 1}`"
-                                [class.is-invalid]="isInvalid(['desc', i])" appCapitalize="dot-space">
+                            <input #descriptionInput [formControlName]="i" class="form-control"
+                                [placeholder]="`Describe feature ${i + 1}`" [class.is-invalid]="isInvalid(['desc', i])"
+                                appCapitalize="dot-space">
                             <button *ngIf="descArray.length > 1" type="button" (click)="removeItem(descArray, i)"
                                 class="btn btn-outline-danger">
                                 <i class="bi bi-trash3"></i>
@@ -90,8 +103,8 @@
                             </button> -->
                         </div>
                         <div class="d-flex flex-wrap gap-2 mb-2">
-                            <div *ngFor="let t of toolsArray.controls; let i=index" class="input-group flex-nowrap custom-input-group"
-                                >
+                            <div *ngFor="let t of toolsArray.controls; let i=index"
+                                class="input-group flex-nowrap custom-input-group">
                                 <input #toolInput [formControlName]="i" class="form-control form-control-sm"
                                     [placeholder]="`Technology ${i + 1}`" [class.is-invalid]="isInvalid(['tools', i])">
                                 <button *ngIf="toolsArray.length > 1" type="button" (click)="removeItem(toolsArray, i)"
@@ -105,16 +118,19 @@
                             <i class="bi bi-plus-circle"></i> Add Tool
                         </button>
                     </div>
-                    
+
                     <div class="col-md-4 col-lg-3">
-                        <img [src]="projectImageUrl" class="object-fit-cover rounded-4 mb-3" height="150" width="100%" alt="project-image">
-                        <input type="text" formControlName="image" (input)="onInputChange($event)" class="form-control" placeholder="Enter image url">
+                        <img [src]="projectImageUrl" class="object-fit-cover rounded-4 mb-3" height="150" width="100%"
+                            alt="project-image">
+                        <input type="text" formControlName="image" (input)="onInputChange($event)" class="form-control"
+                            placeholder="Enter image url">
                     </div>
 
                     <div class="col-md-6 col-lg-4">
                         <div class="form-check mt-2">
                             <!-- Bound to reactive form control via formControlName -->
-                            <input class="form-check-input" type="checkbox" formControlName="showOnResume" id="showOnResume">
+                            <input class="form-check-input" type="checkbox" formControlName="showOnResume"
+                                id="showOnResume">
                             <label class="form-check-label fw-bold" for="showOnResume">
                                 Show On Resume
                             </label>
@@ -139,11 +155,12 @@
                         {{ isEdit ? 'Update' : 'Save' }}
                     </button>
                     @if(!isEdit){
-                        <button type="button" class="btn btn-outline-primary px-3 rounded-3" (click)="onSubmit(true)">
-                            Save & Add New
-                        </button>
+                    <button type="button" class="btn btn-outline-primary px-3 rounded-3" (click)="onSubmit(true)">
+                        Save & Add New
+                    </button>
                     }
-                    <a [routerLink]="['/projects']" [queryParams]="{ page: page }" class="btn btn-light px-3 rounded-3 border">Cancel</a>
+                    <a [routerLink]="['/projects']" [queryParams]="{ page: page }"
+                        class="btn btn-light px-3 rounded-3 border">Cancel</a>
                 </div>
             </form>
         </div>
@@ -151,20 +168,21 @@
 </div>
 
 <!-- Category Management Modal -->
-<div class="modal fade" id="categoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+<div class="modal fade" id="categoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="categoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content app-modal">
             <div class="modal-header">
-                <h5 class="modal-title fw-semibold" id="categoryModalLabel"><i class="bi bi-grid me-2"></i>Manage Categories
+                <h5 class="modal-title fw-semibold" id="categoryModalLabel"><i class="bi bi-grid me-2"></i>Manage
+                    Categories
                 </h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="input-group mb-4 shadow-sm">
                     <input type="text" class="form-control border-end-0 border-primary shadow-none"
-                        placeholder="New category name e.g. Frontend" [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}"
-                        (keyup.enter)="addCategory()">
+                        placeholder="New category name e.g. Frontend" [(ngModel)]="newCategoryName"
+                        [ngModelOptions]="{standalone: true}" (keyup.enter)="addCategory()">
                     <button class="btn btn-primary px-3 fw-bold" type="button" (click)="addCategory()">
                         {{ isCategoryEdit ? 'Update' : 'Add' }}
                     </button>
@@ -219,8 +237,8 @@
                 </div>
                 <h5 class="modal-title fw-bold text-primary mb-3" id="deleteConfirmModalLabel">Confirm Deletion</h5>
                 <p class="mb-4 text-muted">
-                    Are you sure you want to delete <span
-                        class="fw-bold text-primary text-break">{{ categoryToDelete?.name }}</span>? <br>
+                    Are you sure you want to delete <span class="fw-bold text-primary text-break">{{
+                        categoryToDelete?.name }}</span>? <br>
                     <span class="small">This action cannot be undone.</span>
                 </p>
                 <div class="d-flex gap-2 justify-content-center">

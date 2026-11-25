@@ -54,6 +54,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       completedYear: ['', Validators.required],
       image: [''],
       link: [''],
+      showLink: [false],
       desc: this.fb.array([this.fb.control('', Validators.required)]),
       tools: this.fb.array([this.fb.control('', Validators.required)]),
       showOnResume: [false], // Added here
@@ -109,6 +110,7 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
       completedYear: project.completedYear || '',
       image: project.image || '',
       link: project.link || '',
+      showLink: project.showLink ?? false,
       showOnResume: project.showOnResume ?? false,
       isActive: project.isActive ?? true
     });
