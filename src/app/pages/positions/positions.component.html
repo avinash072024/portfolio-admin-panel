@@ -5,9 +5,11 @@
                 <p class="panel-kicker mb-1">POSITIONS MANAGEMENT</p>
                 <h1 class="panel-title mb-0">Positions <span class="positions-count">{{ positions.length }}</span></h1>
             </div>
+            @if (!activePosition) {
             <button type="button" class="btn btn-primary rounded-3" (click)="openCreateForm()">
                 <i class="bi bi-plus-lg"></i> New
             </button>
+            }
         </div>
 
         <!-- @if (activePosition) {
@@ -83,7 +85,7 @@
         <form [formGroup]="positionForm" (ngSubmit)="savePosition()" class="modal-content rounded-4">
             <div class="modal-header">
                 <h1 id="position-form-title" class="h5 mb-0 text-primary">
-                    <i class="bi bi-person-badge me-2"></i>{{ editingPosition ? 'Edit Position' : 'Create Position' }}
+                    <i class="bi bi-person-workspace me-2"></i>{{ editingPosition ? 'Edit Position' : 'Create Position' }}
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     (click)="closeForm()"></button>
