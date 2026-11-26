@@ -9,6 +9,7 @@ import { SkillsService } from '../../services/skills/skills.service';
 import { SocketService } from '../../services/socket/socket.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CapitalizeDirective } from '../../directives/capitalize/capitalize.directive';
+import { Constants } from '../../models/constants';
 
 @Component({
   selector: 'app-add-edit-skills',
@@ -35,6 +36,13 @@ export class AddEditSkillsComponent implements OnInit, OnDestroy {
   isCategoryEdit: boolean = false;
   categoryEditId: string | null = null;
   categoryToDelete: any = null;
+
+  confirmDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT1;
+  confirmBulkDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT2;
+
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement2: string = Constants.DELETE_STATEMENT2;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
 
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;

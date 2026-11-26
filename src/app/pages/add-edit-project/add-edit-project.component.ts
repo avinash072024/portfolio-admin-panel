@@ -40,6 +40,11 @@ export class AddEditProjectComponent implements OnInit, OnDestroy {
   categoryToDelete: any = null;
   projectImageUrl: string = Constants.PROJECT_IMAGE_URL;
 
+  confirmDeleteStatement: string = Constants.DELETE_CONFIRM_STATEMENT1;
+
+  delelteStatement1: string = Constants.DELETE_STATEMENT1;
+  delelteStatement3: string = Constants.DELETE_STATEMENT3;
+
   ngOnInit(): void {
     this.page = Number(this.route.snapshot.queryParamMap.get('page')) || 1;
     this.subscribeToSocketUpdates();

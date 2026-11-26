@@ -15,7 +15,7 @@
 
       <div class="action-btn-wrapper">
         <button type="button"
-          class="btn btn-primary-custom d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3 shadow-sm"
+          class="btn btn-primary d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3 shadow-sm"
           (click)="enableEditableFields()">
           <i [ngClass]="editableFields ? 'bi bi-x-lg' : 'bi bi-pencil-square'"></i>
           <span class="fw-normal">{{ editableFields ? 'Cancel' : 'Edit Info' }}</span>
@@ -30,7 +30,7 @@
 
       <!-- Basic Info Card -->
       <div class="col-lg-6">
-        <div class="card h-100 custom-card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card h-100 shadow-sm border rounded-4 overflow-hidden">
           <div class="card-header bg-transparent border-bottom py-3 d-flex align-items-center gap-2">
             <div class="card-icon-badge">
               <i class="bi bi-person-vcard text-primary"></i>
@@ -93,7 +93,7 @@
 
       <!-- Social Links Card -->
       <div class="col-lg-6">
-        <div class="card h-100 custom-card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card h-100 shadow-sm border rounded-4 overflow-hidden">
           <div class="card-header bg-transparent border-bottom py-3 d-flex align-items-center gap-2">
             <div class="card-icon-badge">
               <i class="bi bi-share text-primary"></i>
@@ -175,7 +175,7 @@
           class="btn btn-primary btn-custom rounded-3 d-flex align-items-center gap-2 shadow-sm">
           Save
         </button>
-        <button type="button" (click)="enableEditableFields()" class="btn btn-light-custom btn-custom rounded-3">
+        <button type="button" (click)="enableEditableFields()" class="btn btn-light btn-custom border rounded-3">
           Cancel
         </button>
       </div>
