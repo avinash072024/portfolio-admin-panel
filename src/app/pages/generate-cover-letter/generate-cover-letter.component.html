@@ -1,4 +1,67 @@
-<main class="container-fluid px-0" data-aos="fade-up">
+<section class="restore-panel card border-1 rounded-4 shadow-sm mt-md-2 mt-lg-0" aria-labelledby="restore-heading"
+	data-aos="fade-up">
+	<div class="restore-heading panel-heading">
+		<div>
+			<p class="panel-kicker mb-1">GENERATE COVER LETTER</p>
+			<h2 id="restore-heading" class="panel-title mb-0">Cover letter</h2>
+		</div>
+	</div>
+
+	<div class="restore-body border-1 border-top">
+		<form [formGroup]="coverLetterForm" (ngSubmit)="generateCoverLetter()" novalidate autocomplete="off">
+			<p class="restore-description">
+                Enter the company name and application subject to generate a professional, personalized cover letter tailored to your job application.
+            </p>
+
+			<div class="row g-3">
+				<div class="col-md-6 col-lg-6 col-xl-4">
+					<label for="companyName" class="form-label">Company Name</label>
+					<input id="companyName" type="text" formControlName="companyName" class="form-control"
+						[class.is-invalid]="coverLetterForm.controls.companyName.invalid && coverLetterForm.controls.companyName.touched"
+						placeholder="e.g. Acme Technologies" aria-describedby="companyNameFeedback">
+					<div id="companyNameFeedback" class="invalid-feedback">Enter the company name.</div>
+				</div>
+
+				<div class="col-md-6 col-lg-6 col-xl-4">
+					<label for="subject" class="form-label">Application Subject</label>
+					<input id="subject" type="text" formControlName="subject" class="form-control"
+						[class.is-invalid]="coverLetterForm.controls.subject.invalid && coverLetterForm.controls.subject.touched"
+						placeholder="e.g. Application for Frontend Developer" aria-describedby="subjectFeedback">
+					<div id="subjectFeedback" class="invalid-feedback">Enter the application subject.</div>
+				</div>
+				<div class="col-md-12 col-lg-12 col-xl-4">
+					<label class="form-label text-transparent d-none d-md-block">&nbsp;</label>
+					<div class="d-flex justify-content-center align-items-center gap-2">
+						<button type="submit" class="btn btn-primary px-3 rounded-3" [disabled]="isGenerating()">
+							@if (isGenerating()) {
+							<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+							Generating PDF...
+							} @else {
+							<i class="bi bi-file-earmark-pdf me-1" aria-hidden="true"></i>Generate
+							}
+						</button>
+						<!-- <a routerLink="/home" class="btn btn-light px-3 rounded-3 border">Cancel</a> -->
+						<button class="btn btn-light px-3 rounded-3 border" type="reset"><i class="bi bi-arrow-repeat"></i> Reset</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <main class="container-fluid px-0" data-aos="fade-up">
 	<div class="card shadow-sm border-1 rounded-4 mt-md-2 mt-lg-0 overflow-hidden" data-aos="fade-up">
 		<div class="card-header d-flex justify-content-between align-items-center py-3">
 			<h5 class="text-primary mb-0">
@@ -37,7 +100,7 @@
 								<i class="bi bi-file-earmark-pdf me-1" aria-hidden="true"></i>Generate
 								}
 							</button>
-							<!-- <a routerLink="/home" class="btn btn-light px-3 rounded-3 border">Cancel</a> -->
+							<a routerLink="/home" class="btn btn-light px-3 rounded-3 border">Cancel</a>
 							<button class="btn btn-light px-3 rounded-3 border" type="reset">Reset</button>
 						</div>
 					</div>
@@ -45,4 +108,4 @@
 			</form>
 		</div>
 	</div>
-</main>
+</main> -->

@@ -33,6 +33,7 @@ export class GenerateCoverLetterComponent implements OnInit {
   myInformation: any = null;
 
   readonly isGenerating = signal(false);
+  
   readonly coverLetterForm = this.formBuilder.nonNullable.group({
     companyName: ['', [Validators.required, Validators.pattern(/\S/)]],
     subject: ['', [Validators.required, Validators.pattern(/\S/)]],
