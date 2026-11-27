@@ -879,6 +879,12 @@ thead th {
     margin-bottom: 0.4rem;
 }
 
+.footer-buttons {
+    .btn {
+        width: 6.875rem;
+    }
+}
+
 @keyframes bulk-actions-enter {
     from {
         opacity: 0;

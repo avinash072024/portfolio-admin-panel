@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { firstValueFrom, Observable } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +18,7 @@ type BackupRecord = Record<string, unknown>;
 @Component({
   selector: 'app-backup-restore',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './backup-restore.component.html',
   styleUrl: './backup-restore.component.scss'
 })
@@ -32,8 +33,11 @@ export class BackupRestoreComponent {
     { value: 'feedback', label: 'Feedbacks' }
   ];
 
-  selectedBackup: BackupType | '' = '';
-  selectedFile: File | null = null;
+  readonly backupForm = new FormGroup({
+    backupType: new FormControl<BackupType | ''>('', { nonNullable: true, validators: Validators.required }),
+    backupFile: new FormControl<File | null>(null, [Validators.required, this.validateJsonFile])
+  });
+  submitted = false;
   isImporting = false;
   importedCount = 0;
 
@@ -47,82 +51,96 @@ export class BackupRestoreComponent {
   private spinner = inject(NgxSpinnerService);
   private toastr = inject(ToastrService);
 
-  onBackupTypeChange(event: Event): void {
-    this.selectedBackup = (event.target as HTMLSelectElement).value as BackupType | '';
+  get selectedBackup(): BackupType | '' {
+    return this.backupForm.controls.backupType.value;
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
+    this.backupForm.controls.backupFile.setValue(input.files?.[0] ?? null);
+  }
 
-    if (file && !file.name.toLowerCase().endsWith('.json')) {
-      this.toastr.error('Please select a JSON backup file.');
-      input.value = '';
-      this.selectedFile = null;
-      return;
-    }
+  get showBackupTypeError(): boolean {
+    const control = this.backupForm.controls.backupType;
+    return control.invalid && (control.touched || this.submitted);
+  }
 
-    this.selectedFile = file;
+  get showBackupFileError(): boolean {
+    const control = this.backupForm.controls.backupFile;
+    return control.invalid && (control.touched || this.submitted);
   }
 
   async importBackup(): Promise<void> {
-    if (!this.selectedBackup) {
-      this.toastr.warning('Select which backup you are uploading.');
-      return;
-    }
-    if (!this.selectedFile) {
-      this.toastr.warning('Select a JSON backup file to upload.');
-      return;
-    }
     if (this.isImporting) return;
+    if (this.backupForm.invalid) {
+      this.submitted = true;
+      this.backupForm.markAllAsTouched();
+      return;
+    }
+
+    const selectedFile = this.backupForm.controls.backupFile.value;
+    if (!selectedFile || !this.selectedBackup) {
+      return;
+    }
 
     this.isImporting = true;
-    let json: string;
-    try {
-      json = await this.selectedFile.text();
-    } catch {
-      this.isImporting = false;
-      this.toastr.error('Unable to read the selected backup file.');
-      return;
-    }
+    this.backupForm.disable();
+    let spinnerVisible = false;
 
-    let records: unknown;
     try {
-      records = JSON.parse(json);
-    } catch {
-      this.isImporting = false;
-      this.toastr.error('The selected file is not valid JSON.');
-      return;
-    }
-
-    if (!Array.isArray(records) || records.length === 0) {
-      this.isImporting = false;
-      this.toastr.error('The backup must contain a non-empty JSON array of records.');
-      return;
-    }
-    if (records.some(record => !this.isBackupRecord(record))) {
-      this.isImporting = false;
-      this.toastr.error('Every item in the backup must be a JSON object.');
-      return;
-    }
-
-    this.importedCount = 0;
-    this.spinner.show();
-    try {
-      const preparedRecords = (records as BackupRecord[]).map(record => this.prepareRecord(record));
-      const response = await firstValueFrom(this.createRecords(preparedRecords));
-      if (this.isFailedResponse(response)) {
-        throw new Error(response['message'] as string || 'The server rejected the backup records.');
+      let json: string;
+      try {
+        json = await selectedFile.text();
+      } catch {
+        this.toastr.error('Unable to read the selected backup file.');
+        return;
       }
 
-      this.importedCount = preparedRecords.length;
-      this.toastr.success(`${this.importedCount} ${this.selectedBackup} ${this.importedCount > 1 ? 'records': 'record'} restored successfully.`);
-    } catch (error: unknown) {
-      this.toastr.error(this.getErrorMessage(error));
+      let records: unknown;
+      try {
+        records = JSON.parse(json);
+      } catch {
+        this.toastr.error('The selected file is not valid JSON.');
+        return;
+      }
+
+      if (!Array.isArray(records) || records.length === 0) {
+        this.toastr.error('The backup must contain a non-empty JSON array of records.');
+        return;
+      }
+      if (records.some(record => !this.isBackupRecord(record))) {
+        this.toastr.error('Every item in the backup must be a JSON object.');
+        return;
+      }
+
+      this.importedCount = 0;
+      this.spinner.show();
+      spinnerVisible = true;
+      try {
+        const preparedRecords = (records as BackupRecord[]).map(record => this.prepareRecord(record));
+        const response = await firstValueFrom(this.createRecords(preparedRecords));
+        if (this.isFailedResponse(response)) {
+          throw new Error(response['message'] as string || 'The server rejected the backup records.');
+        }
+
+        this.importedCount = preparedRecords.length;
+        this.toastr.success(`${this.importedCount} ${this.selectedBackup} ${this.importedCount > 1 ? 'records': 'record'} restored successfully.`);
+      } catch (error: unknown) {
+        this.toastr.error(this.getErrorMessage(error));
+      }
     } finally {
-      this.spinner.hide();
-      this.isImporting = false;
+      try {
+        if (spinnerVisible) this.spinner.hide();
+      } finally {
+        this.backupForm.enable();
+        this.isImporting = false;
+      }
     }
+  }
+
+  private validateJsonFile(control: AbstractControl): ValidationErrors | null {
+    const file = control.value as File | null;
+    return file && !file.name.toLowerCase().endsWith('.json') ? { invalidFileType: true } : null;
   }
 
   private createRecords(records: BackupRecord[]): Observable<unknown> {

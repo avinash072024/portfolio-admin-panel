@@ -83,16 +83,16 @@
                 </div>
 
                 <!-- Footer Buttons -->
-                <div class="mt-4 d-flex justify-content-center align-items-center gap-2">
+                <div class="footer-buttons border-top pt-4 mt-4 d-flex justify-content-center align-items-center gap-2">
                     <button type="button" class="btn btn-primary px-3 rounded-3" (click)="onSubmit(false)">
-                        {{ isEdit ? 'Update' : 'Save' }}
+                        <i class="bi bi-check-lg"></i> {{ isEdit ? 'Update' : 'Save' }}
                     </button>
-                    @if(!isEdit){
+                    <!-- @if(!isEdit){
                         <button type="button" class="btn btn-outline-primary px-3 rounded-3" (click)="onSubmit(true)">
                             Save & Add New
                         </button>
-                    }
-                    <a [routerLink]="['/services']" [queryParams]="{ page: page }" class="btn btn-light px-3 rounded-3 border">Cancel</a>
+                    } -->
+                    <a [routerLink]="['/services']" [queryParams]="{ page: page }" class="btn btn-light px-3 rounded-3 border"><i class="bi bi-x-lg"></i> Cancel</a>
                 </div>
             </form>
         </div>
