@@ -8,20 +8,21 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class SkillsService {
+  private readonly apiUrl1: string = `${environment.apiUrl}/skills`;
+  private readonly apiUrl2: string = `${environment.apiUrl}/skill-categories`;
   sessionService = inject(SessionService);
-
   constructor(private http: HttpClient) { }
 
   getSkills(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/skills')
+    return this.http.get(this.apiUrl1)
   }
 
   getSkillsAll(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/skills/all')
+    return this.http.get(`${this.apiUrl1}/all`)
   }
 
   getAllSkills(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
-    let url = `${environment.apiUrl}/skills/all`;
+    let url = `${this.apiUrl1}/all`;
     let params = `?page=${page}&limit=${limit}`;
     if (search) {
       params += `&search=${encodeURIComponent(search)}`;
@@ -30,44 +31,44 @@ export class SkillsService {
   }
 
   getSkillById(id: string): Observable<any> {
-    return this.http.get(environment.apiUrl + `/skills/${id}`);
+    return this.http.get(`${this.apiUrl1}/${id}`);
   }
 
   addSkill(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/skills', data);
+    return this.http.post(this.apiUrl1, data);
   }
 
   addMultipleSkills(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/skills/bulk', data);
+    return this.http.post(`${this.apiUrl1}/bulk`, data);
   }
 
   updateSkill(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/skills/${id}`, data);
+    return this.http.put(`${this.apiUrl1}/${id}`, data);
   }
 
   deleteSkill(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/skills/${id}`);
+    return this.http.delete(`${this.apiUrl1}/${id}`);
   }
 
   deleteMultipleSkills(ids: string[]): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/skills/bulk`, {
+    return this.http.delete(`${this.apiUrl1}/bulk`, {
       body: { ids }
     });
   }
   
   getSkillCategories(): Observable<any> {
-    return this.http.get(environment.apiUrl + `/skill-categories`);
+    return this.http.get(this.apiUrl2);
   }
 
   addSkillCategory(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/skill-categories', data);
+    return this.http.post(this.apiUrl2, data);
   }
 
   deleteSkillCategory(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/skill-categories/${id}`);
+    return this.http.delete(`${this.apiUrl2}/${id}`);
   }
 
   updateSkillCategory(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/skill-categories/${id}`, data);
+    return this.http.put(`${this.apiUrl2}/${id}`, data);
   }
 }

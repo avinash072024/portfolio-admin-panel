@@ -8,13 +8,13 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class ServicesService {
+  private readonly apiUrl: string = `${environment.apiUrl}/services`;
   sessionService = inject(SessionService);
-
   constructor(private http: HttpClient) { }
 
   // GET /api/services
   getServices(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
-    let url = `${environment.apiUrl}/services/all`;
+    let url = `${this.apiUrl}/all`;
     let params = `?page=${page}&limit=${limit}`;
     if (search) {
       params += `&search=${encodeURIComponent(search)}`;
@@ -24,31 +24,31 @@ export class ServicesService {
 
   // GET /api/services/:id
   getServiceById(id: string): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/services/${id}`);
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   // POST /api/services
   addService(data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/services`, data);
+    return this.http.post(`${this.apiUrl}`, data);
   }
 
   addMultipleServices(data: any[]): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/services/bulk`, data);
+    return this.http.post(`${this.apiUrl}/bulk`, data);
   }
 
   // PUT /api/services/:id
   updateService(id: string, data: any): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/services/${id}`, data);
+    return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
   // DELETE /api/services/:id
   deleteService(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/services/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
   // DELETE /api/services/bulk
   deleteMultipleServices(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/services/bulk`, {
+    return this.http.delete(`${this.apiUrl}/bulk`, {
       body: { ids }
     });
   }

@@ -8,15 +8,16 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class EducationService {
+  private readonly apiUrl: string = `${environment.apiUrl}/education`;
   sessionService = inject(SessionService);
   constructor(private http: HttpClient) { }
 
   getEducationById(id: string): Observable<any> {
-    return this.http.get(environment.apiUrl + `/education/${id}`);
+    return this.http.get(`${this.apiUrl}/${id}`)
   }
 
   getEducation(): Observable<any> {
-    return this.http.get(environment.apiUrl + `/education/all`);
+    return this.http.get(`${this.apiUrl}/all`);
   }
 
   addEducation(data: any): Observable<any> {
@@ -24,18 +25,18 @@ export class EducationService {
   }
 
   addMultipleEducation(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/education/bulk', data);
+    return this.http.post(`${this.apiUrl}/bulk`, data);
   }
 
   updateEducation(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/education/${id}`, data);
+    return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
   deleteEducation(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/education/${id}`)
+    return this.http.delete(`${this.apiUrl}/${id}`)
   }
 
   deleteMultipleEducation(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/education/bulk`, { body: { ids } });
+    return this.http.delete(`${this.apiUrl}/bulk`, { body: { ids } });
   }
 }

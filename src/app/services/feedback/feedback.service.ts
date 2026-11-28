@@ -8,19 +8,20 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class FeedbackService {
+  private readonly apiUrl: string = `${environment.apiUrl}/feedback`;
   sessionService = inject(SessionService);
   constructor(private http: HttpClient) { }
 
   getFeedbacks(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/feedback');
+    return this.http.get(this.apiUrl);
   }
 
   addMultipleFeedbacks(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/feedback/bulk', data);
+    return this.http.post(`${this.apiUrl}/bulk`, data);
   }
 
   getAllFeedbacks(page: number = 1, limit: number = 5, search: string = ''): Observable<any> {
-    let url = `${environment.apiUrl}/feedback?page=${page}&limit=${limit}`;
+    let url = `${this.apiUrl}?page=${page}&limit=${limit}`;
     if (search?.trim()) {
       url += `&search=${encodeURIComponent(search.trim())}`;
     }
@@ -28,18 +29,18 @@ export class FeedbackService {
   }
 
   updateFeedbackVerified(id: string, verified: boolean): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/feedback/${id}/verified`, { verified });
+    return this.http.patch(`${this.apiUrl}/${id}/verified`, { verified });
   }
 
   deleteFeedback(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/feedback/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
   deleteMultipleFeedbacks(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/feedback/bulk`, { body: { ids } });
+    return this.http.delete(`${this.apiUrl}/bulk`, { body: { ids } });
   }
 
   updateMultipleFeedbackVerified(ids: string[], verified: boolean): Observable<any> {
-    return this.http.patch(`${environment.apiUrl}/feedback/bulk/verified`, { ids, verified });
+    return this.http.patch(`${this.apiUrl}/bulk/verified`, { ids, verified });
   }
 }

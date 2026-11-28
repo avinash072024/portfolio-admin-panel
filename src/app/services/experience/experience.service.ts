@@ -8,34 +8,35 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class ExperienceService {
+  private readonly apiUrl: string = `${environment.apiUrl}/experience`;
   sessionService = inject(SessionService);
   constructor(private http: HttpClient) { }
 
   getExperienceById(id: string): Observable<any> {
-    return this.http.get(environment.apiUrl + `/experience/${id}`);
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   getExperience(): Observable<any> {
-    return this.http.get(environment.apiUrl + `/experience/all`);
+    return this.http.get(`${this.apiUrl}/all`);
   }
 
   addExperience(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + '/experience', data);
+    return this.http.post(this.apiUrl, data);
   }
 
   addMultipleExperience(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/experience/bulk', data);
+    return this.http.post(`${this.apiUrl}/bulk`, data);
   }
 
   updateExperience(id: string, data: any): Observable<any> {
-    return this.http.put(environment.apiUrl + `/experience/${id}`, data);
+    return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
   deleteExperience(id: string): Observable<any> {
-    return this.http.delete(environment.apiUrl + `/experience/${id}`)
+    return this.http.delete(`${this.apiUrl}/${id}`)
   }
 
   deleteMultipleExperience(ids: string[]): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/experience/bulk`, { body: { ids } });
+    return this.http.delete(`${this.apiUrl}/bulk`, { body: { ids } });
   }
 }

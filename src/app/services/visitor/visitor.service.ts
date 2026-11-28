@@ -8,17 +8,16 @@ import { SessionService } from '../session/session.service';
   providedIn: 'root'
 })
 export class VisitorService {
-  // private cache = new Map<string, Observable<any>>();
+  private readonly apiUrl: string = `${environment.apiUrl}/visitor`;
   sessionService = inject(SessionService);
   constructor(private http: HttpClient) { }
 
-  /** Fetch all visitors without pagination (used for summary/count widgets) */
   getVisitor(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/visitor/all');
+    return this.http.get(`${this.apiUrl}/all`);
   }
 
   addMultipleVisitors(data: any[]): Observable<any> {
-    return this.http.post(environment.apiUrl + '/visitor/bulk', data);
+    return this.http.post(`${this.apiUrl}/bulk`, data);
   }
 
   getAllVisitors(page: number = 1, limit: number = 5, date?: string): Observable<any> {
@@ -33,7 +32,7 @@ export class VisitorService {
     }
 
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-    return this.http.get(`${environment.apiUrl}/visitor/all${queryString}`);
+    return this.http.get(`${this.apiUrl}/all${queryString}`);
   }
 
   getVisitorsByDate(date: string): Observable<any> {
@@ -41,6 +40,6 @@ export class VisitorService {
   }
 
   deleteDuplicateVisitors(): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/visitor/duplicates`);
+    return this.http.delete(`${this.apiUrl}/duplicates`);
   }
 }

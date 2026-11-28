@@ -25,14 +25,16 @@ export interface ContactInfo {
   providedIn: 'root'
 })
 export class ContactService {
+  private readonly apiUrl: string = `${environment.apiUrl}/contact`;
+
   private http = inject(HttpClient);
   sessionService = inject(SessionService);
 
   getContact(): Observable<{ success: boolean; contact: ContactInfo }> {
-    return this.http.get<{ success: boolean; contact: ContactInfo }>(environment.apiUrl + `/contact`);
+    return this.http.get<{ success: boolean; contact: ContactInfo }>(this.apiUrl);
   }
 
   updateContact(contactData: Partial<ContactInfo>): Observable<{ success: boolean; message: string; contact: ContactInfo }> {
-    return this.http.post<{ success: boolean; message: string; contact: ContactInfo }>(`${environment.apiUrl}/contact`, contactData);
+    return this.http.post<{ success: boolean; message: string; contact: ContactInfo }>(this.apiUrl, contactData);
   }
 }

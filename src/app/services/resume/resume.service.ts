@@ -7,10 +7,12 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class ResumeService {
+  private readonly apiUrl: string = `${environment.apiUrl}/resumes`;
+
   constructor(private http: HttpClient) {}
 
   getATSResume(): Observable<Blob> {
-    return this.http.get(`${environment.apiUrl}/resumes/generate-ats`, {
+    return this.http.get(`${this.apiUrl}/generate-ats`, {
       responseType: 'blob',
     });
   }
@@ -20,7 +22,7 @@ export class ResumeService {
       .set('companyName', companyName.trim())
       .set('subject', subject.trim());
 
-    return this.http.get(`${environment.apiUrl}/resumes/generate-cover-letter`, {
+    return this.http.get(`${this.apiUrl}/generate-cover-letter`, {
       params,
       responseType: 'blob',
     });
